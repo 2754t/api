@@ -1,0 +1,4 @@
+GET http://localhost:8000/palyers
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer xxxxxxxx

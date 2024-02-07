@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Player;
+
 return [
 
     /*
@@ -14,7 +16,7 @@ return [
     */
 
     'defaults' => [
-        'guard' => 'web',
+        'guard' => 'player',
         'passwords' => 'users',
     ],
 
@@ -36,9 +38,9 @@ return [
     */
 
     'guards' => [
-        'web' => [
-            'driver' => 'session',
-            'provider' => 'users',
+        'player' => [
+            'driver' => 'bearer',
+            'provider' => 'playerProvider',
         ],
     ],
 
@@ -60,9 +62,9 @@ return [
     */
 
     'providers' => [
-        'users' => [
+        'playerProvider' => [
             'driver' => 'eloquent',
-            'model' => App\Models\User::class,
+            'model' => Player::class,
         ],
 
         // 'users' => [

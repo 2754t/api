@@ -3,7 +3,10 @@
 namespace App\Providers;
 
 // use Illuminate\Support\Facades\Gate;
+
+use App\Auth\BearerGuard;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Auth;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -21,6 +24,12 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        // ガードの追加
+        Auth::extend('bearer', static function ($app, $name, $config) {
+            $userProvider = $app['auth']->createUserProvider($config['provider'] ?? null);
+            $request = $app->make('request');
+
+            return new BearerGuard($userProvider, $request);
+        });
     }
 }

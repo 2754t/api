@@ -2,10 +2,14 @@
 
 namespace App\Models;
 
+use Illuminate\Auth\Authenticatable as AuthAuthenticatable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Contracts\Auth\Authenticatable;
 
-class Player extends Model
+class Player extends Model implements Authenticatable
 {
+    use AuthAuthenticatable;
+
     /**
      * @var array
      */
@@ -14,5 +18,8 @@ class Player extends Model
         'team_id' => 'integer',
         'pitcher_flag' => 'boolean',
         'catcher_flag' => 'boolean',
+        'role' => 'integer',
+        'access_token_expired' => 'datetime:Y-m-d',
     ];
+    
 }
