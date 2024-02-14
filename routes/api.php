@@ -17,4 +17,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/signIn', SignInController::class);
 
-Route::get('/players', FetchController::class);
+Route::middleware(['auth:player'])->group(function () {
+    Route::get('/players', FetchController::class);
+});

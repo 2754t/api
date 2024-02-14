@@ -1,4 +1,4 @@
-GET http://localhost:8000/palyers
+GET http://localhost:8000/players
 Content-Type: application/json
 Accept: application/json
-Authorization: Bearer xxxxxxxx
+Authorization: Bearer access_token_4xpCRzRDwxStm3URO3otYTDdjBFR44HgQsnbymZ4rFarZGzkaUA2MwS2fwMtrju2VtRRMXE3v1TiDbpXMeTVrIy

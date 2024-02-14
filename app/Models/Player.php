@@ -21,5 +21,18 @@ class Player extends Model implements Authenticatable
         'role' => 'integer',
         'access_token_expired' => 'datetime:Y-m-d',
     ];
+
+    /**
+     * The attributes that should be hidden for serialization.
+     *
+     * @var array<string>
+     */
+    protected $hidden = [
+        'access_token',
+        'access_token_expired',
+        'password',
+        'remember_token',
+    ];
+
     
 }

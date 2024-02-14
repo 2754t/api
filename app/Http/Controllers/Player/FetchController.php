@@ -9,7 +9,8 @@ class FetchController extends Controller
 {
     public function __invoke()
     {
-        dd(Player::all());
-        return Player::all();
+        $players = Player::all();
+        // TODO リソース作って返す
+        return $players;
     }
 }
