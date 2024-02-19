@@ -19,7 +19,7 @@ class Player extends Model implements Authenticatable
         'pitcher_flag' => 'boolean',
         'catcher_flag' => 'boolean',
         'role' => 'integer',
-        'access_token_expired' => 'datetime:Y-m-d',
+        'access_token_expired' => 'datetime',
     ];
 
     /**
