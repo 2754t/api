@@ -6,7 +6,7 @@ use Illuminate\Auth\Authenticatable as AuthAuthenticatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Auth\Authenticatable;
 
-class Attendances extends Model implements Authenticatable
+class Attendance extends Model implements Authenticatable
 {
     use AuthAuthenticatable;
 

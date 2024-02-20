@@ -1,0 +1,4 @@
+GET http://localhost:8000/make/positions
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer access_token_HcW8L2YsslIOJKFGlEO2MqLINnM5GO2SPY04ZcRY4kdwJR78p3Y76j1R5PZAr9FZhQYOl5w7rLWbsCqOm0ytU8m
