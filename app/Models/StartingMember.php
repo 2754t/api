@@ -5,7 +5,8 @@ namespace App\Models;
 use Illuminate\Auth\Authenticatable as AuthAuthenticatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Auth\Authenticatable;
-use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Enums\Position;
 
 /**
  * App\Models\StartingMember
@@ -16,7 +17,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property int $activity_id 活動ID
  * @property int $attendance_id 出欠ID
  * @property boolean $starting_lineup スタメン
- * @property int|null $position 守備位置
+ * @property Position|null $position 守備位置
  * @property int|null $batting_order 打順
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
@@ -49,7 +50,7 @@ class StartingMember extends Model implements Authenticatable
         'player_id' => 'integer',
         'activity_id' => 'integer',
         'starting_lineup' => 'boolean',
-        'position' => 'integer',
+        'position' => Position::class,
         'batting_order' => 'integer',
     ];
 
@@ -66,9 +67,9 @@ class StartingMember extends Model implements Authenticatable
     |-------------------
     |
     */
-    public function player(): HasOne
+    public function player(): BelongsTo
     {
-        return $this->hasOne(Player::class, 'player_id', 'id');
+        return $this->BelongsTo(Player::class);
     }
 
     /*
