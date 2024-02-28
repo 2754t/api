@@ -23,6 +23,10 @@ class StartingMemberService
      * 残りの8人に、残りの8つのポジションを、ユニーク割り当てる
      * スタメンの10人に、1〜10 の打順をユニークに割り当てる
      */
+    private $position_array = [];
+    private $batting_order_array = [];
+    private $starting_members;
+
     public function generate(Activity $activity): void
     {
         $attendances = Attendance::query()
@@ -32,46 +36,43 @@ class StartingMemberService
             ->get();
 
         /** @var array<Position> */
-        $position_array = Position::cases();
-        $starting_members = collect([]);
+        $this->position_array = Position::cases();
+        $this->batting_order_array = range(1,10);
+        $this->starting_members = collect([]);
 
         // TODO ピッチャーキャッチャーいなかった時
 
         // 出席者のうちピッチャーができる人たち
         $pitcher_attendances = $attendances->filter(fn (Attendance $attendance) => $attendance->player->pitcher_flag);
+
         /** @var Attendance この試合のピッチャー */
         $pitcher_attendance = $pitcher_attendances->random();
         // まずスターティングメンバーにピッチャーを追加
-        $starting_member = $this->createStartingMember($pitcher_attendance, $position_array, Position::PITCHER);
-        $starting_members->push($starting_member);
+        $starting_member = $this->createStartingMember($pitcher_attendance, Position::PITCHER);
+        $this->starting_members->push($starting_member);
 
         // 残りの出席者のうちキャッチャーのできる人たち
-        $catcher_attendances = $attendances->filter(fn (Attendance $attendance) => $attendance->player->catcher_flag && $attendance->id !== $starting_members->first()->attendance_id);
+        $catcher_attendances = $attendances->filter(fn (Attendance $attendance) => $attendance->player->catcher_flag && $attendance->id !== $this->starting_members->first()->attendance_id);
         /** @var Attendance この試合のピッチャー */
         $catcher_attendance = $catcher_attendances->random();
         // 2人目のスターティングメンバーにキャッチャーを追加
-        $starting_member = $this->createStartingMember($catcher_attendance, $position_array, Position::CATCHER);
-        $starting_members->push($starting_member);
+        $starting_member = $this->createStartingMember($catcher_attendance, Position::CATCHER);
+        $this->starting_members->push($starting_member);
 
-        $attendances = $attendances->filter(fn (Attendance $attendance) => !$starting_members->pluck('attendance_id')->contains($attendance->id));
+        $attendances = $attendances->filter(fn (Attendance $attendance) => !$this->starting_members->pluck('attendance_id')->contains($attendance->id));
 
-        $attendances->map(function (Attendance $attendance) use (&$position_array, $starting_members): StartingMember {
+        $attendances->each(function (Attendance $attendance): void {
             
-            $starting_member = $this->createStartingMember($attendance, $position_array);
-            $starting_members->push($starting_member);
-
-            return $starting_member;
+            $starting_member = $this->createStartingMember($attendance);
+            $this->starting_members->push($starting_member);
         });
 
-        // $starting_members->sortBy(['position', 'desc']);
-        $starting_members->map(function (StartingMember $starting_member) {
-            var_dump($starting_member->position->label(). " ". $starting_member->player->last_name);
+        $this->starting_members->map(function (StartingMember $starting_member) {
+            var_dump($starting_member->batting_order. $starting_member->position->label(). " ". $starting_member->player->last_name);
         });
-
-        $starting_members = collect([]);
     }
 
-    private function createStartingMember(Attendance $attendance, array &$position_array, ?Position $position=null): StartingMember
+    private function createStartingMember(Attendance $attendance, ?Position $position=null): StartingMember
     {
         $starting_member = new StartingMember();
         $starting_member->team_id = $attendance->team_id;
@@ -79,19 +80,23 @@ class StartingMemberService
         $starting_member->activity_id = $attendance->activity_id;
         $starting_member->attendance_id = $attendance->id;
         $starting_member->starting_lineup = YesNo::YES;
-        $starting_member->position = $position? $position : $this->randPosition($position_array);
-        $starting_member->batting_order = null;
+        $starting_member->position = $position? $position : $this->randPosition();
+        $starting_member->batting_order = $this->batting_order_array[array_rand($this->batting_order_array)];
 
         
         if ($starting_member->position) {
-            unset($position_array[$starting_member->position->value - 1]);
+            $this->position_array = array_filter($this->position_array, fn (Position $position) => $position !== $starting_member->position);
+        }
+
+        if ($starting_member->batting_order) {
+            $this->batting_order_array = array_diff($this->batting_order_array, [$starting_member->batting_order]);
         }
         
         return $starting_member;
     }
 
-    private function randPosition(array $position_array): Position
+    private function randPosition(): Position
     {
-        return $position_array[array_rand($position_array, 1)];
+        return $this->position_array[array_rand($this->position_array, 1)];
     }
 }
