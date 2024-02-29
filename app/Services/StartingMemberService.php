@@ -37,7 +37,8 @@ class StartingMemberService
 
         /** @var array<Position> */
         $this->position_array = Position::cases();
-        $this->batting_order_array = range(1,10);
+        // 10をactivityの参加者数にする。カラム追加から
+        $this->batting_order_array = range(1,13);
         $this->starting_members = collect([]);
 
         // TODO ピッチャーキャッチャーいなかった時
@@ -68,7 +69,7 @@ class StartingMemberService
         });
 
         $this->starting_members->map(function (StartingMember $starting_member) {
-            var_dump($starting_member->batting_order. $starting_member->position->label(). " ". $starting_member->player->last_name);
+            var_dump($starting_member->batting_order. "番 ". $starting_member->position->label(). " ". $starting_member->player->last_name);
         });
     }
 
@@ -97,6 +98,10 @@ class StartingMemberService
 
     private function randPosition(): Position
     {
+        if ($this->position_array === []) {
+            return Position::DH;
+        }
+
         return $this->position_array[array_rand($this->position_array, 1)];
     }
 }
