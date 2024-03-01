@@ -35,9 +35,11 @@ class StartingMemberService
             ->where('answer', Answer::YES)
             ->get();
 
+        // TODO DHを除く配列にしたい
         /** @var array<Position> */
         $this->position_array = Position::cases();
-        // 10をactivityの参加者数にする。カラム追加から
+        // TODO activityテーブルにスタメン人数のカラムを追加。13のところをスタメン人数にする。
+        // スタメン人数より多かったり少なかったりする場合は
         $this->batting_order_array = range(1,13);
         $this->starting_members = collect([]);
 
