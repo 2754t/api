@@ -8,23 +8,16 @@ use App\Enums\YesNo;
 use App\Models\Activity;
 use App\Models\Attendance;
 use App\Models\StartingMember;
+use App\UseCase\Exceptions\UseCaseException;
+use Illuminate\Support\Collection;
 
 class StartingMemberService
 {
-    /**
-     * Undocumented function
-     * 
-     * 出席メンバーのうち、10人をスタメン (starting_lineup = true) にする
-     * 残りをベンチ (starting_lineup = false) にする
-     * スタメンのうち、ピッチャーができる人 (Player::pitcher_flag = true) のいずれかひとりを
-     * ピッチャー (position = Position::PITCHER) にする。
-     * スタメンのうち、キャッチャーができる人 (Player::catcher_flag = true) のいずれかひとりを
-     * キャッチャー (position = Position::CATCHER) にする。
-     * 残りの8人に、残りの8つのポジションを、ユニーク割り当てる
-     * スタメンの10人に、1〜10 の打順をユニークに割り当てる
-     */
+    /** @var array<Position> DHを除くポジションの配列が初期値 */
     private $position_array = [];
+    /** @var array<int> 出席者数までの数字の配列が初期値 */
     private $batting_order_array = [];
+    /** @var Collection<StartingMember> ランダムで決まったスタメンのコレクション。空のコレクションが初期値 */
     private $starting_members;
 
     public function generate(Activity $activity): void
@@ -35,44 +28,74 @@ class StartingMemberService
             ->where('answer', Answer::YES)
             ->get();
 
-        // TODO DHを除く配列にしたい
-        /** @var array<Position> */
-        $this->position_array = Position::cases();
-        // TODO activityテーブルにスタメン人数のカラムを追加。13のところをスタメン人数にする。
-        // スタメン人数より多かったり少なかったりする場合は
-        $this->batting_order_array = range(1,13);
+        $this->position_array = array_filter(Position::cases(), fn($position) => $position !== Position::DH);
+        $this->batting_order_array = range(1, $attendances->count());
         $this->starting_members = collect([]);
 
-        // TODO ピッチャーキャッチャーいなかった時
+        $pitcher = $this->getPitcher($attendances);
+        $this->starting_members->push($pitcher);
 
-        // 出席者のうちピッチャーができる人たち
-        $pitcher_attendances = $attendances->filter(fn (Attendance $attendance) => $attendance->player->pitcher_flag);
+        $catcher = $this->getCatcher($attendances);
+        $this->starting_members->push($catcher);
 
-        /** @var Attendance この試合のピッチャー */
-        $pitcher_attendance = $pitcher_attendances->random();
-        // まずスターティングメンバーにピッチャーを追加
-        $starting_member = $this->createStartingMember($pitcher_attendance, Position::PITCHER);
-        $this->starting_members->push($starting_member);
+        $attendances = $attendances->filter(
+            fn (Attendance $attendance) => !$this->starting_members->pluck('attendance_id')->contains($attendance->id)
+        );
 
-        // 残りの出席者のうちキャッチャーのできる人たち
-        $catcher_attendances = $attendances->filter(fn (Attendance $attendance) => $attendance->player->catcher_flag && $attendance->id !== $this->starting_members->first()->attendance_id);
-        /** @var Attendance この試合のピッチャー */
-        $catcher_attendance = $catcher_attendances->random();
-        // 2人目のスターティングメンバーにキャッチャーを追加
-        $starting_member = $this->createStartingMember($catcher_attendance, Position::CATCHER);
-        $this->starting_members->push($starting_member);
-
-        $attendances = $attendances->filter(fn (Attendance $attendance) => !$this->starting_members->pluck('attendance_id')->contains($attendance->id));
-
-        $attendances->each(function (Attendance $attendance): void {
-            
+        $attendances->each(function (Attendance $attendance): void
+        {
             $starting_member = $this->createStartingMember($attendance);
             $this->starting_members->push($starting_member);
+        });
+
+        // 打順で並び替え
+        $this->starting_members = $this->starting_members->sortBy(function (StartingMember $starting_member) {
+            return $starting_member->batting_order;
         });
 
         $this->starting_members->map(function (StartingMember $starting_member) {
             var_dump($starting_member->batting_order. "番 ". $starting_member->position->label(). " ". $starting_member->player->last_name);
         });
+    }
+
+    /**
+     * @param Collection<Attendance> $attendances
+     * @return StartingMember
+     */
+    private function getPitcher(Collection $attendances): StartingMember
+    {
+        // 出席者のうちピッチャーができる人たち
+        $pitcher_attendances = $attendances->filter(fn (Attendance $attendance) => $attendance->player->pitcher_flag);
+
+        if ($pitcher_attendances->isEmpty()) {
+            throw new UseCaseException('出席者にピッチャーがいません。');
+        }
+
+        /** @var Attendance この試合のピッチャー */
+        $pitcher_attendance = $pitcher_attendances->random();
+
+        return $this->createStartingMember($pitcher_attendance, Position::PITCHER);
+    }
+
+    /**
+     * @param Collection<Attendance> $attendances
+     * @return StartingMember
+     */
+    private function getCatcher(Collection $attendances): StartingMember
+    {
+        // 残りの出席者のうちキャッチャーのできる人たち
+        $catcher_attendances = $attendances->filter(
+            fn (Attendance $attendance) => $attendance->player->catcher_flag && $attendance->id !== $this->starting_members->first()->attendance_id
+        );
+
+        if ($catcher_attendances->isEmpty()) {
+            throw new UseCaseException('出席者にキャッチャーがいません。');
+        }
+
+        /** @var Attendance この試合のキャッチャー */
+        $catcher_attendance = $catcher_attendances->random();
+
+        return $this->createStartingMember($catcher_attendance, Position::CATCHER);
     }
 
     private function createStartingMember(Attendance $attendance, ?Position $position=null): StartingMember
