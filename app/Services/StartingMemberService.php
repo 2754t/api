@@ -8,7 +8,9 @@ use App\Enums\YesNo;
 use App\Models\Activity;
 use App\Models\Attendance;
 use App\Models\StartingMember;
-use App\UseCase\Exceptions\UseCaseException;
+use App\Services\Exceptions\NoCatcherException;
+use App\Services\Exceptions\NoPitcherException;
+use App\Services\Exceptions\NotEnoughMembersException;
 use Illuminate\Support\Collection;
 
 class StartingMemberService
@@ -20,13 +22,17 @@ class StartingMemberService
     /** @var Collection<StartingMember> ランダムで決まったスタメンのコレクション。空のコレクションが初期値 */
     private $starting_members;
 
-    public function generate(Activity $activity): void
+    public function generate(Activity $activity): Collection
     {
         $attendances = Attendance::query()
             ->with('player')
             ->where('activity_id', $activity->id)
             ->where('answer', Answer::YES)
             ->get();
+
+        if ($attendances->count() < 9) {
+            throw new NotEnoughMembersException('参加者が足りません。');
+        }
 
         $this->position_array = array_filter(Position::cases(), fn($position) => $position !== Position::DH);
         $this->batting_order_array = range(1, $attendances->count());
@@ -49,13 +55,13 @@ class StartingMemberService
         });
 
         // 打順で並び替え
-        $this->starting_members = $this->starting_members->sortBy(function (StartingMember $starting_member) {
-            return $starting_member->batting_order;
-        });
+        $this->starting_members = $this->starting_members->sortBy(fn (StartingMember $starting_member) => $starting_member->batting_order);
 
         $this->starting_members->map(function (StartingMember $starting_member) {
             var_dump($starting_member->batting_order. "番 ". $starting_member->position->label(). " ". $starting_member->player->last_name);
         });
+
+        return $this->starting_members;
     }
 
     /**
@@ -68,7 +74,7 @@ class StartingMemberService
         $pitcher_attendances = $attendances->filter(fn (Attendance $attendance) => $attendance->player->pitcher_flag);
 
         if ($pitcher_attendances->isEmpty()) {
-            throw new UseCaseException('出席者にピッチャーがいません。');
+            throw new NoPitcherException('出席者にピッチャーがいません。');
         }
 
         /** @var Attendance この試合のピッチャー */
@@ -89,7 +95,7 @@ class StartingMemberService
         );
 
         if ($catcher_attendances->isEmpty()) {
-            throw new UseCaseException('出席者にキャッチャーがいません。');
+            throw new NoCatcherException('出席者にキャッチャーがいません。');
         }
 
         /** @var Attendance この試合のキャッチャー */
