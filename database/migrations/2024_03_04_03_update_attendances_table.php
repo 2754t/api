@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('starting_members', function (Blueprint $table) {
-            $table->foreignId('attendance_id')->comment('出欠ID')->after('activity_id');
+        Schema::table('attendances', function (Blueprint $table) {
+            $table->boolean('dh_flag')->comment('DHフラグ')->after('answer');
         });
     }
 
@@ -21,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('starting_members', function (Blueprint $table) {
-            $table->dropColumn('attendance_id');
+        Schema::table('attendances', function (Blueprint $table) {
+            $table->dropColumn('dh_flag');
         });
     }
 };

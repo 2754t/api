@@ -11,8 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('starting_members', function (Blueprint $table) {
-            $table->foreignId('attendance_id')->comment('出欠ID')->after('activity_id');
+        Schema::create('teams', function (Blueprint $table) {
+            $table->id()->comment('チームID');
+            $table->string('team_name', 50)->comment('チーム名');
+            $table->string('team_kana', 50)->comment('チーム名かな');
+            $table->timestamps();
         });
     }
 
@@ -21,8 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('starting_members', function (Blueprint $table) {
-            $table->dropColumn('attendance_id');
-        });
+        Schema::dropIfExists('teams');
     }
 };

@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('starting_members', function (Blueprint $table) {
-            $table->foreignId('attendance_id')->comment('出欠ID')->after('activity_id');
+        Schema::table('activities', function (Blueprint $table) {
+            $table->integer('play_time')->comment('活動の予定時間/h')->after('activity_date');
         });
     }
 
@@ -21,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('starting_members', function (Blueprint $table) {
-            $table->dropColumn('attendance_id');
+        Schema::table('activities', function (Blueprint $table) {
+            $table->integer('play_time');
         });
     }
 };
