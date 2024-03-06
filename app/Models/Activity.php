@@ -2,9 +2,12 @@
 
 namespace App\Models;
 
+use App\Enums\ActivityType;
+use App\Enums\DHType;
 use Illuminate\Auth\Authenticatable as AuthAuthenticatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Validation\Rules\Enum;
 
 /**
  * App\Models\Activity
@@ -12,7 +15,12 @@ use Illuminate\Contracts\Auth\Authenticatable;
  * @property int $id 活動ID
  * @property int $team_id チームID
  * @property \Illuminate\Support\Carbon $activity_date 活動日時
- * @property int $activity_type 活動内容
+ * @property ActivityType $activity_type 活動内容
+ * @property int $stadium_id 球場ID
+ * @property int $play_time 活動の予定時間/h
+ * @property int $confirmed_flag 活動確定フラグ
+ * @property DHType|null $dh_type DHタイプ
+ * @property int|null $entry_cost 参加費
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @method static \Illuminate\Database\Eloquent\Builder|Activity newModelQuery()
@@ -24,6 +32,11 @@ use Illuminate\Contracts\Auth\Authenticatable;
  * @method static \Illuminate\Database\Eloquent\Builder|Activity whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Activity whereTeamId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Activity whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Activity whereConfirmedFlag($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Activity whereDhType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Activity whereEntryCost($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Activity wherePlayTime($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Activity whereStadiumId($value)
  * @mixin \Eloquent
  */
 class Activity extends Model implements Authenticatable
@@ -37,6 +50,11 @@ class Activity extends Model implements Authenticatable
         'id' => 'integer',
         'team_id' => 'integer',
         'activity_date' => 'datetime',
-        'activity_type' => 'integer',
+        'activity_type' => new Enum(ActivityType::class),
+        'stadium_id' => 'integer',
+        'play_time' => 'integer',
+        'confirmed_flag' => 'boolean',
+        'dh_type' => new Enum(DHType::class),
+        'entry_cost' => 'integer',
     ];
 }

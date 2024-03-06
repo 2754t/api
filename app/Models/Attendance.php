@@ -30,6 +30,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static \Illuminate\Database\Eloquent\Builder|Attendance whereTeamId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Attendance whereUpdatedAt($value)
  * @property-read \App\Models\Player|null $player
+ * @property int $dh_flag DHフラグ
+ * @method static \Illuminate\Database\Eloquent\Builder|Attendance whereDhFlag($value)
  * @mixin \Eloquent
  */
 class Attendance extends Model implements Authenticatable
