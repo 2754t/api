@@ -50,11 +50,11 @@ class Activity extends Model implements Authenticatable
         'id' => 'integer',
         'team_id' => 'integer',
         'activity_date' => 'datetime',
-        'activity_type' => new Enum(ActivityType::class),
+        'activity_type' => ActivityType::class,
         'stadium_id' => 'integer',
         'play_time' => 'integer',
         'confirmed_flag' => 'boolean',
-        'dh_type' => new Enum(DHType::class),
+        'dh_type' => DHType::class,
         'entry_cost' => 'integer',
     ];
 }
