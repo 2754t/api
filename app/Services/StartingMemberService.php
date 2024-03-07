@@ -10,6 +10,7 @@ use App\Models\Activity;
 use App\Models\Attendance;
 use App\Models\StartingMember;
 use App\Services\Exceptions\NoCatcherException;
+use App\Services\Exceptions\NoDHTypeException;
 use App\Services\Exceptions\NoPitcherException;
 use App\Services\Exceptions\NotEnoughMembersException;
 use Illuminate\Support\Collection;
@@ -29,6 +30,10 @@ class StartingMemberService
 
     public function generate(Activity $activity): Collection
     {
+        if (!$activity->dh_type) {
+            throw new NoDHTypeException('DHタイプが設定されていません。');
+        }
+
         $attendances = Attendance::query()
             ->with('player')
             ->where('activity_id', $activity->id)

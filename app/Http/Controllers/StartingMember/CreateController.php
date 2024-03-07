@@ -7,7 +7,7 @@ use App\Models\Activity;
 use App\Services\StartingMemberService;
 use App\UseCase\Exceptions\UseCaseException;
 
-class PositionSetController extends Controller
+class CreateController extends Controller
 {
     public function __invoke(StartingMemberService $service): void
     {

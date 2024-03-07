@@ -2,8 +2,7 @@
 
 use App\Http\Controllers\Player\FetchController;
 use App\Http\Controllers\SignIn\SignInController;
-use App\Http\Controllers\StartingMember\FetchController as StartingMemberFetchController;
-use App\Http\Controllers\StartingMember\PositionSetController;
+use App\Http\Controllers\StartingMember\CreateController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,6 +20,5 @@ Route::post('/signIn', SignInController::class);
 
 Route::middleware(['auth:player'])->group(function () {
     Route::get('/players', FetchController::class);
-    Route::get('/starting/members', StartingMemberFetchController::class);
-    Route::get('/position/set', PositionSetController::class);
+    Route::get('/starting-member/create', CreateController::class);
 });
