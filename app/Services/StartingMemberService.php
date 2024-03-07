@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Enums\Answer;
+use App\Enums\DHType;
 use App\Enums\Position;
 use App\Enums\YesNo;
 use App\Models\Activity;
@@ -21,6 +22,10 @@ class StartingMemberService
     private $batting_order_array = [];
     /** @var Collection<StartingMember> ランダムで決まったスタメンのコレクション。空のコレクションが初期値 */
     private $starting_members;
+    /** @var Activity 活動オブジェクト */
+    private $activity;
+    /** @var bool DHが1人の時の判定用 */
+    private $first_call = true;
 
     public function generate(Activity $activity): Collection
     {
@@ -37,6 +42,7 @@ class StartingMemberService
         $this->position_array = array_filter(Position::cases(), fn($position) => $position !== Position::DH);
         $this->batting_order_array = range(1, $attendances->count());
         $this->starting_members = collect([]);
+        $this->activity = $activity;
 
         $pitcher = $this->getPitcher($attendances);
         $this->starting_members->push($pitcher);
@@ -111,8 +117,8 @@ class StartingMemberService
         $starting_member->player_id = $attendance->player_id;
         $starting_member->activity_id = $attendance->activity_id;
         $starting_member->attendance_id = $attendance->id;
-        $starting_member->starting_lineup = YesNo::YES;
-        $starting_member->position = $position? $position : $this->randPosition();
+        $starting_member->starting_lineup = $this->randPosition() ? YesNo::YES : YesNo::NO;
+        $starting_member->position = $position ? $position : $this->randPosition();
         $starting_member->batting_order = $this->batting_order_array[array_rand($this->batting_order_array)];
 
         
@@ -127,9 +133,17 @@ class StartingMemberService
         return $starting_member;
     }
 
-    private function randPosition(): Position
+    private function randPosition(): ?Position
     {
-        if ($this->position_array === []) {
+        if ($this->activity->dh_type === DHType::ZERO && $this->position_array === []) {
+            return null;
+        }
+
+        if ($this->activity->dh_type === DHType::ONE && $this->position_array === []) {
+            return $this->first_call ? Position::DH :null;
+        }
+
+        if ($this->activity->dh_type === DHType::UNLIMITED && $this->position_array === []) {
             return Position::DH;
         }
 
