@@ -63,14 +63,7 @@ class StartingMemberService
         {
             $starting_member = $this->createStartingMember($attendance);
             $this->starting_members->push($starting_member);
-        });
-
-        // 打順で並び替え
-        $this->starting_members = $this->starting_members->sortBy(fn (StartingMember $starting_member) => $starting_member->batting_order);
-
-        $this->starting_members->map(function (StartingMember $starting_member) {
-            var_dump($starting_member->batting_order. "番 ". $starting_member->position->label(). " ". $starting_member->player->last_name);
-        });
+        }); 
 
         return $this->starting_members;
     }
@@ -135,6 +128,7 @@ class StartingMemberService
             $this->batting_order_array = array_diff($this->batting_order_array, [$starting_member->batting_order]);
         }
         
+        $starting_member->save();
         return $starting_member;
     }
 

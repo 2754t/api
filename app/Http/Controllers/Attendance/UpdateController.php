@@ -1,19 +1,20 @@
 <?php
 
-namespace App\Http\Controllers\StartingMember;
+namespace App\Http\Controllers\Attendance;
 
 use App\Http\Controllers\Controller;
 use App\Models\Activity;
 use App\Services\StartingMemberService;
+use App\UseCase\Actions\Attendance\UpdateAction;
 use App\UseCase\Exceptions\UseCaseException;
 
-class CreateController extends Controller
+class UpdateController extends Controller
 {
-    public function __invoke(StartingMemberService $service): void
+    public function __invoke(UpdateAction $action, StartingMemberService $service)
     {
-        $activity = Activity::find(1);
+        $activity = Activity::first();
         try {
-            $service->generate($activity);
+            $action($activity, $service);
         } catch (UseCaseException $e) {
             abort(400, $e->getMessage(). "登録後に再度アクセスしてください。");
         }

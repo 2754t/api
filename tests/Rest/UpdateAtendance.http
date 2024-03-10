@@ -1,4 +1,4 @@
-GET http://localhost:8000/starting-member/create
+GET http://localhost:8000/attendance/update
 Content-Type: application/json
 Accept: application/json
 Authorization: Bearer access_token_2K1tAWcGBfKA3HAl8OS6Z41YewGHmWrDigIVgwG7XcTCOwN22ziXtCGcwL6iLcNT7NN72Qb2DplJdzxlqYksa6Z

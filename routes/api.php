@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Attendance\UpdateController;
 use App\Http\Controllers\Player\FetchController;
 use App\Http\Controllers\SignIn\SignInController;
 use App\Http\Controllers\StartingMember\CreateController;
@@ -20,5 +21,5 @@ Route::post('/signIn', SignInController::class);
 
 Route::middleware(['auth:player'])->group(function () {
     Route::get('/players', FetchController::class);
-    Route::get('/starting-member/create', CreateController::class);
+    Route::get('/attendance/update', UpdateController::class);
 });

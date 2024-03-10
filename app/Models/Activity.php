@@ -7,7 +7,6 @@ use App\Enums\DHType;
 use Illuminate\Auth\Authenticatable as AuthAuthenticatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Auth\Authenticatable;
-use Illuminate\Validation\Rules\Enum;
 
 /**
  * App\Models\Activity
@@ -37,6 +36,8 @@ use Illuminate\Validation\Rules\Enum;
  * @method static \Illuminate\Database\Eloquent\Builder|Activity whereEntryCost($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Activity wherePlayTime($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Activity whereStadiumId($value)
+ * @property int|null $recruitment 募集人数
+ * @method static \Illuminate\Database\Eloquent\Builder|Activity whereRecruitment($value)
  * @mixin \Eloquent
  */
 class Activity extends Model implements Authenticatable
