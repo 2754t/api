@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\Position;
 use Illuminate\Auth\Authenticatable as AuthAuthenticatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Auth\Authenticatable;
@@ -16,8 +17,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int $player_id 選手ID
  * @property int $activity_id 活動ID
  * @property int $answer 出欠回答
- * @property int $dh_flag DHフラグ
- * @property int|null $second_position 第二ポジション
+ * @property bool $dh_flag DHフラグ
+ * @property Position|null $second_position 第二ポジション
  * @property string|null $note 備考
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
@@ -50,6 +51,8 @@ class Attendance extends Model implements Authenticatable
         'player_id' => 'integer',
         'activity_id' => 'integer',
         'answer' => 'integer',
+        'dh_flag' => 'boolean',
+        'second_position' => Position::class,
     ];
 
     /*

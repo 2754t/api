@@ -20,6 +20,7 @@ use Illuminate\Contracts\Auth\Authenticatable;
  * @property int $confirmed_flag 活動確定フラグ
  * @property DHType|null $dh_type DHタイプ
  * @property int|null $entry_cost 参加費
+ * @property int|null $recruitment 募集人数
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @method static \Illuminate\Database\Eloquent\Builder|Activity newModelQuery()
@@ -36,7 +37,6 @@ use Illuminate\Contracts\Auth\Authenticatable;
  * @method static \Illuminate\Database\Eloquent\Builder|Activity whereEntryCost($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Activity wherePlayTime($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Activity whereStadiumId($value)
- * @property int|null $recruitment 募集人数
  * @method static \Illuminate\Database\Eloquent\Builder|Activity whereRecruitment($value)
  * @mixin \Eloquent
  */
@@ -57,5 +57,6 @@ class Activity extends Model implements Authenticatable
         'confirmed_flag' => 'boolean',
         'dh_type' => DHType::class,
         'entry_cost' => 'integer',
+        'recruitment' => 'integer',
     ];
 }

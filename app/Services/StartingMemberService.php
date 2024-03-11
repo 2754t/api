@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Enums\ActivityType;
 use App\Enums\Answer;
 use App\Enums\DHType;
 use App\Enums\Position;
@@ -10,9 +11,9 @@ use App\Models\Activity;
 use App\Models\Attendance;
 use App\Models\StartingMember;
 use App\Services\Exceptions\NoCatcherException;
-use App\Services\Exceptions\NoDHTypeException;
 use App\Services\Exceptions\NoPitcherException;
 use App\Services\Exceptions\NotEnoughMembersException;
+use DomainException;
 use Illuminate\Support\Collection;
 
 class StartingMemberService
@@ -25,13 +26,16 @@ class StartingMemberService
     private $starting_members;
     /** @var Activity 活動オブジェクト */
     private $activity;
-    /** @var bool DHが1人の時の判定用 */
-    private $first_call = true;
 
     public function generate(Activity $activity): Collection
     {
+
+        if ($activity->activity_type !== ActivityType::GAME) {
+            throw new DomainException('試合ではありません。');
+        }
+
         if (!$activity->dh_type) {
-            throw new NoDHTypeException('DHタイプが設定されていません。');
+            throw new DomainException('DHタイプが未設定です。');
         }
 
         $attendances = Attendance::query()
@@ -45,7 +49,15 @@ class StartingMemberService
         }
 
         $this->position_array = array_filter(Position::cases(), fn($position) => $position !== Position::DH);
-        $this->batting_order_array = range(1, $attendances->count());
+
+        if ($attendances->count() === 9 || $activity->dh_type === DHType::ZERO) {
+            $this->batting_order_array = range(1, 9);
+        } elseif ($activity->dh_type === DHType::ONE) {
+            $this->batting_order_array = range(1, 10);
+        } else {
+            $this->batting_order_array = range(1, $attendances->count());
+        }
+
         $this->starting_members = collect([]);
         $this->activity = $activity;
 
@@ -115,10 +127,11 @@ class StartingMemberService
         $starting_member->player_id = $attendance->player_id;
         $starting_member->activity_id = $attendance->activity_id;
         $starting_member->attendance_id = $attendance->id;
-        $starting_member->starting_lineup = $this->randPosition() ? YesNo::YES : YesNo::NO;
         $starting_member->position = $position ? $position : $this->randPosition();
-        $starting_member->batting_order = $this->batting_order_array[array_rand($this->batting_order_array)];
-
+        $starting_member->starting_lineup = $starting_member->position !== null;
+        if ($starting_member->starting_lineup && $this->batting_order_array) {
+            $starting_member->batting_order = $this->batting_order_array[array_rand($this->batting_order_array)];
+        }
         
         if ($starting_member->position) {
             $this->position_array = array_filter($this->position_array, fn (Position $position) => $position !== $starting_member->position);
@@ -139,7 +152,11 @@ class StartingMemberService
         }
 
         if ($this->activity->dh_type === DHType::ONE && $this->position_array === []) {
-            return $this->first_call ? Position::DH :null;
+            if ($this->starting_members->where('position', Position::DH)->count() > 0) {
+                return null;
+            } else {
+                return Position::DH;
+            }
         }
 
         if ($this->activity->dh_type === DHType::UNLIMITED && $this->position_array === []) {

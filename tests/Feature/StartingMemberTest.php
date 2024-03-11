@@ -58,6 +58,7 @@ class StartingMemberTest extends TestCase
             $attendance->player_id = $player->id;
             $attendance->activity_id = $activity->id;
             $attendance->answer = Answer::YES;
+            $attendance->dh_flag = false;
             $attendance->save();
         }
 
@@ -116,6 +117,7 @@ class StartingMemberTest extends TestCase
             $attendance->player_id = $player->id;
             $attendance->activity_id = $activity->id;
             $attendance->answer = Answer::YES;
+            $attendance->dh_flag = false;
             $attendance->save();
         }
 
@@ -174,6 +176,7 @@ class StartingMemberTest extends TestCase
             $attendance->player_id = $player->id;
             $attendance->activity_id = $activity->id;
             $attendance->answer = Answer::YES;
+            $attendance->dh_flag = false;
             $attendance->save();
         }
 
@@ -232,6 +235,7 @@ class StartingMemberTest extends TestCase
             $attendance->player_id = $player->id;
             $attendance->activity_id = $activity->id;
             $attendance->answer = Answer::YES;
+            $attendance->dh_flag = false;
             $attendance->save();
         }
 
@@ -290,6 +294,7 @@ class StartingMemberTest extends TestCase
             $attendance->player_id = $player->id;
             $attendance->activity_id = $activity->id;
             $attendance->answer = Answer::YES;
+            $attendance->dh_flag = false;
             $attendance->save();
         }
 
@@ -348,6 +353,7 @@ class StartingMemberTest extends TestCase
             $attendance->player_id = $player->id;
             $attendance->activity_id = $activity->id;
             $attendance->answer = Answer::YES;
+            $attendance->dh_flag = false;
             $attendance->save();
         }
 
@@ -360,8 +366,8 @@ class StartingMemberTest extends TestCase
 
         $batting_orders = $starting_lineup->pluck('batting_order');
         $this->assertEquals(9, $batting_orders->unique()->count());
-        $this->assertEquals(1, $batting_orders->min('batting_order'));
-        $this->assertEquals(9, $batting_orders->max('batting_order'));
+        $this->assertEquals(1, $batting_orders->min());
+        $this->assertEquals(9, $batting_orders->max());
 
         $this->assertEquals(1, $starting_lineup->where('position', Position::PITCHER)->count());
         $this->assertEquals(1, $starting_lineup->where('position', Position::CATCHER)->count());
@@ -408,6 +414,7 @@ class StartingMemberTest extends TestCase
             $attendance->player_id = $player->id;
             $attendance->activity_id = $activity->id;
             $attendance->answer = Answer::YES;
+            $attendance->dh_flag = false;
             $attendance->save();
         }
 
@@ -415,7 +422,6 @@ class StartingMemberTest extends TestCase
 
         $this->assertInstanceOf(Collection::class, $starting_members);
         $this->assertEquals(11, $starting_members->count());
-        $batting_orders = $starting_members->pluck('batting_order');
         $this->assertEquals(11, $starting_members->unique()->count());
         $this->assertEquals(1, $starting_members->min('batting_order'));
         $this->assertEquals(11, $starting_members->max('batting_order'));
@@ -466,6 +472,7 @@ class StartingMemberTest extends TestCase
             $attendance->player_id = $player->id;
             $attendance->activity_id = $activity->id;
             $attendance->answer = Answer::YES;
+            $attendance->dh_flag = false;
             $attendance->save();
         }
 
@@ -478,8 +485,8 @@ class StartingMemberTest extends TestCase
 
         $batting_orders = $starting_lineup->pluck('batting_order');
         $this->assertEquals(10, $batting_orders->unique()->count());
-        $this->assertEquals(1, $batting_orders->min('batting_order'));
-        $this->assertEquals(10, $batting_orders->max('batting_order'));
+        $this->assertEquals(1, $batting_orders->min());
+        $this->assertEquals(10, $batting_orders->max());
 
         $this->assertEquals(1, $starting_lineup->where('position', Position::PITCHER)->count());
         $this->assertEquals(1, $starting_lineup->where('position', Position::CATCHER)->count());
@@ -527,6 +534,7 @@ class StartingMemberTest extends TestCase
             $attendance->player_id = $player->id;
             $attendance->activity_id = $activity->id;
             $attendance->answer = Answer::YES;
+            $attendance->dh_flag = false;
             $attendance->save();
         }
 
@@ -539,8 +547,8 @@ class StartingMemberTest extends TestCase
 
         $batting_orders = $starting_lineup->pluck('batting_order');
         $this->assertEquals(9, $batting_orders->unique()->count());
-        $this->assertEquals(1, $batting_orders->min('batting_order'));
-        $this->assertEquals(9, $batting_orders->max('batting_order'));
+        $this->assertEquals(1, $batting_orders->min());
+        $this->assertEquals(9, $batting_orders->max());
 
         $this->assertEquals(1, $starting_lineup->where('position', Position::PITCHER)->count());
         $this->assertEquals(1, $starting_lineup->where('position', Position::CATCHER)->count());
@@ -588,6 +596,7 @@ class StartingMemberTest extends TestCase
             $attendance->player_id = $player->id;
             $attendance->activity_id = $activity->id;
             $attendance->answer = Answer::YES;
+            $attendance->dh_flag = false;
             $attendance->save();
         }
 
@@ -629,6 +638,7 @@ class StartingMemberTest extends TestCase
             $attendance->player_id = $player->id;
             $attendance->activity_id = $activity->id;
             $attendance->answer = Answer::YES;
+            $attendance->dh_flag = false;
             $attendance->save();
         }
 
@@ -670,6 +680,7 @@ class StartingMemberTest extends TestCase
             $attendance->player_id = $player->id;
             $attendance->activity_id = $activity->id;
             $attendance->answer = Answer::YES;
+            $attendance->dh_flag = false;
             $attendance->save();
         }
 
@@ -711,6 +722,7 @@ class StartingMemberTest extends TestCase
             $attendance->player_id = $player->id;
             $attendance->activity_id = $activity->id;
             $attendance->answer = Answer::YES;
+            $attendance->dh_flag = false;
             $attendance->save();
         }
 
@@ -752,6 +764,7 @@ class StartingMemberTest extends TestCase
             $attendance->player_id = $player->id;
             $attendance->activity_id = $activity->id;
             $attendance->answer = Answer::YES;
+            $attendance->dh_flag = false;
             $attendance->save();
         }
 
