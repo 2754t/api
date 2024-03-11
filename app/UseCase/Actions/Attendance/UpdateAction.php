@@ -37,25 +37,52 @@ class UpdateAction
             /** @var Collection<Attendance> */
             $can_player_attendances = Attendance::with('player')->where('answer', Answer::YES)->whereNotIn('player_id', $starting_player_ids)->where('dh_flag', YesNo::NO)->get();
 
-            $pitcher_attendances = $can_player_attendances->filter(function (Attendance $can_player_attendance) {
+            $can_pitcher_attendances = $can_player_attendances->filter(function (Attendance $can_player_attendance) {
                 return $can_player_attendance->player->pitcher_flag;
             });
             
             // 2番手ピッチャーをセット
-            if (!$pitcher_attendances->isEmpty()) {
-                $pitcher_attendance = $pitcher_attendances->random();
+            if (!$can_pitcher_attendances->isEmpty()) {
+                $pitcher_attendance = $can_pitcher_attendances->random();
                 $this->createSecondPosition($pitcher_attendance, Position::PITCHER);
                 $can_player_attendances = $can_player_attendances->filter(fn ($can_player_attendance) => $can_player_attendance->id !== $pitcher_attendance->id);
             }
 
             // できるポジションが3つ以上ある人のコレクション
-            $can_player_attendances = $can_player_attendances->filter(function ($can_player_attendance) {
+            $can_player_priority_attendances = $can_player_attendances->filter(function ($can_player_attendance) {
                 if (!$can_player_attendance->player->positions) {
                     return false;
                 }
                 return count(explode(',', $can_player_attendance->player->positions)) >= 2;
             });
-            var_dump($can_player_attendances);die();
+            
+            // 残りの参加者のコレクション
+            $can_player_posteriority_attendances = $can_player_attendances->whereNotIn('id', $can_player_priority_attendances->pluck('id'));
+            
+            // ポジション配列に希望ポジションがあればセット
+            $can_player_priority_attendances->shuffle()->each(function ($can_player_priority_attendance) use ($can_player_posteriority_attendances) {
+                $this->createSecondPosition($can_player_priority_attendance, Position::from($can_player_priority_attendance->player->desired_position));
+                if (!$can_player_priority_attendance->second_position) {
+                    $can_player_posteriority_attendances->push($can_player_priority_attendance);
+                }
+            });
+
+            // ポジション配列から外野を除外
+            $this->position_array = array_filter($this->position_array, function ($position) {
+                return !in_array($position, [Position::LEFT, Position::CENTER, Position::RIGHT]);
+            });
+
+            $can_player_posteriority_attendances->shuffle()->each(function ($can_player_posteriority_attendance) {
+                // TODO　カンマ区切りの文字列から一致するポジションがあれば返す。
+                if (!$can_player_posteriority_attendance->player->positions) {
+                    // TODO コレクションから除く
+                }
+                $player_position_array = explode(",", $can_player_posteriority_attendance->player->positions);
+                var_dump($player_position_array);die();
+                // $this->createSecondPosition($can_player_posteriority_attendance);
+            });
+            
+            var_dump($this->position_array);die();
 
 
 
@@ -73,10 +100,18 @@ class UpdateAction
     {
         $attendance->second_position = $position ? $position : $this->randPosition();
         $attendance->save();
+
+        if ($attendance->second_position) {
+            $this->position_array = array_filter($this->position_array, fn (Position $position) => $position !== $attendance->second_position);
+        }
     }
 
     private function randPosition(): ?Position
     {
+        if ($this->position_array === []) {
+            return null;
+        }
+
         return $this->position_array[array_rand($this->position_array, 1)];
     }
 }
