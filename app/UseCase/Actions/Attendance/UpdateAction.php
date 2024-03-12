@@ -35,7 +35,8 @@ class UpdateAction
             $starting_player_ids = $starting_members->whereIn('position', [Position::PITCHER, Position::CATCHER])->pluck('player_id');
             // TODO team_idとactivity_idで絞るトレートをつくる
             /** @var Collection<Attendance> */
-            $can_player_attendances = Attendance::with('player')->where('answer', Answer::YES)->whereNotIn('player_id', $starting_player_ids)->where('dh_flag', YesNo::NO)->get();
+            $attendances = Attendance::with('player')->where('answer', Answer::YES)->get();
+            $can_player_attendances = $attendances->whereNotIn('player_id', $starting_player_ids)->where('dh_flag', YesNo::NO);
 
             $can_pitcher_attendances = $can_player_attendances->filter(function (Attendance $can_player_attendance) {
                 return $can_player_attendance->player->pitcher_flag;
@@ -61,10 +62,11 @@ class UpdateAction
             
             // ポジション配列に希望ポジションがあればセット
             $can_player_priority_attendances->shuffle()->each(function ($can_player_priority_attendance) use ($can_player_posteriority_attendances) {
-                $this->createSecondPosition($can_player_priority_attendance, Position::from($can_player_priority_attendance->player->desired_position));
-                if (!$can_player_priority_attendance->second_position) {
+                if (!$can_player_priority_attendance->player->desired_position) {
                     $can_player_posteriority_attendances->push($can_player_priority_attendance);
+                    return true;
                 }
+                $this->createSecondPosition($can_player_priority_attendance, Position::tryFrom($can_player_priority_attendance->player->desired_position));
             });
 
             // ポジション配列から外野を除外
@@ -73,24 +75,35 @@ class UpdateAction
             });
 
             $can_player_posteriority_attendances->shuffle()->each(function ($can_player_posteriority_attendance) {
-                // TODO　カンマ区切りの文字列から一致するポジションがあれば返す。
-                if (!$can_player_posteriority_attendance->player->positions) {
-                    // TODO コレクションから除く
+                if ($this->position_array === []) {
+                    // ループ終了
+                    return false;
                 }
-                $player_position_array = explode(",", $can_player_posteriority_attendance->player->positions);
-                var_dump($player_position_array);die();
-                // $this->createSecondPosition($can_player_posteriority_attendance);
+                if (!$can_player_posteriority_attendance->player->positions) {
+                    // 何もしない（continueと同じ）
+                    return true;
+                }
+                // カンマ区切りの文字列を配列に変換
+                /** @var array<int> */
+                $player_position_array = explode(',', $can_player_posteriority_attendance->player->positions);
+                // ポジション配列と一致するポジションのみに絞る
+                $player_position_array = array_filter($player_position_array, function (int $player_position) {
+                    return in_array(Position::tryFrom($player_position), $this->position_array);
+                });
+                if ($player_position_array === []) {
+                    return true;
+                }
+                $this->createSecondPosition($can_player_posteriority_attendance, Position::tryFrom(array_rand($player_position_array, 1)));
             });
-            
-            var_dump($this->position_array);die();
-
-
 
             // TODO 画面に表示できるようになれば4行消す
             $starting_members = $starting_members->sortBy(fn (StartingMember $starting_member) => $starting_member->batting_order);
             $starting_members->map(function (StartingMember $starting_member) {
-                // var_dump($starting_member->batting_order. "番 ". $starting_member->position->label(). " ". $starting_member->player->last_name);
+                var_dump($starting_member->batting_order. "番 ". $starting_member->player->last_name. $starting_member->position->label(). " ");
             });
+
+            // TODO Attendanceモデルにstarting_memberリレーションをつける
+            // $attendances = $attendances->sortBy(fn (Attendance $attendance) => $attendance->)
 
             dd("ok");
         });
