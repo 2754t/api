@@ -16,11 +16,21 @@ use Illuminate\Support\Facades\DB;
 
 class UpdateAction
 {
+    private StartingMemberService $service;
     private $position_array = [];
 
-    public function __invoke(Activity $activity, StartingMemberService $service)
+    public function __construct(StartingMemberService $service)
     {
-        DB::transaction(function () use ($activity, $service) {
+        $this->service = $service;
+    }
+
+    public function __invoke(Activity $activity)
+    {
+        // if (既にStartingMemberが存在) {
+        //     throw new AlreadyDecidedException();
+        // }
+
+        DB::transaction(function () use ($activity) {
 
             // 投手、捕手、DHを除いたポジション配列
             $this->position_array = array_filter(Position::cases(), function($position){
@@ -30,12 +40,11 @@ class UpdateAction
                     $position !== Position::DH;
             });
             // スタメンコレクション
-            $starting_members = $service->generate($activity);
+            $starting_members = $this->service->generate($activity);
             // スタメンから投手、捕手を除いたplayer_idのコレクション
             $starting_player_ids = $starting_members->whereIn('position', [Position::PITCHER, Position::CATCHER])->pluck('player_id');
-            // TODO team_idとactivity_idで絞るトレートをつくる
             /** @var Collection<Attendance> */
-            $attendances = Attendance::with('player')->where('answer', Answer::YES)->get();
+            $attendances = Attendance::with('player')->whereActivityId($activity->activity_id)->where('answer', Answer::YES)->get();
             $can_player_attendances = $attendances->whereNotIn('player_id', $starting_player_ids)->where('dh_flag', YesNo::NO);
 
             $can_pitcher_attendances = $can_player_attendances->filter(function (Attendance $can_player_attendance) {

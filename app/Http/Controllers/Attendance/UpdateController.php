@@ -7,12 +7,18 @@ use App\Models\Activity;
 use App\Services\StartingMemberService;
 use App\UseCase\Actions\Attendance\UpdateAction;
 use App\UseCase\Exceptions\UseCaseException;
+use Illuminate\Support\Facades\Auth;
 
 class UpdateController extends Controller
 {
-    public function __invoke(UpdateAction $action, StartingMemberService $service)
+    public function __invoke(UpdateAction $action, StartingMemberService $service, Activity $activity)
     {
-        $activity = Activity::first();
+        $login_player = Auth::guard('player')->user();
+        
+        if ($login_player->team_id !== $activity->team_id) {
+            abort(404);
+        }
+
         try {
             $action($activity, $service);
         } catch (UseCaseException $e) {
