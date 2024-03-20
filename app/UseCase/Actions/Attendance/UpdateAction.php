@@ -33,10 +33,10 @@ class UpdateAction
         DB::transaction(function () use ($activity) {
 
             // 投手、捕手、DHを除いたポジション配列
-            $this->position_array = array_filter(Position::cases(), function($position){
-                return 
-                    $position !== Position::PITCHER && 
-                    $position !== Position::CATCHER && 
+            $this->position_array = array_filter(Position::cases(), function ($position) {
+                return
+                    $position !== Position::PITCHER &&
+                    $position !== Position::CATCHER &&
                     $position !== Position::DH;
             });
             // スタメンコレクション
@@ -50,7 +50,7 @@ class UpdateAction
             $can_pitcher_attendances = $can_player_attendances->filter(function (Attendance $can_player_attendance) {
                 return $can_player_attendance->player->pitcher_flag;
             });
-            
+
             // 2番手ピッチャーをセット
             if (!$can_pitcher_attendances->isEmpty()) {
                 $pitcher_attendance = $can_pitcher_attendances->random();
@@ -65,10 +65,10 @@ class UpdateAction
                 }
                 return count(explode(',', $can_player_attendance->player->positions)) >= 2;
             });
-            
+
             // 残りの参加者のコレクション
             $can_player_posteriority_attendances = $can_player_attendances->whereNotIn('id', $can_player_priority_attendances->pluck('id'));
-            
+
             // ポジション配列に希望ポジションがあればセット
             $can_player_priority_attendances->shuffle()->each(function ($can_player_priority_attendance) use ($can_player_posteriority_attendances) {
                 if (!$can_player_priority_attendance->player->desired_position) {
@@ -108,7 +108,7 @@ class UpdateAction
             // TODO 画面に表示できるようになれば4行消す
             $starting_members = $starting_members->sortBy(fn (StartingMember $starting_member) => $starting_member->batting_order);
             $starting_members->map(function (StartingMember $starting_member) {
-                var_dump($starting_member->batting_order. "番 ". $starting_member->player->last_name. $starting_member->position->label(). " ");
+                var_dump($starting_member->batting_order . "番 " . $starting_member->player->last_name . " " . $starting_member->position->label() . " ");
             });
 
             // TODO Attendanceモデルにstarting_memberリレーションをつける
@@ -118,7 +118,7 @@ class UpdateAction
         });
     }
 
-    private function createSecondPosition(Attendance $attendance, ?Position $position=null): void
+    private function createSecondPosition(Attendance $attendance, ?Position $position = null): void
     {
         $attendance->second_position = $position ? $position : $this->randPosition();
         $attendance->save();

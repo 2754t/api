@@ -13,8 +13,11 @@ class UpdateController extends Controller
 {
     public function __invoke(UpdateAction $action, StartingMemberService $service, Activity $activity)
     {
+        // TODO 実装できたら不要
+        $activity = Activity::first();
+
         $login_player = Auth::guard('player')->user();
-        
+
         if ($login_player->team_id !== $activity->team_id) {
             abort(404);
         }
@@ -22,7 +25,7 @@ class UpdateController extends Controller
         try {
             $action($activity, $service);
         } catch (UseCaseException $e) {
-            abort(400, $e->getMessage(). "登録後に再度アクセスしてください。");
+            abort(400, $e->getMessage() . "登録後に再度アクセスしてください。");
         }
     }
 }

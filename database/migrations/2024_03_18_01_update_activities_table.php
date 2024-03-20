@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('activities', function (Blueprint $table) {
-            $table->integer('play_time')->comment('活動の予定時間/h')->after('activity_date');
+            $table->tinyInteger('is_order')->default(0)->comment('オーダー決定フラグ')->after('entry_cost');
         });
     }
 
@@ -22,7 +22,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('activities', function (Blueprint $table) {
-            $table->dropColumn('play_time');
+            $table->dropColumn('is_order');
         });
     }
 };

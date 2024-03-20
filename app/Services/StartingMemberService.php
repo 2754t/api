@@ -6,7 +6,7 @@ use App\Enums\ActivityType;
 use App\Enums\Answer;
 use App\Enums\DHType;
 use App\Enums\Position;
-use App\Enums\YesNo;
+use App\Enums\Role;
 use App\Models\Activity;
 use App\Models\Attendance;
 use App\Models\StartingMember;
@@ -48,7 +48,7 @@ class StartingMemberService
             throw new NotEnoughMembersException('参加者が足りません。');
         }
 
-        $this->position_array = array_filter(Position::cases(), fn($position) => $position !== Position::DH);
+        $this->position_array = array_filter(Position::cases(), fn ($position) => $position !== Position::DH);
 
         if ($attendances->count() === 9 || $activity->dh_type === DHType::ZERO) {
             $this->batting_order_array = range(1, 9);
@@ -71,11 +71,20 @@ class StartingMemberService
             fn (Attendance $attendance) => !$this->starting_members->pluck('attendance_id')->contains($attendance->id)
         );
 
-        $attendances->each(function (Attendance $attendance): void
-        {
+        $experience_attendances = $attendances->filter(fn (Attendance $attendance) => $attendance->player->role === Role::EXPERIENCE);
+        // 初回の体験者のみスタメンと希望ポジションが外野なら優遇（画面で制御のみ）
+        $experience_attendances->each(function (Attendance $attendance) {
+            $starting_member = $this->createStartingMember($attendance, Position::tryFrom($attendance->player->desired_position));
+            $attendance->player->desired_position = null;
+            $attendance->player->save();
+            $this->starting_members->push($starting_member);
+        });
+
+
+        $attendances->whereNotIn('id', $experience_attendances->pluck('id'))->each(function (Attendance $attendance): void {
             $starting_member = $this->createStartingMember($attendance);
             $this->starting_members->push($starting_member);
-        }); 
+        });
 
         return $this->starting_members;
     }
@@ -120,7 +129,7 @@ class StartingMemberService
         return $this->createStartingMember($catcher_attendance, Position::CATCHER);
     }
 
-    private function createStartingMember(Attendance $attendance, ?Position $position=null): StartingMember
+    private function createStartingMember(Attendance $attendance, ?Position $position = null): StartingMember
     {
         $starting_member = new StartingMember();
         $starting_member->team_id = $attendance->team_id;
@@ -132,7 +141,7 @@ class StartingMemberService
         if ($starting_member->starting_lineup && $this->batting_order_array) {
             $starting_member->batting_order = $this->batting_order_array[array_rand($this->batting_order_array)];
         }
-        
+
         if ($starting_member->position) {
             $this->position_array = array_filter($this->position_array, fn (Position $position) => $position !== $starting_member->position);
         }
@@ -140,7 +149,7 @@ class StartingMemberService
         if ($starting_member->batting_order) {
             $this->batting_order_array = array_diff($this->batting_order_array, [$starting_member->batting_order]);
         }
-        
+
         $starting_member->save();
         return $starting_member;
     }

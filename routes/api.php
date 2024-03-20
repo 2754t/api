@@ -1,9 +1,9 @@
 <?php
 
+use App\Http\Controllers\Attendance\FetchController as AttendanceFetchController;
 use App\Http\Controllers\Attendance\UpdateController;
 use App\Http\Controllers\Player\FetchController;
 use App\Http\Controllers\SignIn\SignInController;
-use App\Http\Controllers\StartingMember\CreateController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Route;
 Route::post('/signIn', SignInController::class);
 
 Route::middleware(['auth:player'])->group(function () {
-    Route::get('/players', FetchController::class);
+    Route::get('/player', FetchController::class);
+    Route::get('/attendance', AttendanceFetchController::class);
     Route::get('/attendance/update', UpdateController::class);
 });

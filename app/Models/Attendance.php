@@ -6,8 +6,8 @@ use App\Enums\Position;
 use Illuminate\Auth\Authenticatable as AuthAuthenticatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Auth\Authenticatable;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
  * App\Models\Attendance
@@ -71,6 +71,11 @@ class Attendance extends Model implements Authenticatable
     public function player(): BelongsTo
     {
         return $this->belongsTo(Player::class);
+    }
+
+    public function starting_member(): HasOne
+    {
+        return $this->hasOne(StartingMember::class, 'attendance_id');
     }
 
     /*

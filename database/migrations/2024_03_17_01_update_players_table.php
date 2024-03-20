@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('activities', function (Blueprint $table) {
-            $table->integer('play_time')->comment('活動の予定時間/h')->after('activity_date');
+        Schema::table('players', function (Blueprint $table) {
+            $table->integer('role')->default(0)->comment('権限 [0:体験者 1:助っ人 2:メンバー 3:管理者]')->change();
         });
     }
 
@@ -21,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('activities', function (Blueprint $table) {
-            $table->dropColumn('play_time');
+        Schema::table('players', function (Blueprint $table) {
+            $table->dropColumn('role');
         });
     }
 };

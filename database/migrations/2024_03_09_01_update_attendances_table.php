@@ -23,8 +23,8 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('attendances', function (Blueprint $table) {
-            $table->boolean('dh_flag');
-            $table->tinyInteger('second_position');
+            $table->dropColumn('dh_flag');
+            $table->dropColumn('second_position');
         });
     }
 };
