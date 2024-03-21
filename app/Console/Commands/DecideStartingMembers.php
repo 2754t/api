@@ -4,11 +4,9 @@ namespace App\Console\Commands;
 
 use App\Enums\ActivityType;
 use App\Models\Activity;
-use App\Services\StartingMemberService;
 use App\UseCase\Actions\Attendance\UpdateAction;
-use App\UseCase\Exceptions\UseCaseException;
 use Illuminate\Console\Command;
-use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Log;
 use Throwable;
 
 class DecideStartingMembers extends Command
@@ -38,18 +36,25 @@ class DecideStartingMembers extends Command
             ->where('confirmed_flag', true)
             ->get();
 
-            $activities->each(function (Activity $activity) use ($action) {
-                try {
-                    $action($activity);
+        Log::channel('starting_member')->info('Activity count: ' . $activities->count());
+        $this->info('Activity count: ' . $activities->count());
+
+        $activities->each(function (Activity $activity) use ($action) {
+            Log::channel('starting_member')->info('Activity ID: ' . $activity->id);
+            $this->info('Activity ID: ' . $activity->id);
+            try {
+                $action($activity);
+                Log::channel('starting_member')->info('Success');
+
                 // } catch (AlreadyDecidedException $e) {
                 //     // 何もしない
                 // } catch (NotEnoughMembersException|NoPitcherException|NoCatcherException $e) {
                 //     // チームの管理者宛に通知
-                } catch (Throwable $e) {
-                    // ログを残す
-                    report($e);
-                    // 管理者に通知
-                }
-            });
+            } catch (Throwable $e) {
+                // ログを残す
+                report($e);
+                // 管理者に通知
+            }
+        });
     }
 }
