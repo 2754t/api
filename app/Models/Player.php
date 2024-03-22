@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Enums\Position;
+use App\Enums\Role;
 use Illuminate\Auth\Authenticatable as AuthAuthenticatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Auth\Authenticatable;
@@ -16,11 +18,11 @@ use Illuminate\Contracts\Auth\Authenticatable;
  * @property string|null $access_token アクセストークン
  * @property \Illuminate\Support\Carbon|null $access_token_expired アクセストークン有効期限
  * @property string|null $remember_token リメンバートークン
- * @property int $role 権限
+ * @property Role $role 権限
  * @property string $last_name 姓
  * @property string $first_name 名
  * @property int|null $player_number 背番号
- * @property int|null $desired_position 希望ポジション
+ * @property Position|null $desired_position 希望ポジション
  * @property string|null $positions カンマ区切りの守備位置
  * @property bool $pitcher_flag 投手フラグ
  * @property bool $catcher_flag 捕手フラグ
@@ -60,8 +62,9 @@ class Player extends Model implements Authenticatable
         'team_id' => 'integer',
         'pitcher_flag' => 'boolean',
         'catcher_flag' => 'boolean',
-        'role' => 'integer',
+        'role' => Role::class,
         'access_token_expired' => 'datetime',
+        'desired_position' => Position::class,
     ];
 
     /**
@@ -75,6 +78,4 @@ class Player extends Model implements Authenticatable
         'password',
         'remember_token',
     ];
-
-    
 }

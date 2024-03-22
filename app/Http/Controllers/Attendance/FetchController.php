@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Attendance;
 
 use App\Enums\Answer;
-use App\Enums\Position;
 use App\Http\Controllers\Controller;
 use App\Models\Activity;
 use App\Models\Attendance;

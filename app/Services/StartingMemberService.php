@@ -74,17 +74,24 @@ class StartingMemberService
         $experience_attendances = $attendances->filter(fn (Attendance $attendance) => $attendance->player->role === Role::EXPERIENCE);
         // 初回の体験者のみスタメンと希望ポジションが外野なら優遇（画面で制御のみ）
         $experience_attendances->each(function (Attendance $attendance) {
-            $starting_member = $this->createStartingMember($attendance, Position::tryFrom($attendance->player->desired_position));
+            $starting_member = $this->createStartingMember($attendance, $attendance->player->desired_position);
             $attendance->player->desired_position = null;
             $attendance->player->save();
             $this->starting_members->push($starting_member);
         });
 
 
-        $attendances->whereNotIn('id', $experience_attendances->pluck('id'))->each(function (Attendance $attendance): void {
-            $starting_member = $this->createStartingMember($attendance);
-            $this->starting_members->push($starting_member);
-        });
+        $attendances
+            ->whereNotIn('id', $experience_attendances->pluck('id'))
+            ->sortByDesc(fn (Attendance $attendance) => $attendance->dh_flag)
+            ->each(function (Attendance $attendance): void {
+                if ($attendance->dh_flag) {
+                    $starting_member = $this->createStartingMember($attendance, Position::DH);
+                } else {
+                    $starting_member = $this->createStartingMember($attendance);
+                }
+                $this->starting_members->push($starting_member);
+            });
 
         return $this->starting_members;
     }

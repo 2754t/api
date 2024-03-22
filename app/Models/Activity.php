@@ -38,6 +38,8 @@ use Illuminate\Contracts\Auth\Authenticatable;
  * @method static \Illuminate\Database\Eloquent\Builder|Activity wherePlayTime($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Activity whereStadiumId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Activity whereRecruitment($value)
+ * @property int $is_order オーダー決定フラグ
+ * @method static \Illuminate\Database\Eloquent\Builder|Activity whereIsOrder($value)
  * @mixin \Eloquent
  */
 class Activity extends Model implements Authenticatable

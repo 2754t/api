@@ -20,7 +20,9 @@ class AttendanceSeeder extends Seeder
             $attendance->team_id = 1;
             $attendance->player_id = $player_id;
             $attendance->activity_id = 1;
-            $attendance->answer = ($index <= 10) ? 1 : random_int(0, 1) * 2;
+            // $attendance->answer = ($index <= 10) ? 1 : random_int(0, 1) * 2;
+            $attendance->answer = 1;
+            $attendance->dh_flag = false;
             $attendance->save();
         };
     }

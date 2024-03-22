@@ -36,6 +36,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @method static \Illuminate\Database\Eloquent\Builder|Attendance whereDhFlag($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Attendance whereSecondPosition($value)
  * @property-read \App\Models\Player|null $player
+ * @property-read \App\Models\StartingMember|null $starting_member
  * @mixin \Eloquent
  */
 class Attendance extends Model implements Authenticatable

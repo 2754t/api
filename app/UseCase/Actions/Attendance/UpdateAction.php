@@ -6,10 +6,9 @@ namespace App\UseCase\Actions\Attendance;
 
 use App\Enums\Answer;
 use App\Enums\Position;
-use App\Enums\YesNo;
 use App\Models\Activity;
 use App\Models\Attendance;
-use App\Models\StartingMember;
+use App\Services\Exceptions\AlreadyDecidedException;
 use App\Services\StartingMemberService;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
@@ -26,9 +25,9 @@ class UpdateAction
 
     public function __invoke(Activity $activity)
     {
-        // if (既にStartingMemberが存在) {
-        //     throw new AlreadyDecidedException();
-        // }
+        if ($activity->is_order) {
+            throw new AlreadyDecidedException('既にオーダーが決められています。');
+        }
 
         DB::transaction(function () use ($activity) {
 
@@ -44,9 +43,11 @@ class UpdateAction
             // スタメンから投手、捕手を除いたplayer_idのコレクション
             $starting_player_ids = $starting_members->whereIn('position', [Position::PITCHER, Position::CATCHER])->pluck('player_id');
             /** @var Collection<Attendance> */
-            $attendances = Attendance::with('player')->whereActivityId($activity->activity_id)->where('answer', Answer::YES)->get();
-            $can_player_attendances = $attendances->whereNotIn('player_id', $starting_player_ids)->where('dh_flag', YesNo::NO);
-
+            $attendances = Attendance::with(['player', 'starting_member'])
+                ->where('activity_id', $activity->id)
+                ->where('answer', Answer::YES)
+                ->get();
+            $can_player_attendances = $attendances->whereNotIn('player_id', $starting_player_ids)->where('dh_flag', false);
             $can_pitcher_attendances = $can_player_attendances->filter(function (Attendance $can_player_attendance) {
                 return $can_player_attendance->player->pitcher_flag;
             });
@@ -75,7 +76,7 @@ class UpdateAction
                     $can_player_posteriority_attendances->push($can_player_priority_attendance);
                     return true;
                 }
-                $this->createSecondPosition($can_player_priority_attendance, Position::tryFrom($can_player_priority_attendance->player->desired_position));
+                $this->createSecondPosition($can_player_priority_attendance, $can_player_priority_attendance->player->desired_position);
             });
 
             // ポジション配列から外野を除外
@@ -99,22 +100,16 @@ class UpdateAction
                 $player_position_array = array_filter($player_position_array, function (int $player_position) {
                     return in_array(Position::tryFrom($player_position), $this->position_array);
                 });
+                var_dump($player_position_array);
+                die();
                 if ($player_position_array === []) {
                     return true;
                 }
                 $this->createSecondPosition($can_player_posteriority_attendance, Position::tryFrom(array_rand($player_position_array, 1)));
             });
 
-            // TODO 画面に表示できるようになれば4行消す
-            $starting_members = $starting_members->sortBy(fn (StartingMember $starting_member) => $starting_member->batting_order);
-            $starting_members->map(function (StartingMember $starting_member) {
-                var_dump($starting_member->batting_order . "番 " . $starting_member->player->last_name . " " . $starting_member->position->label() . " ");
-            });
-
-            // TODO Attendanceモデルにstarting_memberリレーションをつける
-            // $attendances = $attendances->sortBy(fn (Attendance $attendance) => $attendance->)
-
-            dd("ok");
+            $activity->is_order = true;
+            $activity->save();
         });
     }
 
