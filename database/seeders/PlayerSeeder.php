@@ -26,7 +26,7 @@ class PlayerSeeder extends Seeder
         $player->last_name = '舩越';
         $player->first_name = '貴矢';
         $player->desired_position = Position::SHORT;
-        $player->positions = '2,3,5,7,8,9';
+        $player->positions = '2,3,4,5,6,7,8,9';
         $player->pitcher_flag = false;
         $player->catcher_flag = true;
         $player->save();
@@ -36,49 +36,23 @@ class PlayerSeeder extends Seeder
         $player->email = Str::random(10) . '@example.com';
         $player->password = Hash::make('password');
         $player->role = Role::MEMBER;
-        $player->last_name = '鴨';
-        $player->first_name = Str::random(10);
-        $player->desired_position = null;
-        $player->positions = '1,3,4,5,6,7,8,9';
-        $player->pitcher_flag = true;
-        $player->catcher_flag = false;
-        $player->save();
-
-        $player = new Player();
-        $player->team_id = 1;
-        $player->email = Str::random(10) . '@example.com';
-        $player->password = Hash::make('password');
-        $player->role = Role::MEMBER;
-        $player->last_name = '永井';
-        $player->first_name = '慎太郎';
-        $player->desired_position = 5;
-        $player->positions = '1,3,4,5,6,7,8,9';
-        $player->pitcher_flag = false;
-        $player->catcher_flag = false;
-        $player->save();
-
-        $player = new Player();
-        $player->team_id = 1;
-        $player->email = Str::random(10) . '@example.com';
-        $player->password = Hash::make('password');
-        $player->role = Role::MEMBER;
-        $player->last_name = '永井';
-        $player->first_name = '未来';
-        $player->desired_position = null;
-        $player->positions = '9';
-        $player->pitcher_flag = false;
-        $player->catcher_flag = false;
-        $player->save();
-
-        $player = new Player();
-        $player->team_id = 1;
-        $player->email = Str::random(10) . '@example.com';
-        $player->password = Hash::make('password');
-        $player->role = Role::MEMBER;
         $player->last_name = '西久保';
         $player->first_name = Str::random(10);
-        $player->desired_position = 8;
-        $player->positions = null;
+        $player->desired_position = null;
+        $player->positions = "2,7,9";
+        $player->pitcher_flag = false;
+        $player->catcher_flag = true;
+        $player->save();
+
+        $player = new Player();
+        $player->team_id = 1;
+        $player->email = Str::random(10) . '@example.com';
+        $player->password = Hash::make('password');
+        $player->role = Role::MEMBER;
+        $player->last_name = '西本';
+        $player->first_name = Str::random(10);
+        $player->desired_position = 6;
+        $player->positions = "3,4,5,6,7,8,9";
         $player->pitcher_flag = false;
         $player->catcher_flag = false;
         $player->save();
@@ -93,6 +67,19 @@ class PlayerSeeder extends Seeder
         $player->desired_position = 3;
         $player->positions = '2,3,4,5,6,7,8,9';
         $player->pitcher_flag = false;
+        $player->catcher_flag = true;
+        $player->save();
+
+        $player = new Player();
+        $player->team_id = 1;
+        $player->email = Str::random(10) . '@example.com';
+        $player->password = Hash::make('password');
+        $player->role = Role::HELPER;
+        $player->last_name = '竹添';
+        $player->first_name = Str::random(10);
+        $player->desired_position = 4;
+        $player->positions = "3,4,5,6,7,8,9";
+        $player->pitcher_flag = false;
         $player->catcher_flag = false;
         $player->save();
 
@@ -101,11 +88,11 @@ class PlayerSeeder extends Seeder
         $player->email = Str::random(10) . '@example.com';
         $player->password = Hash::make('password');
         $player->role = Role::HELPER;
-        $player->last_name = '大塚';
+        $player->last_name = '柏原';
         $player->first_name = Str::random(10);
         $player->desired_position = 6;
-        $player->positions = '1,3,4,5,6';
-        $player->pitcher_flag = false;
+        $player->positions = "1,3,5,6,7,8,9";
+        $player->pitcher_flag = true;
         $player->catcher_flag = false;
         $player->save();
 
@@ -114,10 +101,10 @@ class PlayerSeeder extends Seeder
         $player->email = Str::random(10) . '@example.com';
         $player->password = Hash::make('password');
         $player->role = Role::HELPER;
-        $player->last_name = '藤野';
+        $player->last_name = '清水';
         $player->first_name = Str::random(10);
-        $player->desired_position = 9;
-        $player->positions = null;
+        $player->desired_position = 6;
+        $player->positions = "2,3,4,5,6,7,8,9";
         $player->pitcher_flag = false;
         $player->catcher_flag = false;
         $player->save();
@@ -126,12 +113,12 @@ class PlayerSeeder extends Seeder
         $player->team_id = 1;
         $player->email = Str::random(10) . '@example.com';
         $player->password = Hash::make('password');
-        $player->role = Role::EXPERIENCE;
-        $player->last_name = '雅';
+        $player->role = Role::MEMBER;
+        $player->last_name = '鴨';
         $player->first_name = Str::random(10);
-        $player->desired_position = Position::LEFT;
-        $player->positions = null;
-        $player->pitcher_flag = false;
+        $player->desired_position = 6;
+        $player->positions = '1,3,4,5,6,7,8,9';
+        $player->pitcher_flag = true;
         $player->catcher_flag = false;
         $player->save();
 
@@ -140,13 +127,104 @@ class PlayerSeeder extends Seeder
         $player->email = Str::random(10) . '@example.com';
         $player->password = Hash::make('password');
         $player->role = Role::HELPER;
-        $player->last_name = '○○';
+        $player->last_name = '坂本';
         $player->first_name = Str::random(10);
         $player->desired_position = null;
         $player->positions = null;
         $player->pitcher_flag = false;
         $player->catcher_flag = false;
         $player->save();
+
+        // $player = new Player();
+        // $player->team_id = 1;
+        // $player->email = Str::random(10) . '@example.com';
+        // $player->password = Hash::make('password');
+        // $player->role = Role::HELPER;
+        // $player->last_name = 'しん';
+        // $player->first_name = Str::random(10);
+        // $player->desired_position = null;
+        // $player->positions = null;
+        // $player->pitcher_flag = false;
+        // $player->catcher_flag = false;
+        // $player->save();
+
+        // $player = new Player();
+        // $player->team_id = 1;
+        // $player->email = Str::random(10) . '@example.com';
+        // $player->password = Hash::make('password');
+        // $player->role = Role::MEMBER;
+        // $player->last_name = '永井';
+        // $player->first_name = '慎太郎';
+        // $player->desired_position = 5;
+        // $player->positions = '1,3,4,5,6,7,8,9';
+        // $player->pitcher_flag = false;
+        // $player->catcher_flag = false;
+        // $player->save();
+
+        // $player = new Player();
+        // $player->team_id = 1;
+        // $player->email = Str::random(10) . '@example.com';
+        // $player->password = Hash::make('password');
+        // $player->role = Role::MEMBER;
+        // $player->last_name = '永井';
+        // $player->first_name = '未来';
+        // $player->desired_position = null;
+        // $player->positions = '9';
+        // $player->pitcher_flag = false;
+        // $player->catcher_flag = false;
+        // $player->save();
+
+        // $player = new Player();
+        // $player->team_id = 1;
+        // $player->email = Str::random(10) . '@example.com';
+        // $player->password = Hash::make('password');
+        // $player->role = Role::HELPER;
+        // $player->last_name = '大塚';
+        // $player->first_name = Str::random(10);
+        // $player->desired_position = 6;
+        // $player->positions = '1,3,4,5,6';
+        // $player->pitcher_flag = false;
+        // $player->catcher_flag = false;
+        // $player->save();
+
+        // $player = new Player();
+        // $player->team_id = 1;
+        // $player->email = Str::random(10) . '@example.com';
+        // $player->password = Hash::make('password');
+        // $player->role = Role::HELPER;
+        // $player->last_name = '藤野';
+        // $player->first_name = Str::random(10);
+        // $player->desired_position = 9;
+        // $player->positions = null;
+        // $player->pitcher_flag = false;
+        // $player->catcher_flag = false;
+        // $player->save();
+
+        // $player = new Player();
+        // $player->team_id = 1;
+        // $player->email = Str::random(10) . '@example.com';
+        // $player->password = Hash::make('password');
+        // $player->role = Role::EXPERIENCE;
+        // $player->last_name = '雅';
+        // $player->first_name = Str::random(10);
+        // $player->desired_position = Position::LEFT;
+        // $player->positions = null;
+        // $player->pitcher_flag = false;
+        // $player->catcher_flag = false;
+        // $player->save();
+
+        // $player = new Player();
+        // $player->team_id = 1;
+        // $player->email = Str::random(10) . '@example.com';
+        // $player->password = Hash::make('password');
+        // $player->role = Role::HELPER;
+        // $player->last_name = '○○';
+        // $player->first_name = Str::random(10);
+        // $player->desired_position = null;
+        // $player->positions = null;
+        // $player->pitcher_flag = false;
+        // $player->catcher_flag = false;
+        // $player->save();
 
         // for ($i = 1; $i <= 10; $i++) {
         //     $player = new Player();

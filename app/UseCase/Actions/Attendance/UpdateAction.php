@@ -29,6 +29,8 @@ class UpdateAction
             throw new AlreadyDecidedException('既にオーダーが決められています。');
         }
 
+        // TODO　キャッチャーは第二ポジションにしない。第二ポジションかぶっているバグ
+
         DB::transaction(function () use ($activity) {
 
             // 投手、捕手、DHを除いたポジション配列
@@ -64,7 +66,7 @@ class UpdateAction
                 if (!$can_player_attendance->player->positions) {
                     return false;
                 }
-                return count(explode(',', $can_player_attendance->player->positions)) >= 2;
+                return count(explode(',', $can_player_attendance->player->positions)) >= 4;
             });
 
             // 残りの参加者のコレクション
@@ -72,7 +74,13 @@ class UpdateAction
 
             // ポジション配列に希望ポジションがあればセット
             $can_player_priority_attendances->shuffle()->each(function ($can_player_priority_attendance) use ($can_player_posteriority_attendances) {
-                if (!$can_player_priority_attendance->player->desired_position) {
+                $desired_position = $can_player_priority_attendance->player->desired_position;
+                if (!$desired_position) {
+                    // 何もしない（continueと同じ）
+                    return true;
+                }
+                // 希望ポジションがポジション配列にあるか判定
+                if (!in_array($can_player_priority_attendance->player->desired_position, $this->position_array)) {
                     $can_player_posteriority_attendances->push($can_player_priority_attendance);
                     return true;
                 }
@@ -100,8 +108,7 @@ class UpdateAction
                 $player_position_array = array_filter($player_position_array, function (int $player_position) {
                     return in_array(Position::tryFrom($player_position), $this->position_array);
                 });
-                var_dump($player_position_array);
-                die();
+
                 if ($player_position_array === []) {
                     return true;
                 }

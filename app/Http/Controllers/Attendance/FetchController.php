@@ -4,21 +4,21 @@ namespace App\Http\Controllers\Attendance;
 
 use App\Enums\Answer;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\AttendanceResource;
 use App\Models\Activity;
 use App\Models\Attendance;
-use Illuminate\Support\Collection;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Auth;
 
 class FetchController extends Controller
 {
-    public function __invoke(): Collection
+    public function __invoke(): AnonymousResourceCollection
     {
         $login_player = Auth::guard('player')->user();
 
         $activity = Activity::query()
             ->where('team_id', $login_player->team_id)
-            ->where('activity_date', '>', today())
-            ->where('is_order', true)
+
             ->firstOrFail();
 
         $attendances = Attendance::query()
@@ -27,19 +27,22 @@ class FetchController extends Controller
             ->where('answer', Answer::YES)
             ->get();
 
-        $attendances->each(function (Attendance $attendance) {
-            $position = $attendance->starting_member->position ? $attendance->starting_member->position->label() : '控';
-            $second_position = $attendance->second_position ? $attendance->second_position->label() : "";
-            var_dump(
-                $attendance->starting_member->batting_order . '番 ' .
-                    $attendance->player->last_name . ' ' .
-                    $position . ' ' .
-                    $second_position
-            );
-        });
-        die();
+        // $attendances->each(function (Attendance $attendance) {
+        //     $position = $attendance->starting_member->position ? $attendance->starting_member->position->label() : '控';
+        //     $second_position = $attendance->second_position ? $attendance->second_position->label() : "";
+        //     var_dump(
+        //         $attendance->starting_member->batting_order . '番 ' .
+        //             $attendance->player->last_name . ' ' .
+        //             $position . ' ' .
+        //             $second_position
+        //     );
+        // });
 
-        // TODO resourceつくる
-        return $attendances;
+        // 打順で並べ替え
+        $attendances = $attendances->sortBy(function (Attendance $attendance) {
+            return $attendance->starting_member->batting_order;
+        });
+
+        return AttendanceResource::collection($attendances);
     }
 }
