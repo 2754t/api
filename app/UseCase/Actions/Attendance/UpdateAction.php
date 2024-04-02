@@ -29,8 +29,6 @@ class UpdateAction
             throw new AlreadyDecidedException('既にオーダーが決められています。');
         }
 
-        // TODO　キャッチャーは第二ポジションにしない。第二ポジションかぶっているバグ
-
         DB::transaction(function () use ($activity) {
 
             // 投手、捕手、DHを除いたポジション配列
@@ -80,11 +78,11 @@ class UpdateAction
                     return true;
                 }
                 // 希望ポジションがポジション配列にあるか判定
-                if (!in_array($can_player_priority_attendance->player->desired_position, $this->position_array)) {
+                if (!in_array($desired_position, $this->position_array)) {
                     $can_player_posteriority_attendances->push($can_player_priority_attendance);
                     return true;
                 }
-                $this->createSecondPosition($can_player_priority_attendance, $can_player_priority_attendance->player->desired_position);
+                $this->createSecondPosition($can_player_priority_attendance, $desired_position);
             });
 
             // ポジション配列から外野を除外
@@ -112,7 +110,9 @@ class UpdateAction
                 if ($player_position_array === []) {
                     return true;
                 }
-                $this->createSecondPosition($can_player_posteriority_attendance, Position::tryFrom(array_rand($player_position_array, 1)));
+                // 残りのポジションの配列からランダムで第二ポジションにする
+                $position_int = (int)$player_position_array[array_rand($player_position_array, 1)];
+                $this->createSecondPosition($can_player_posteriority_attendance, Position::tryFrom($position_int));
             });
 
             $activity->is_order = true;
@@ -122,10 +122,11 @@ class UpdateAction
 
     private function createSecondPosition(Attendance $attendance, ?Position $position = null): void
     {
-        $attendance->second_position = $position ? $position : $this->randPosition();
+        $position = $position ?? $this->randPosition();
+        $attendance->second_position = $position;
         $attendance->save();
 
-        if ($attendance->second_position) {
+        if ($position) {
             $this->position_array = array_filter($this->position_array, fn (Position $position) => $position !== $attendance->second_position);
         }
     }
