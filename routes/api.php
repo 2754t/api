@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Activity\FetchController as ActivityFetchController;
 use App\Http\Controllers\Attendance\FetchController as AttendanceFetchController;
 use App\Http\Controllers\Attendance\UpdateController;
 use App\Http\Controllers\Player\FetchController;
@@ -24,3 +25,5 @@ Route::middleware(['auth:player'])->group(function () {
     Route::get('/attendance', AttendanceFetchController::class);
     Route::get('/attendance/update', UpdateController::class);
 });
+
+Route::get('/activity', ActivityFetchController::class);
