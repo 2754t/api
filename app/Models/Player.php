@@ -7,6 +7,7 @@ use App\Enums\Role;
 use Illuminate\Auth\Authenticatable as AuthAuthenticatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
 /**
  * App\Models\Player
@@ -53,6 +54,7 @@ use Illuminate\Contracts\Auth\Authenticatable;
 class Player extends Model implements Authenticatable
 {
     use AuthAuthenticatable;
+    use Notifiable;
 
     /**
      * @var array

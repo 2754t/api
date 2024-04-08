@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Models\Activity;
+use App\Notifications\AttendanceRequest;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
 use Throwable;
@@ -72,6 +73,7 @@ class SendAttendanceRequest extends Command
     private function sendToMember(Activity $activity)
     {
         // メール送信
+        // $player->notify(new AttendanceRequest($activity));
 
         // attendance 追加
     }
