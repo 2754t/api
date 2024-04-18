@@ -32,9 +32,6 @@ class SendAttendanceRequest extends Command
         // 次回送信日時が過去の活動を取得
         $activities = Activity::where('next_send_datetime', '<', now())->get();
 
-        // TODO 複数送信内容がある時は1つのメールにまとめて送りたい
-        // TODO メールのURLからであればログイン不要でattendance/updateを開く
-
         $activities->each(function (Activity $activity) {
             // 募集人数に足りているか
             if ($this->hasEnoughMember($activity)) {
