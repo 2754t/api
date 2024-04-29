@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Activity\FetchController as ActivityFetchController;
 use App\Http\Controllers\Attendance\FetchController as AttendanceFetchController;
+use App\Http\Controllers\Attendance\UpdateController;
 use App\Http\Controllers\Player\FetchController;
 use App\Http\Controllers\SignIn\SignInController;
 use Illuminate\Support\Facades\Route;
@@ -30,4 +31,7 @@ Route::middleware(['auth:player'])->group(function () {
     // 出欠
     // 出席者のみをfetchするので名前変えたい
     Route::get('/attendance', AttendanceFetchController::class);
+
+    // テスト用スタメン決め
+    Route::get("attendance/update", UpdateController::class);
 });

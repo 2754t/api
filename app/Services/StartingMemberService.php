@@ -44,18 +44,20 @@ class StartingMemberService
             ->where('answer', Answer::YES)
             ->get();
 
-        if ($attendances->count() < 9) {
+        $attendances_count = $attendances->count() ? $attendances->count() : null;
+
+        if ($attendances_count < 9) {
             throw new NotEnoughMembersException('参加者が足りません。');
         }
 
         $this->position_array = array_filter(Position::cases(), fn ($position) => $position !== Position::DH);
 
-        if ($attendances->count() === 9 || $activity->dh_type === DHType::ZERO) {
+        if ($attendances_count === 9 || $activity->dh_type === DHType::ZERO) {
             $this->batting_order_array = range(1, 9);
         } elseif ($activity->dh_type === DHType::ONE) {
             $this->batting_order_array = range(1, 10);
         } else {
-            $this->batting_order_array = range(1, $attendances->count());
+            $this->batting_order_array = range(1, $attendances_count);
         }
 
         $this->starting_members = collect([]);
@@ -80,18 +82,30 @@ class StartingMemberService
             $this->starting_members->push($starting_member);
         });
 
+        $attendances = $attendances
+            ->whereNotIn('id', $experience_attendances->pluck('id'));
 
-        $attendances
-            ->whereNotIn('id', $experience_attendances->pluck('id'))
+        // DHフラグのある出席者にポジションDHをセット（DHフラグを持てるかは出欠登録時にチェック）
+        $dh_attendances = $attendances
+            ->where('dh_flag', true)
             ->sortByDesc(fn (Attendance $attendance) => $attendance->dh_flag)
             ->each(function (Attendance $attendance): void {
-                if ($attendance->dh_flag) {
+                $starting_member = $this->createStartingMember($attendance, Position::DH);
+                $this->starting_members->push($starting_member);
+            });
+
+        $attendances
+            ->whereNotIn('id', $dh_attendances->pluck('id'))
+            ->shuffle()
+            ->each(function (Attendance $attendance) use ($attendances_count): void {
+                if ($attendance->player->pitcher_flag && ($this->starting_members->where('position', Position::DH)->count() + 9) < $attendances_count) {
                     $starting_member = $this->createStartingMember($attendance, Position::DH);
+                    $this->starting_members->push($starting_member);
                 } else {
                     $starting_member = $this->createStartingMember($attendance);
                 }
-                $this->starting_members->push($starting_member);
             });
+
 
         return $this->starting_members;
     }
