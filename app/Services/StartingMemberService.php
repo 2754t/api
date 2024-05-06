@@ -12,6 +12,7 @@ use App\Models\Attendance;
 use App\Models\StartingMember;
 use App\Services\Exceptions\NoCatcherException;
 use App\Services\Exceptions\NoPitcherException;
+use App\Services\Exceptions\NotEnoughMembersBecauseManyDHsException;
 use App\Services\Exceptions\NotEnoughMembersException;
 use DomainException;
 use Illuminate\Support\Collection;
@@ -48,6 +49,10 @@ class StartingMemberService
 
         if ($attendances_count < 9) {
             throw new NotEnoughMembersException('参加者が足りません。');
+        }
+
+        if (($attendances_count - 9) < $attendances->where('dh_flag', true)->count()) {
+            throw new NotEnoughMembersBecauseManyDHsException('DH希望者が' . $attendances->where('DHFlag', true)->count() . '名のため、スタメンが決められません。');
         }
 
         $this->position_array = array_filter(Position::cases(), fn ($position) => $position !== Position::DH);
@@ -123,6 +128,7 @@ class StartingMemberService
             throw new NoPitcherException('出席者にピッチャーがいません。');
         }
 
+        // TODO ランダムではなく成績順にする
         /** @var Attendance この試合のピッチャー */
         $pitcher_attendance = $pitcher_attendances->random();
 

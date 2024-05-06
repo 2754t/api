@@ -8,6 +8,7 @@ use App\Enums\Answer;
 use App\Enums\Position;
 use App\Models\Activity;
 use App\Models\Attendance;
+use App\Models\StartingMember;
 use App\Services\Exceptions\AlreadyDecidedException;
 use App\Services\StartingMemberService;
 use Illuminate\Support\Collection;
@@ -114,6 +115,18 @@ class UpdateAction
                 $position_int = (int)$player_position_array[array_rand($player_position_array, 1)];
                 $this->createSecondPosition($can_player_posteriority_attendance, Position::tryFrom($position_int));
             });
+
+
+            // テスト用
+            $attendances->each(function (Attendance $attendance) {
+                if ($attendance->second_position === null) {
+                    $second_position = "";
+                } else {
+                    $second_position = $attendance->second_position->label();
+                }
+                var_dump($attendance->player->last_name . ' ' . $attendance->starting_member->position->label() . ' ' . $second_position);
+            });
+            die();
 
             $activity->is_order = true;
             $activity->save();
