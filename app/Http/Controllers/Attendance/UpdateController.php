@@ -10,6 +10,6 @@ class UpdateController extends Controller
 {
     public function __invoke(UpdateAction $action)
     {
-        $action(Activity::orderByDesc('activity_date')->first());
+        $action(Activity::orderByDesc('activity_datetime')->first());
     }
 }

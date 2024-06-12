@@ -13,7 +13,7 @@ use Illuminate\Contracts\Auth\Authenticatable;
  *
  * @property int $id 活動ID
  * @property int $team_id チームID
- * @property \Illuminate\Support\Carbon $activity_date 活動日時
+ * @property \Illuminate\Support\Carbon $activity_datetime 活動日時
  * @property ActivityType $activity_type 活動内容
  * @property int $stadium_id 球場ID
  * @property int $play_time 活動の予定時間/h
@@ -53,7 +53,7 @@ class Activity extends Model implements Authenticatable
     protected $casts = [
         'id' => 'integer',
         'team_id' => 'integer',
-        'activity_date' => 'datetime',
+        'activity_datetime' => 'datetime',
         'activity_type' => ActivityType::class,
         'stadium_id' => 'integer',
         'play_time' => 'integer',

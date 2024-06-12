@@ -23,7 +23,7 @@ use Tests\TestCase;
 class StartingMemberTest extends TestCase
 {
     use RefreshDatabase;
-    
+
     /**
      * @test
      */
@@ -36,7 +36,7 @@ class StartingMemberTest extends TestCase
         $activity->stadium_id = 1;
         $activity->play_time = 2;
         $activity->confirmed_flag = true;
-        $activity->activity_date = today();
+        $activity->activity_datetime = today();
         $activity->activity_type = ActivityType::GAME;
         $activity->dh_type = DHType::UNLIMITED;
         $activity->save();
@@ -95,7 +95,7 @@ class StartingMemberTest extends TestCase
         $activity->stadium_id = 1;
         $activity->play_time = 2;
         $activity->confirmed_flag = true;
-        $activity->activity_date = today();
+        $activity->activity_datetime = today();
         $activity->activity_type = ActivityType::GAME;
         $activity->dh_type = DHType::ONE;
         $activity->save();
@@ -154,7 +154,7 @@ class StartingMemberTest extends TestCase
         $activity->stadium_id = 1;
         $activity->play_time = 2;
         $activity->confirmed_flag = true;
-        $activity->activity_date = today();
+        $activity->activity_datetime = today();
         $activity->activity_type = ActivityType::GAME;
         $activity->dh_type = DHType::ZERO;
         $activity->save();
@@ -213,7 +213,7 @@ class StartingMemberTest extends TestCase
         $activity->stadium_id = 1;
         $activity->play_time = 2;
         $activity->confirmed_flag = true;
-        $activity->activity_date = today();
+        $activity->activity_datetime = today();
         $activity->activity_type = ActivityType::GAME;
         $activity->dh_type = DHType::UNLIMITED;
         $activity->save();
@@ -272,7 +272,7 @@ class StartingMemberTest extends TestCase
         $activity->stadium_id = 1;
         $activity->play_time = 2;
         $activity->confirmed_flag = true;
-        $activity->activity_date = today();
+        $activity->activity_datetime = today();
         $activity->activity_type = ActivityType::GAME;
         $activity->dh_type = DHType::ONE;
         $activity->save();
@@ -331,7 +331,7 @@ class StartingMemberTest extends TestCase
         $activity->stadium_id = 1;
         $activity->play_time = 2;
         $activity->confirmed_flag = true;
-        $activity->activity_date = today();
+        $activity->activity_datetime = today();
         $activity->activity_type = ActivityType::GAME;
         $activity->dh_type = DHType::ZERO;
         $activity->save();
@@ -392,7 +392,7 @@ class StartingMemberTest extends TestCase
         $activity->stadium_id = 1;
         $activity->play_time = 2;
         $activity->confirmed_flag = true;
-        $activity->activity_date = today();
+        $activity->activity_datetime = today();
         $activity->activity_type = ActivityType::GAME;
         $activity->dh_type = DHType::UNLIMITED;
         $activity->save();
@@ -450,7 +450,7 @@ class StartingMemberTest extends TestCase
         $activity->stadium_id = 1;
         $activity->play_time = 2;
         $activity->confirmed_flag = true;
-        $activity->activity_date = today();
+        $activity->activity_datetime = today();
         $activity->activity_type = ActivityType::GAME;
         $activity->dh_type = DHType::ONE;
         $activity->save();
@@ -512,7 +512,7 @@ class StartingMemberTest extends TestCase
         $activity->stadium_id = 1;
         $activity->play_time = 2;
         $activity->confirmed_flag = true;
-        $activity->activity_date = today();
+        $activity->activity_datetime = today();
         $activity->activity_type = ActivityType::GAME;
         $activity->dh_type = DHType::ZERO;
         $activity->save();
@@ -574,7 +574,7 @@ class StartingMemberTest extends TestCase
         $activity->stadium_id = 1;
         $activity->play_time = 2;
         $activity->confirmed_flag = true;
-        $activity->activity_date = today();
+        $activity->activity_datetime = today();
         $activity->activity_type = ActivityType::PRACTICE;
         $activity->dh_type = DHType::UNLIMITED;
         $activity->save();
@@ -616,7 +616,7 @@ class StartingMemberTest extends TestCase
         $activity->stadium_id = 1;
         $activity->play_time = 2;
         $activity->confirmed_flag = true;
-        $activity->activity_date = today();
+        $activity->activity_datetime = today();
         $activity->activity_type = ActivityType::GAME;
         $activity->dh_type = DHType::UNLIMITED;
         $activity->save();
@@ -658,7 +658,7 @@ class StartingMemberTest extends TestCase
         $activity->stadium_id = 1;
         $activity->play_time = 2;
         $activity->confirmed_flag = true;
-        $activity->activity_date = today();
+        $activity->activity_datetime = today();
         $activity->activity_type = ActivityType::GAME;
         $activity->dh_type = DHType::UNLIMITED;
         $activity->save();
@@ -700,7 +700,7 @@ class StartingMemberTest extends TestCase
         $activity->stadium_id = 1;
         $activity->play_time = 2;
         $activity->confirmed_flag = true;
-        $activity->activity_date = today();
+        $activity->activity_datetime = today();
         $activity->activity_type = ActivityType::GAME;
         $activity->dh_type = DHType::UNLIMITED;
         $activity->save();
@@ -742,7 +742,7 @@ class StartingMemberTest extends TestCase
         $activity->stadium_id = 1;
         $activity->play_time = 2;
         $activity->confirmed_flag = true;
-        $activity->activity_date = today();
+        $activity->activity_datetime = today();
         $activity->activity_type = ActivityType::GAME;
         $activity->dh_type = DHType::UNLIMITED;
         $activity->save();

@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('activities', function (Blueprint $table) {
             $table->id()->comment('活動ID');
             $table->foreignId('team_id')->comment('チームID');
-            $table->dateTime('activity_date')->comment('活動日時');
-            $table->tinyInteger('activity_type')->comment('活動内容');
+            $table->dateTime('activity_datetime')->comment('活動日時');
+            $table->tinyInteger('activity_type')->comment('活動内容[0:練習 1:試合 2:紅白戦]');
             $table->timestamps();
         });
     }

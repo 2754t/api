@@ -18,7 +18,7 @@ class FetchController extends Controller
 
         $activity = Activity::query()
             ->where('team_id', $login_player->team_id)
-            ->orderByDesc('activity_date')
+            ->orderByDesc('activity_datetime')
             ->firstOrFail();
 
         $attendances = Attendance::query()

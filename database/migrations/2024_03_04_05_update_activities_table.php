@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('activities', function (Blueprint $table) {
-            $table->integer('play_time')->comment('活動の予定時間/h')->after('activity_date');
+            $table->integer('play_time')->comment('活動の予定時間(h)')->after('activity_datetime');
         });
     }
 

@@ -22,12 +22,15 @@ class ActivityResource extends JsonResource
             'id' => $this->id,
             'team_id' => $this->team_id,
             'stadium_id' => $this->stadium_id,
-            'activity_date' => $this->activity_date,
+            'activity_datetime' => $this->activity_datetime,
             'play_time' => $this->play_time,
+            'next_send_datetime' => $this->next_send_datetime,
             'activity_type' => $this->activity_type,
             'confirmed_flag' => $this->confirmed_flag,
             'dh_type' => $this->dh_type,
+            'recruitment' => $this->recruitment,
             'entry_cost' => $this->entry_cost,
+            'is_order' => $this->is_order,
         ];
     }
 }

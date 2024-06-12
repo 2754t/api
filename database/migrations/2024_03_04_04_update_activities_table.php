@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::table('activities', function (Blueprint $table) {
             $table->foreignId('stadium_id')->comment('球場ID')->after('team_id');
             $table->boolean('confirmed_flag')->comment('活動確定フラグ')->after('activity_type');
-            $table->tinyInteger('dh_type')->nullable()->comment('DHタイプ')->after('confirmed_flag');
+            $table->tinyInteger('dh_type')->nullable()->comment('DHタイプ[0:0人 1:1人 2:2人以上]')->after('confirmed_flag');
             $table->integer('entry_cost')->nullable()->comment('参加費')->after('dh_type');
         });
     }

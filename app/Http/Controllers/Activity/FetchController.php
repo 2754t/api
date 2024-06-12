@@ -1,18 +1,22 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Http\Controllers\Activity;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ActivityResource;
-use App\Models\Activity;
+use App\UseCase\Actions\Activity\FetchAction;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class FetchController extends Controller
 {
-    public function __invoke(): AnonymousResourceCollection
+    public function __invoke(FetchAction $action, Request $request): AnonymousResourceCollection
     {
-        return ActivityResource::collection(Activity::get());
+        $year = (int)$request->input('year');
+        $month = (int)$request->input('month');
+
+        $activities = $action($year, $month);
+
+        return ActivityResource::collection($activities);
     }
 }

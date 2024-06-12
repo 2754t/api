@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Http\Controllers\Activity\FetchController as ActivityFetchController;
 use App\Http\Controllers\Attendance\FetchController as AttendanceFetchController;
 use App\Http\Controllers\Attendance\UpdateController;

@@ -37,10 +37,10 @@ class AttendanceRequest extends Notification
     {
         return (new MailMessage)
             ->subject('出欠確認')
-            //->line($this->activity->activity_date . 'に' . $this->activity->activity_type. 'が登録されました。')
+            //->line($this->activity->activity_datetime . 'に' . $this->activity->activity_type. 'が登録されました。')
             ->line(sprintf(
                 '%sの%sが登録されました。',
-                $this->activity->activity_date->format('m月d日 H:i'),
+                $this->activity->activity_datetime->format('m月d日 H:i'),
                 $this->activity->activity_type->label()
             ))
             ->line('サイトにアクセスして出欠を回答してください。')

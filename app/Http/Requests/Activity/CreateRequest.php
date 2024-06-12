@@ -15,7 +15,7 @@ class CreateRequest extends FormRequest
     {
         return [
             'stadium_id' => ['required'],
-            'activity_date' => ['required'],
+            'activity_datetime' => ['required'],
             'play_time' => ['required'],
             'activity_type' => ['required'],
             'confirmed_flag' => ['required'],
@@ -31,7 +31,7 @@ class CreateRequest extends FormRequest
     {
         return [
             'stadium_id' => '球場ID',
-            'activity_date' => '	活動日時',
+            'activity_datetime' => '	活動日時',
             'play_time' => '活動の予定時間/h',
             'activity_type' => '活動内容',
             'confirmed_flag' => '活動確定フラグ',

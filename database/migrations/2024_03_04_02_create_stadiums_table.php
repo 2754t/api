@@ -20,7 +20,7 @@ return new class extends Migration
             $table->integer('sunday_cost')->nullable()->comment('日曜日使用料金/h');
             $table->boolean('free_parking_flag')->nullable()->comment('無料駐車場フラグ');
             $table->integer('parking_cost')->nullable()->comment('近隣有料駐車場参考料金');
-            $table->integer('from_station')->nullable()->comment('最寄駅からの徒歩時間/m');
+            $table->integer('from_station')->nullable()->comment('最寄駅からの徒歩時間(m)');
             $table->timestamps();
         });
     }

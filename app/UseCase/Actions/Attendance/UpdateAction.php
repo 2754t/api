@@ -118,15 +118,15 @@ class UpdateAction
 
 
             // テスト用
-            $attendances->each(function (Attendance $attendance) {
-                if ($attendance->second_position === null) {
-                    $second_position = "";
-                } else {
-                    $second_position = $attendance->second_position->label();
-                }
-                var_dump($attendance->player->last_name . ' ' . $attendance->starting_member->position->label() . ' ' . $second_position);
-            });
-            die();
+            // $attendances->each(function (Attendance $attendance) {
+            //     if ($attendance->second_position === null) {
+            //         $second_position = "";
+            //     } else {
+            //         $second_position = $attendance->second_position->label();
+            //     }
+            //     var_dump($attendance->player->last_name . ' ' . $attendance->starting_member->position->label() . ' ' . $second_position);
+            // });
+            // die();
 
             $activity->is_order = true;
             $activity->save();

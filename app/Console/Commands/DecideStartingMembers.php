@@ -31,7 +31,7 @@ class DecideStartingMembers extends Command
     public function handle(UpdateAction $action)
     {
         $activities = Activity::query()
-            // ->where('activity_date', today()->addDays(2))
+            // ->where('activity_datetime', today()->addDays(2))
             ->where('activity_type', ActivityType::GAME)
             // ->where('confirmed_flag', true)
             ->get();

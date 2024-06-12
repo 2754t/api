@@ -15,12 +15,14 @@ enum ActivityType: int
 
     case PRACTICE = 0;
     case GAME = 1;
+    case INTRASQUADGAME = 2;
 
     public function label(): string
     {
         return match ($this) {
             self::PRACTICE => '練習',
             self::GAME => '試合',
+            self::INTRASQUADGAME => '紅白戦',
         };
     }
 }

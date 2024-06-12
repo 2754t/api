@@ -14,7 +14,7 @@ class CreateAction
         $activity = new Activity();
         $activity->team_id = 1;
         $activity->stadium_id = $request->stadium_id;
-        $activity->activity_date = $request->activity_date;
+        $activity->activity_datetime = $request->activity_datetime;
         $activity->play_time = $request->play_time;
         $activity->activity_type = $request->activity_type;
         $activity->confirmed_flag = $request->confirmed_flag;
