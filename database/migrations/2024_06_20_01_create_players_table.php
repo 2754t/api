@@ -16,9 +16,15 @@ return new class extends Migration
             $table->foreignId('team_id')->comment('チームID');
             $table->string('email', 100)->comment('メールアドレス');
             $table->string('password', 191)->comment('パスワード');
+            $table->string('access_token', 100)->nullable()->comment('アクセストークン');
+            $table->dateTime('access_token_expired')->nullable()->comment('アクセストークン有効期限');
             $table->string('last_name', 30)->comment('姓');
             $table->string('first_name', 30)->comment('名');
-            $table->string('positions', 20)->nullable()->comment('カンマ区切りの守備位置');
+            $table->string('nickname', 30)->nullable()->comment('ニックネーム');
+            $table->tinyInteger('role')->default(0)->comment('権限 [0:体験者 1:助っ人 2:メンバー 3:管理者]');
+            $table->integer('player_number')->nullable()->comment('背番号');
+            $table->tinyInteger('desired_position')->nullable()->comment('希望ポジション');
+            $table->string('position_joined', 20)->nullable()->comment('習得ポジション');
             $table->boolean('pitcher_flag')->default(false)->comment('投手フラグ');
             $table->boolean('catcher_flag')->default(false)->comment('捕手フラグ');
             $table->timestamps();

@@ -2,56 +2,37 @@
 
 namespace App\Models;
 
-use Illuminate\Auth\Authenticatable as AuthAuthenticatable;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Enums\Position;
+use Illuminate\Support\Carbon;
 
 /**
  * App\Models\StartingMember
  *
- * @property int $id オーダーID
- * @property int $team_id チームID
- * @property int $player_id 選手ID
- * @property int $activity_id 活動ID
- * @property int $attendance_id 出欠ID
- * @property boolean $starting_lineup スタメン
- * @property Position|null $position 守備位置
- * @property int|null $batting_order 打順
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\Player|null $player
- * @method static \Illuminate\Database\Eloquent\Builder|StartingMember newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|StartingMember newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|StartingMember query()
- * @method static \Illuminate\Database\Eloquent\Builder|StartingMember whereActivityId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|StartingMember whereAttendanceId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|StartingMember whereBattingOrder($value)
- * @method static \Illuminate\Database\Eloquent\Builder|StartingMember whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|StartingMember whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|StartingMember wherePlayerId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|StartingMember wherePosition($value)
- * @method static \Illuminate\Database\Eloquent\Builder|StartingMember whereStartingLineup($value)
- * @method static \Illuminate\Database\Eloquent\Builder|StartingMember whereTeamId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|StartingMember whereUpdatedAt($value)
- * @mixin \Eloquent
+ * @property int           $id              スタメンID
+ * @property int           $team_id         チームID
+ * @property int           $attendance_id   出欠ID
+ * @property bool          $starting_flag   スタメンフラグ
+ * @property int|null      $batting_order   打順
+ * @property Position|null $position        スタートポジション
+ * @property Position|null $second_position 第二ポジション
+ * @property Carbon|null   $created_at
+ * @property Carbon|null   $updated_at
  */
-class StartingMember extends Model implements Authenticatable
+class StartingMember extends Model
 {
-    use AuthAuthenticatable;
-
     /**
      * @var array
      */
     protected $casts = [
         'id' => 'integer',
         'team_id' => 'integer',
-        'player_id' => 'integer',
-        'activity_id' => 'integer',
-        'starting_lineup' => 'boolean',
-        'position' => Position::class,
+        'attendance_id' => 'integer',
+        'starting_flag' => 'boolean',
         'batting_order' => 'integer',
+        'position' => Position::class,
+        'second_position' => Position::class,
     ];
 
     /*

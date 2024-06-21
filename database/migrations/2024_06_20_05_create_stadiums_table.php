@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('stadiums', function (Blueprint $table) {
             $table->id()->comment('球場ID');
+            $table->foreignId('team_id')->comment('チームID');
             $table->string('stadium_name', 50)->comment('球場名');
             $table->string('address', 100)->comment('住所');
             $table->integer('weekday_cost')->nullable()->comment('平日使用料金/h');
@@ -20,6 +21,7 @@ return new class extends Migration
             $table->integer('sunday_cost')->nullable()->comment('日曜日使用料金/h');
             $table->boolean('free_parking_flag')->nullable()->comment('無料駐車場フラグ');
             $table->integer('parking_cost')->nullable()->comment('近隣有料駐車場参考料金');
+            $table->string('nearest_station', 100)->nullable()->comment('最寄駅');
             $table->integer('from_station')->nullable()->comment('最寄駅からの徒歩時間(m)');
             $table->timestamps();
         });

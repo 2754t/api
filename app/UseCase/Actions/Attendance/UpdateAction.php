@@ -8,7 +8,6 @@ use App\Enums\Answer;
 use App\Enums\Position;
 use App\Models\Activity;
 use App\Models\Attendance;
-use App\Models\StartingMember;
 use App\Services\Exceptions\AlreadyDecidedException;
 use App\Services\StartingMemberService;
 use Illuminate\Support\Collection;
@@ -26,7 +25,7 @@ class UpdateAction
 
     public function __invoke(Activity $activity)
     {
-        if ($activity->is_order) {
+        if ($activity->decide_order_flag) {
             throw new AlreadyDecidedException('既にオーダーが決められています。');
         }
 
@@ -62,10 +61,10 @@ class UpdateAction
 
             // できるポジションが3つ以上ある人のコレクション
             $can_player_priority_attendances = $can_player_attendances->filter(function ($can_player_attendance) {
-                if (!$can_player_attendance->player->positions) {
+                if (!$can_player_attendance->player->position_joined) {
                     return false;
                 }
-                return count(explode(',', $can_player_attendance->player->positions)) >= 4;
+                return count(explode(',', $can_player_attendance->player->position_joined)) >= 4;
             });
 
             // 残りの参加者のコレクション
@@ -96,13 +95,13 @@ class UpdateAction
                     // ループ終了
                     return false;
                 }
-                if (!$can_player_posteriority_attendance->player->positions) {
+                if (!$can_player_posteriority_attendance->player->position_joined) {
                     // 何もしない（continueと同じ）
                     return true;
                 }
                 // カンマ区切りの文字列を配列に変換
                 /** @var array<int> */
-                $player_position_array = explode(',', $can_player_posteriority_attendance->player->positions);
+                $player_position_array = explode(',', $can_player_posteriority_attendance->player->position_joined);
                 // ポジション配列と一致するポジションのみに絞る
                 $player_position_array = array_filter($player_position_array, function (int $player_position) {
                     return in_array(Position::tryFrom($player_position), $this->position_array);
@@ -128,7 +127,7 @@ class UpdateAction
             // });
             // die();
 
-            $activity->is_order = true;
+            $activity->decide_order_flag = true;
             $activity->save();
         });
     }

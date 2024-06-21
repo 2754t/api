@@ -8,48 +8,28 @@ use Illuminate\Auth\Authenticatable as AuthAuthenticatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Carbon;
 
 /**
  * App\Models\Player
  *
- * @property int $id 選手ID
- * @property int $team_id チームID
- * @property string $email メールアドレス
- * @property string $password パスワード
- * @property string|null $access_token アクセストークン
- * @property \Illuminate\Support\Carbon|null $access_token_expired アクセストークン有効期限
- * @property string|null $remember_token リメンバートークン
- * @property Role $role 権限
- * @property string $last_name 姓
- * @property string $first_name 名
- * @property int|null $player_number 背番号
- * @property Position|null $desired_position 希望ポジション
- * @property string|null $positions カンマ区切りの守備位置
- * @property bool $pitcher_flag 投手フラグ
- * @property bool $catcher_flag 捕手フラグ
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @method static \Illuminate\Database\Eloquent\Builder|Player newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Player newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Player query()
- * @method static \Illuminate\Database\Eloquent\Builder|Player whereAccessToken($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Player whereAccessTokenExpired($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Player whereCatcherFlag($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Player whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Player whereDesiredPosition($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Player whereEmail($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Player whereFirstName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Player whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Player whereLastName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Player wherePassword($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Player wherePitcherFlag($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Player wherePlayerNumber($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Player wherePositions($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Player whereRememberToken($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Player whereRole($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Player whereTeamId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Player whereUpdatedAt($value)
- * @mixin \Eloquent
+ * @property int           $id                   選手ID
+ * @property int           $team_id              チームID
+ * @property string        $email                メールアドレス
+ * @property string        $password             パスワード
+ * @property string|null   $access_token         アクセストークン
+ * @property Carbon|null   $access_token_expired アクセストークン有効期限
+ * @property Role          $role                 権限 [0:体験者 1:助っ人 2:メンバー 3:管理者]
+ * @property string        $last_name            姓
+ * @property string        $first_name           名
+ * @property string        $nickname             ニックネーム
+ * @property int|null      $player_number        背番号
+ * @property Position|null $desired_position     希望ポジション
+ * @property string|null   $position_joined      習得ポジション
+ * @property bool          $pitcher_flag         投手フラグ
+ * @property bool          $catcher_flag         捕手フラグ
+ * @property Carbon|null   $created_at
+ * @property Carbon|null   $updated_at
  */
 class Player extends Model implements Authenticatable
 {
@@ -62,11 +42,12 @@ class Player extends Model implements Authenticatable
     protected $casts = [
         'id' => 'integer',
         'team_id' => 'integer',
+        'access_token_expired' => 'datetime',
+        'role' => Role::class,
+        'player_number' => 'integer',
+        'desired_position' => Position::class,
         'pitcher_flag' => 'boolean',
         'catcher_flag' => 'boolean',
-        'role' => Role::class,
-        'access_token_expired' => 'datetime',
-        'desired_position' => Position::class,
     ];
 
     /**
@@ -78,6 +59,5 @@ class Player extends Model implements Authenticatable
         'access_token',
         'access_token_expired',
         'password',
-        'remember_token',
     ];
 }

@@ -4,63 +4,51 @@ namespace App\Models;
 
 use App\Enums\ActivityType;
 use App\Enums\DHType;
-use Illuminate\Auth\Authenticatable as AuthAuthenticatable;
+use App\Enums\RefereeType;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Support\Carbon;
 
 /**
  * App\Models\Activity
  *
- * @property int $id 活動ID
- * @property int $team_id チームID
- * @property \Illuminate\Support\Carbon $activity_datetime 活動日時
- * @property ActivityType $activity_type 活動内容
- * @property int $stadium_id 球場ID
- * @property int $play_time 活動の予定時間/h
- * @property \Illuminate\Support\Carbon|null $next_send_datetime 次回送信日時
- * @property int $confirmed_flag 活動確定フラグ
- * @property DHType|null $dh_type DHタイプ
- * @property int|null $entry_cost 参加費
- * @property int|null $recruitment 募集人数
- * @property int $is_order オーダー決定フラグ
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @method static \Illuminate\Database\Eloquent\Builder|Activity newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Activity newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Activity query()
- * @method static \Illuminate\Database\Eloquent\Builder|Activity whereActivityDate($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Activity whereActivityType($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Activity whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Activity whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Activity whereTeamId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Activity whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Activity whereConfirmedFlag($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Activity whereDhType($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Activity whereEntryCost($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Activity wherePlayTime($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Activity whereStadiumId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Activity whereRecruitment($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Activity whereIsOrder($value)
- * @mixin \Eloquent
+ * @property int              $id                 活動ID
+ * @property int              $team_id            チームID
+ * @property int              $stadium_id         球場ID
+ * @property Carbon           $activity_datetime  活動日時
+ * @property int              $play_time          活動の予定時間(h)
+ * @property string           $meeting_time       集合時間
+ * @property string           $meeting_place      集合場所
+ * @property ActivityType     $activity_type      活動内容
+ * @property bool             $confirmed_flag     活動確定フラグ
+ * @property string|null      $opposing_team      相手チーム
+ * @property RefereeType|null $referee_type       審判の種類
+ * @property DHType|null      $dh_type            DHタイプ
+ * @property int|null         $recruitment        募集人数
+ * @property int|null         $entry_cost         参加費
+ * @property string|null      $belongings         持ち物
+ * @property bool             $decide_order_flag  オーダー決定フラグ
+ * @property Carbon|null      $next_send_datetime 次回送信日時
+ * @property Carbon|null      $created_at
+ * @property Carbon|null      $updated_at
  */
-class Activity extends Model implements Authenticatable
+class Activity extends Model
 {
-    use AuthAuthenticatable;
-
     /**
      * @var array
      */
     protected $casts = [
         'id' => 'integer',
         'team_id' => 'integer',
-        'activity_datetime' => 'datetime',
-        'activity_type' => ActivityType::class,
         'stadium_id' => 'integer',
+        'activity_datetime' => 'datetime',
         'play_time' => 'integer',
-        'next_send_datetime' => 'datetime',
+        'activity_type' => ActivityType::class,
         'confirmed_flag' => 'boolean',
+        'referee_type' => RefereeType::class,
         'dh_type' => DHType::class,
-        'entry_cost' => 'integer',
         'recruitment' => 'integer',
+        'entry_cost' => 'integer',
+        'decide_order_flag' => 'boolean',
+        'next_send_datetime' => 'datetime',
     ];
 }

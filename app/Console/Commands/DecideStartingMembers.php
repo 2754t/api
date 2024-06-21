@@ -32,7 +32,7 @@ class DecideStartingMembers extends Command
     {
         $activities = Activity::query()
             // ->where('activity_datetime', today()->addDays(2))
-            ->where('activity_type', ActivityType::GAME)
+            // ->where('activity_type', ActivityType::GAME)
             // ->where('confirmed_flag', true)
             ->get();
 

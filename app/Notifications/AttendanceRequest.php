@@ -2,10 +2,8 @@
 
 namespace App\Notifications;
 
-use App\Enums\ActivityType;
 use App\Models\Activity;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 

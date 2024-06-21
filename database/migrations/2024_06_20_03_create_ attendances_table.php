@@ -11,14 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('starting_members', function (Blueprint $table) {
-            $table->id()->comment('オーダーID');
+        Schema::create('attendances', function (Blueprint $table) {
+            $table->id()->comment('出欠ID');
             $table->foreignId('team_id')->comment('チームID');
             $table->foreignId('player_id')->comment('選手ID');
             $table->foreignId('activity_id')->comment('活動ID');
-            $table->boolean('starting_lineup')->default(false)->comment('スタメン');
-            $table->tinyInteger('position')->nullable()->comment('守備位置');
-            $table->tinyInteger('batting_order')->nullable()->comment('打順');
+            $table->tinyInteger('answer')->default(0)->comment('出欠回答 [0:無回答 1:出席 2:欠席]');
+            $table->boolean('dh_flag')->default(false)->comment('DHフラグ');
+            $table->tinyText('note')->nullable()->comment('備考');
             $table->timestamps();
         });
     }
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('starting_members');
+        Schema::dropIfExists('attendances');
     }
 };

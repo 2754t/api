@@ -2,21 +2,23 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
  * App\Models\Team
  *
- * @method static \Illuminate\Database\Eloquent\Builder|Team newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Team newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Team query()
- * @mixin \Eloquent
+ * @property int         $id        チームID
+ * @property string      $team_name チーム名
+ * @property string      $team_kana チーム名かな
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  */
 class Team extends Model
 {
-    use HasFactory;
-
-    protected $table = 'm_teams';
-    protected $primaryKey = 'team_id';
+    /**
+     * @var array
+     */
+    protected $casts = [
+        'id' => 'integer',
+    ];
 }

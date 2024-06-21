@@ -26,7 +26,7 @@ class PlayerResource extends JsonResource
             'first_name' => $this->first_name,
             'player_number' => $this->player_number,
             'desired_position' => $this->desired_position,
-            'positions' => $this->positions,
+            'position_joined' => $this->position_joined,
             'pitcher_flag' => $this->pitcher_flag,
             'catcher_flag' => $this->catcher_flag,
         ];

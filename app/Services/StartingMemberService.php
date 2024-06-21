@@ -31,9 +31,9 @@ class StartingMemberService
     public function generate(Activity $activity): Collection
     {
 
-        if ($activity->activity_type !== ActivityType::GAME) {
-            throw new DomainException('試合ではありません。');
-        }
+        // if ($activity->activity_type !== ActivityType::GAME) {
+        //     throw new DomainException('試合ではありません。');
+        // }
 
         if (!$activity->dh_type) {
             throw new DomainException('DHタイプが未設定です。');

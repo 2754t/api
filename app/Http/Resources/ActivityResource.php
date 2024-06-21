@@ -30,7 +30,7 @@ class ActivityResource extends JsonResource
             'dh_type' => $this->dh_type,
             'recruitment' => $this->recruitment,
             'entry_cost' => $this->entry_cost,
-            'is_order' => $this->is_order,
+            'decide_order_flag' => $this->decide_order_flag,
         ];
     }
 }

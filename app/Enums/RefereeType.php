@@ -7,20 +7,20 @@ namespace App\Enums;
 use App\Enums\Shared\HasLabel;
 
 /**
- * YesNo
+ * 審判の種類
  */
-enum YesNo: int
+enum RefereeType: int
 {
     use HasLabel;
 
-    case NO = 0;
-    case YES = 1;  
+    case DISPATCH = 1;
+    case OURSELVES = 2;
 
     public function label(): string
     {
         return match ($this) {
-            self::NO => 'No',
-            self::YES => 'Yes',
+            self::DISPATCH => '派遣審判',
+            self::OURSELVES => '攻撃チームの選手',
         };
     }
 }
