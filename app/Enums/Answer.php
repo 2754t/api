@@ -7,7 +7,7 @@ namespace App\Enums;
 use App\Enums\Shared\HasLabel;
 
 /**
- * 出欠
+ * 出欠回答
  */
 enum Answer: int
 {

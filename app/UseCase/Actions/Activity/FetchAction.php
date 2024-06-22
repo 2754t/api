@@ -12,7 +12,9 @@ class FetchAction
     public function __invoke(int $year, int $month): Collection
     {
         // TODO team_idの判定方法考える
-        return Activity::where('team_id', 1)
+        return Activity::query()
+            ->with('stadium')
+            ->where('team_id', 1)
             ->whereYear('activity_datetime', $year)
             ->whereMonth('activity_datetime', $month)
             ->get();

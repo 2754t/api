@@ -6,6 +6,7 @@ use App\Enums\ActivityType;
 use App\Enums\DHType;
 use App\Enums\RefereeType;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Carbon;
 
 /**
@@ -51,4 +52,29 @@ class Activity extends Model
         'decide_order_flag' => 'boolean',
         'next_send_datetime' => 'datetime',
     ];
+
+    /*
+    |-------------------
+    | スコープ
+    |-------------------
+    |
+    */
+
+    /*
+    |-------------------
+    | リレーション
+    |-------------------
+    |
+    */
+    public function stadium(): HasOne
+    {
+        return $this->hasOne(Stadium::class, 'id', 'stadium_id');
+    }
+
+    /*
+    |-------------------
+    | アクセサ
+    |-------------------
+    |
+    */
 }
