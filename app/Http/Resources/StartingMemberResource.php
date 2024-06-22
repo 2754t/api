@@ -21,8 +21,8 @@ class StartingMemberResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'team_id' => new TeamResource($this->whenLoaded('team')),
-            'attendance_id' => new AttendanceResource($this->whenLoaded('attendance')),
+            'team' => new TeamResource($this->whenLoaded('team')),
+            'attendance' => new AttendanceResource($this->whenLoaded('attendance')),
             'starting_flag' => $this->starting_flag,
             'batting_order' => $this->batting_order,
             'position' => $this->position,

@@ -20,7 +20,7 @@ class PlayerResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'team_id' => new TeamResource($this->whenLoaded('team')),
+            'team' => new TeamResource($this->whenLoaded('team')),
             'email' => $this->email,
             'password' => $this->password,
             'access_token' => $this->access_token,

@@ -22,10 +22,9 @@ class AttendanceResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'team_id' => new TeamResource($this->whenLoaded('team')),
+            'team' => new TeamResource($this->whenLoaded('team')),
+            'activity' => new ActivityResource($this->whenLoaded('activity')),
             'player' => new PlayerResource($this->whenLoaded('player')),
-            'starting_member' => new StartingMemberResource($this->whenLoaded('starting_member')),
-            'activity_id' => new ActivityResource($this->whenLoaded('activity')),
             'answer' => $this->answer,
             'dh_flag' => $this->dh_flag,
             'note' => $this->note,

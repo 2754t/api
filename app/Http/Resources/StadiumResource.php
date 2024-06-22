@@ -20,7 +20,7 @@ class StadiumResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'team_id' => new TeamResource($this->whenLoaded('team')),
+            'team' => new TeamResource($this->whenLoaded('team')),
             'stadium_name' => $this->stadium_name,
             'address' => $this->address,
             'weekday_cost' => $this->weekday_cost,

@@ -12,8 +12,8 @@ use Illuminate\Support\Carbon;
  *
  * @property int         $id          出欠ID
  * @property int         $team_id     チームID
- * @property int         $player_id   選手ID
  * @property int         $activity_id 活動ID
+ * @property int         $player_id   選手ID
  * @property int         $answer      出欠回答
  * @property bool        $dh_flag     DHフラグ
  * @property string|null $note        備考
@@ -28,8 +28,8 @@ class Attendance extends Model
     protected $casts = [
         'id' => 'integer',
         'team_id' => 'integer',
-        'player_id' => 'integer',
         'activity_id' => 'integer',
+        'player_id' => 'integer',
         'answer' => 'integer',
         'dh_flag' => 'boolean',
     ];

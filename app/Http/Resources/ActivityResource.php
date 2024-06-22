@@ -20,8 +20,8 @@ class ActivityResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'team_id' => new TeamResource($this->whenLoaded('team')),
-            'stadium_id' => new StadiumResource($this->whenLoaded('stadium')),
+            'team' => new TeamResource($this->whenLoaded('team')),
+            'stadium' => new StadiumResource($this->whenLoaded('stadium')),
             'activity_datetime' => $this->activity_datetime,
             'play_time' => $this->play_time,
             'meeting_time' => $this->meeting_time,
