@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Resources;
 
+use App\Models\Attendance;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -20,12 +21,12 @@ class StartingMemberResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'team_id' => $this->team_id,
-            'player_id' => new PlayerResource($this->whenLoaded('player')),
-            'activity_id' => $this->activity_id,
-            'starting_lineup' => $this->starting_lineup,
-            'position' => $this->position,
+            'team_id' => new TeamResource($this->whenLoaded('team')),
+            'attendance_id' => new AttendanceResource($this->whenLoaded('attendance')),
+            'starting_flag' => $this->starting_flag,
             'batting_order' => $this->batting_order,
+            'position' => $this->position,
+            'second_position' => $this->second_position,
         ];
     }
 }

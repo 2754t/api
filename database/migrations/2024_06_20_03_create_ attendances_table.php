@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('attendances', function (Blueprint $table) {
             $table->id()->comment('出欠ID');
             $table->foreignId('team_id')->comment('チームID');
-            $table->foreignId('player_id')->comment('選手ID');
             $table->foreignId('activity_id')->comment('活動ID');
+            $table->foreignId('player_id')->comment('選手ID');
             $table->tinyInteger('answer')->default(0)->comment('出欠回答 [0:無回答 1:出席 2:欠席]');
             $table->boolean('dh_flag')->default(false)->comment('DHフラグ');
             $table->tinyText('note')->nullable()->comment('備考');

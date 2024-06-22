@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('attendance_id')->comment('出欠ID');
             $table->boolean('starting_flag')->default(false)->comment('スタメンフラグ');
             $table->tinyInteger('batting_order')->nullable()->comment('打順');
-            $table->tinyInteger('position')->nullable()->comment('守備位置');
+            $table->tinyInteger('position')->nullable()->comment('スタートポジション');
             $table->tinyInteger('second_position')->nullable()->comment('第二ポジション');
             $table->timestamps();
         });

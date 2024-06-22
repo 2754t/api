@@ -22,7 +22,7 @@ return new class extends Migration
             $table->tinyInteger('activity_type')->comment('活動内容 [0:練習 1:試合 2:紅白戦]');
             $table->boolean('confirmed_flag')->default(false)->comment('活動確定フラグ');
             $table->string('opposing_team', 100)->nullable()->comment('相手チーム');
-            $table->tinyInteger('referee_type')->nullable()->comment('審判の種類');
+            $table->tinyInteger('referee_type')->nullable()->comment('審判の種類 [1:派遣 2:攻撃チームの選手]');
             $table->tinyInteger('dh_type')->nullable()->comment('DHタイプ [0:0人 1:1人 2:2人以上]');
             $table->integer('recruitment')->nullable()->comment('募集人数');
             $table->integer('entry_cost')->nullable()->comment('参加費');

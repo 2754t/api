@@ -20,10 +20,15 @@ class PlayerResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'team_id' => $this->team_id,
+            'team_id' => new TeamResource($this->whenLoaded('team')),
+            'email' => $this->email,
+            'password' => $this->password,
+            'access_token' => $this->access_token,
+            'access_token_expired' => $this->access_token_expired,
             'role' => $this->role,
             'last_name' => $this->last_name,
             'first_name' => $this->first_name,
+            'nickname' => $this->nickname,
             'player_number' => $this->player_number,
             'desired_position' => $this->desired_position,
             'position_joined' => $this->position_joined,

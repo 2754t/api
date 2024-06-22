@@ -2,8 +2,10 @@
 
 namespace Database\Seeders;
 
+use App\Enums\Answer;
 use App\Models\Attendance;
 use App\Models\Player;
+use App\Models\Team;
 use Illuminate\Database\Seeder;
 
 class AttendanceSeeder extends Seeder
@@ -15,13 +17,18 @@ class AttendanceSeeder extends Seeder
     {
         Attendance::query()->delete();
 
-        foreach (Player::pluck('id') as $index => $player_id) {
+        $team_id = Team::where('team_name', 'Navies')->first()->id;
+
+        $player_ids = Player::query()
+            ->whereIn('last_name', ['舩越', '西久保', '山岸', '矢口'])
+            ->pluck('id');
+
+        foreach ($player_ids as $player_id) {
             $attendance = new Attendance();
-            $attendance->team_id = 1;
+            $attendance->team_id = $team_id;
             $attendance->player_id = $player_id;
-            $attendance->activity_id = 5;
-            // $attendance->answer = ($index <= 10) ? 1 : random_int(0, 1) * 2;
-            $attendance->answer = 1;
+            $attendance->activity_id = 1;
+            $attendance->answer = Answer::YES;
             $attendance->dh_flag = false;
             $attendance->save();
         };

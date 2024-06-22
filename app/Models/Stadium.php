@@ -24,6 +24,8 @@ use Illuminate\Support\Carbon;
  */
 class Stadium extends Model
 {
+    protected $table = 'stadiums';
+
     /**
      * @var array
      */
