@@ -20,20 +20,39 @@ class ActivitySeeder extends Seeder
 
         $team_id = Team::where('team_name', 'Navies')->first()->id;
 
+        $activity0 = new Activity();
+        $activity0->team_id = $team_id;
+        $activity0->stadium_id = 1;
+        $activity0->activity_datetime = '2024-06-15 15:00:00';
+        $activity0->play_time = 2;
+        $activity0->meeting_time = '開始15分前まで';
+        $activity0->meeting_place = '三塁側入り口前';
+        $activity0->activity_type = ActivityType::INTRASQUADGAME;
+        $activity0->confirmed_flag = true;
+        $activity0->opposing_team = '紅白戦';
+        $activity0->referee_type = RefereeType::DISPATCH;
+        $activity0->dh_type = DHType::ONE;
+        $activity0->recruitment = 9;
+        $activity0->entry_cost = 600;
+        $activity0->belongings = 'ユニフォーム（ジャージ可）、グローブ、スパイク（金具可）、参加費';
+        $activity0->decide_order_flag = true;
+        $activity0->next_send_datetime = null;
+        $activity0->save();
+
         $activity1 = new Activity();
         $activity1->team_id = $team_id;
-        $activity1->stadium_id = 3;
-        $activity1->activity_datetime = '2024-07-13 15:00:00';
+        $activity1->stadium_id = 1;
+        $activity1->activity_datetime = '2024-07-13 12:00:00';
         $activity1->play_time = 2;
         $activity1->meeting_time = '開始15分前まで';
-        $activity1->meeting_place = '一塁側';
+        $activity1->meeting_place = '三塁側入り口前';
         $activity1->activity_type = ActivityType::GAME;
-        $activity1->confirmed_flag = false;
-        $activity1->opposing_team = null;
-        $activity1->referee_type = RefereeType::DISPATCH;
+        $activity1->confirmed_flag = true;
+        $activity1->opposing_team = '神田クラブ';
+        $activity1->referee_type = RefereeType::OURSELVES;
         $activity1->dh_type = DHType::ONE;
         $activity1->recruitment = 10;
-        $activity1->entry_cost = 600;
+        $activity1->entry_cost = 400;
         $activity1->belongings = 'ユニフォーム（ジャージ可）、グローブ、スパイク（金具可）、参加費';
         $activity1->decide_order_flag = false;
         $activity1->next_send_datetime = null;
@@ -117,11 +136,11 @@ class ActivitySeeder extends Seeder
 
         $activity6 = new Activity();
         $activity6->team_id = $team_id;
-        $activity6->stadium_id = 3;
-        $activity6->activity_datetime = '2024-08-18 15:00:00';
+        $activity6->stadium_id = 1;
+        $activity6->activity_datetime = '2024-08-17 15:00:00';
         $activity6->play_time = 2;
         $activity6->meeting_time = '開始15分前まで';
-        $activity6->meeting_place = '一塁側';
+        $activity6->meeting_place = '一塁側入り口前';
         $activity6->activity_type = ActivityType::GAME;
         $activity6->confirmed_flag = false;
         $activity6->opposing_team = null;
@@ -171,5 +190,43 @@ class ActivitySeeder extends Seeder
         $activity8->decide_order_flag = false;
         $activity8->next_send_datetime = null;
         $activity8->save();
+
+        $activity9 = new Activity();
+        $activity9->team_id = $team_id;
+        $activity9->stadium_id = 3;
+        $activity9->activity_datetime = '2024-09-14 15:00:00';
+        $activity9->play_time = 2;
+        $activity9->meeting_time = '開始15分前まで';
+        $activity9->meeting_place = '一塁側';
+        $activity9->activity_type = ActivityType::GAME;
+        $activity9->confirmed_flag = false;
+        $activity9->opposing_team = null;
+        $activity9->referee_type = RefereeType::DISPATCH;
+        $activity9->dh_type = DHType::ONE;
+        $activity9->recruitment = 10;
+        $activity9->entry_cost = 600;
+        $activity9->belongings = 'ユニフォーム（ジャージ可）、グローブ、スパイク（金具可）、参加費';
+        $activity9->decide_order_flag = false;
+        $activity9->next_send_datetime = null;
+        $activity9->save();
+
+        $activity10 = new Activity();
+        $activity10->team_id = $team_id;
+        $activity10->stadium_id = 2;
+        $activity10->activity_datetime = '2024-09-21 15:00:00';
+        $activity10->play_time = 2;
+        $activity10->meeting_time = '開始15分前まで';
+        $activity10->meeting_place = '一塁側スタンド';
+        $activity10->activity_type = ActivityType::GAME;
+        $activity10->confirmed_flag = false;
+        $activity10->opposing_team = null;
+        $activity10->referee_type = RefereeType::DISPATCH;
+        $activity10->dh_type = DHType::ONE;
+        $activity10->recruitment = 10;
+        $activity10->entry_cost = 700;
+        $activity10->belongings = 'ユニフォーム（ジャージ可）、グローブ、スパイク（金具可）、参加費';
+        $activity10->decide_order_flag = false;
+        $activity10->next_send_datetime = null;
+        $activity10->save();
     }
 }

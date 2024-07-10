@@ -36,6 +36,7 @@ class ActivityResource extends JsonResource
             'belongings' => $this->belongings,
             'decide_order_flag' => $this->decide_order_flag,
             'next_send_datetime' => $this->next_send_datetime,
+            'links' => LinkResource::collection(($this->whenLoaded('links'))), // リレーション
         ];
     }
 }

@@ -6,6 +6,7 @@ use App\Enums\ActivityType;
 use App\Enums\DHType;
 use App\Enums\RefereeType;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Carbon;
 
@@ -71,6 +72,10 @@ class Activity extends Model
         return $this->hasOne(Stadium::class, 'id', 'stadium_id');
     }
 
+    public function links(): HasMany
+    {
+        return $this->hasMany(Link::class, 'activity_id', 'id');
+    }
     /*
     |-------------------
     | アクセサ

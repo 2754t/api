@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
             StadiumSeeder::class,
             ActivitySeeder::class,
             PlayerSeeder::class,
+            LinkSeeder::class,
             AttendanceSeeder::class,
         ]);
     }
