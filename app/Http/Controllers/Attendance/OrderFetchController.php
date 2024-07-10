@@ -10,7 +10,7 @@ use App\Models\Attendance;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Auth;
 
-class FetchController extends Controller
+class OrderFetchController extends Controller
 {
     public function __invoke(): AnonymousResourceCollection
     {
