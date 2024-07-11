@@ -27,6 +27,7 @@ return new class extends Migration
             $table->string('position_joined', 20)->nullable()->comment('習得ポジション');
             $table->boolean('pitcher_flag')->default(false)->comment('投手フラグ');
             $table->boolean('catcher_flag')->default(false)->comment('捕手フラグ');
+            $table->boolean('bottom_batting_order_flag')->default(false)->comment('先発時打順下位フラグ');
             $table->timestamps();
         });
     }

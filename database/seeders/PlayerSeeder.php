@@ -32,6 +32,7 @@ class PlayerSeeder extends Seeder
         $player->position_joined = '2,3,4,5,6,7,8,9';
         $player->pitcher_flag = false;
         $player->catcher_flag = true;
+        $player->bottom_batting_order_flag = false;
         $player->save();
 
         $player = new Player();
@@ -46,6 +47,7 @@ class PlayerSeeder extends Seeder
         $player->position_joined = '1,3,4,5,6,7,8,9';
         $player->pitcher_flag = true;
         $player->catcher_flag = false;
+        $player->bottom_batting_order_flag = false;
         $player->save();
 
         $player = new Player();
@@ -59,6 +61,7 @@ class PlayerSeeder extends Seeder
         $player->position_joined = "2";
         $player->pitcher_flag = false;
         $player->catcher_flag = true;
+        $player->bottom_batting_order_flag = false;
         $player->save();
 
         $player = new Player();
@@ -72,6 +75,7 @@ class PlayerSeeder extends Seeder
         $player->position_joined = "3,4,5,6,7,8,9";
         $player->pitcher_flag = false;
         $player->catcher_flag = false;
+        $player->bottom_batting_order_flag = false;
         $player->save();
 
         $player = new Player();
@@ -85,6 +89,7 @@ class PlayerSeeder extends Seeder
         $player->position_joined = '1,3,7,9';
         $player->pitcher_flag = true;
         $player->catcher_flag = false;
+        $player->bottom_batting_order_flag = false;
         $player->save();
 
         $player = new Player();
@@ -98,6 +103,7 @@ class PlayerSeeder extends Seeder
         $player->position_joined = '7,8,9';
         $player->pitcher_flag = false;
         $player->catcher_flag = false;
+        $player->bottom_batting_order_flag = false;
         $player->save();
 
         $player = new Player();
@@ -111,6 +117,7 @@ class PlayerSeeder extends Seeder
         $player->position_joined = '3,4,6';
         $player->pitcher_flag = false;
         $player->catcher_flag = false;
+        $player->bottom_batting_order_flag = false;
         $player->save();
 
         $player = new Player();
@@ -125,6 +132,7 @@ class PlayerSeeder extends Seeder
         $player->position_joined = '6,8';
         $player->pitcher_flag = false;
         $player->catcher_flag = false;
+        $player->bottom_batting_order_flag = false;
         $player->save();
 
         $player = new Player();
@@ -138,6 +146,7 @@ class PlayerSeeder extends Seeder
         $player->position_joined = "1,3,5,6,7,8,9";
         $player->pitcher_flag = true;
         $player->catcher_flag = false;
+        $player->bottom_batting_order_flag = false;
         $player->save();
 
         $player = new Player();
@@ -151,6 +160,7 @@ class PlayerSeeder extends Seeder
         $player->position_joined = "2,3,4,5,6,7,8,9";
         $player->pitcher_flag = false;
         $player->catcher_flag = false;
+        $player->bottom_batting_order_flag = true;
         $player->save();
 
         $player = new Player();
@@ -164,6 +174,7 @@ class PlayerSeeder extends Seeder
         $player->position_joined = "3,4,5,6,7,8,9";
         $player->pitcher_flag = false;
         $player->catcher_flag = false;
+        $player->bottom_batting_order_flag = false;
         $player->save();
 
         $player = new Player();
@@ -177,6 +188,7 @@ class PlayerSeeder extends Seeder
         $player->position_joined = "2,7,8,9";
         $player->pitcher_flag = false;
         $player->catcher_flag = false;
+        $player->bottom_batting_order_flag = false;
         $player->save();
 
         $player = new Player();
@@ -190,6 +202,7 @@ class PlayerSeeder extends Seeder
         $player->position_joined = "1,3,4,5,6,7,8,9";
         $player->pitcher_flag = false;
         $player->catcher_flag = false;
+        $player->bottom_batting_order_flag = false;
         $player->save();
 
         $player = new Player();
@@ -203,6 +216,7 @@ class PlayerSeeder extends Seeder
         $player->position_joined = "1,2,3,4,5,6,7,8,9";
         $player->pitcher_flag = true;
         $player->catcher_flag = false;
+        $player->bottom_batting_order_flag = false;
         $player->save();
 
         $player = new Player();
@@ -216,6 +230,7 @@ class PlayerSeeder extends Seeder
         $player->position_joined = '2,3,4,5,6,7,8,9';
         $player->pitcher_flag = false;
         $player->catcher_flag = false;
+        $player->bottom_batting_order_flag = false;
         $player->save();
 
         $player = new Player();
@@ -229,6 +244,7 @@ class PlayerSeeder extends Seeder
         $player->position_joined = '1,3,4,5,6';
         $player->pitcher_flag = true;
         $player->catcher_flag = false;
+        $player->bottom_batting_order_flag = false;
         $player->save();
 
         $player = new Player();
@@ -242,6 +258,7 @@ class PlayerSeeder extends Seeder
         $player->position_joined = null;
         $player->pitcher_flag = false;
         $player->catcher_flag = false;
+        $player->bottom_batting_order_flag = false;
         $player->save();
 
         $player = new Player();
@@ -255,6 +272,7 @@ class PlayerSeeder extends Seeder
         $player->position_joined = null;
         $player->pitcher_flag = false;
         $player->catcher_flag = false;
+        $player->bottom_batting_order_flag = false;
         $player->save();
 
         $player = new Player();
@@ -268,6 +286,7 @@ class PlayerSeeder extends Seeder
         $player->position_joined = null;
         $player->pitcher_flag = false;
         $player->catcher_flag = false;
+        $player->bottom_batting_order_flag = false;
         $player->save();
 
         $player = new Player();
@@ -281,6 +300,7 @@ class PlayerSeeder extends Seeder
         $player->position_joined = null;
         $player->pitcher_flag = false;
         $player->catcher_flag = false;
+        $player->bottom_batting_order_flag = false;
         $player->save();
 
         $player = new Player();
@@ -294,6 +314,7 @@ class PlayerSeeder extends Seeder
         $player->position_joined = '1,3,4,5,6,7,8,9';
         $player->pitcher_flag = false;
         $player->catcher_flag = false;
+        $player->bottom_batting_order_flag = false;
         $player->save();
 
         $player = new Player();
@@ -307,6 +328,7 @@ class PlayerSeeder extends Seeder
         $player->position_joined = '9';
         $player->pitcher_flag = false;
         $player->catcher_flag = false;
+        $player->bottom_batting_order_flag = false;
         $player->save();
 
         $player = new Player();
@@ -320,6 +342,7 @@ class PlayerSeeder extends Seeder
         $player->position_joined = null;
         $player->pitcher_flag = false;
         $player->catcher_flag = false;
+        $player->bottom_batting_order_flag = false;
         $player->save();
 
         $player = new Player();
@@ -333,6 +356,7 @@ class PlayerSeeder extends Seeder
         $player->position_joined = null;
         $player->pitcher_flag = false;
         $player->catcher_flag = false;
+        $player->bottom_batting_order_flag = false;
         $player->save();
 
         $player = new Player();
@@ -346,6 +370,7 @@ class PlayerSeeder extends Seeder
         $player->position_joined = null;
         $player->pitcher_flag = false;
         $player->catcher_flag = false;
+        $player->bottom_batting_order_flag = false;
         $player->save();
 
         $player = new Player();
@@ -359,6 +384,7 @@ class PlayerSeeder extends Seeder
         $player->position_joined = null;
         $player->pitcher_flag = false;
         $player->catcher_flag = false;
+        $player->bottom_batting_order_flag = false;
         $player->save();
 
         // for ($i = 1; $i <= 10; $i++) {
@@ -371,6 +397,7 @@ class PlayerSeeder extends Seeder
         //     $player->position_joined = null;
         //     $player->pitcher_flag = random_int(0, 1);
         //     $player->catcher_flag = random_int(0, 1);
+        $player->bottom_batting_order_flag = false;
         //     $player->save();
         // }
     }

@@ -34,6 +34,7 @@ class PlayerResource extends JsonResource
             'position_joined' => $this->position_joined,
             'pitcher_flag' => $this->pitcher_flag,
             'catcher_flag' => $this->catcher_flag,
+            'bottom_batting_order_flag' => $this->bottom_batting_order_flag,
         ];
     }
 }
