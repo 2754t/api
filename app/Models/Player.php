@@ -28,7 +28,7 @@ use Illuminate\Support\Carbon;
  * @property string|null   $position_joined           習得ポジション
  * @property bool          $pitcher_flag              投手フラグ
  * @property bool          $catcher_flag              捕手フラグ
- * @property bool          $bottom_batting_order_flag 投手時打順下位フラグ
+ * @property bool          $batting_order_bottom_flag 投手時打順下位フラグ
  * @property Carbon|null   $created_at
  * @property Carbon|null   $updated_at
  */
@@ -49,7 +49,7 @@ class Player extends Model implements Authenticatable
         'desired_position' => Position::class,
         'pitcher_flag' => 'boolean',
         'catcher_flag' => 'boolean',
-        'bottom_batting_order_flag' => 'boolean',
+        'batting_order_bottom_flag' => 'boolean',
     ];
 
     /**
