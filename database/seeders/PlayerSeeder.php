@@ -125,7 +125,7 @@ class PlayerSeeder extends Seeder
         $player->email = Str::random(10) . '@example.com';
         $player->password = Hash::make('password');
         $player->role = Role::MEMBER;
-        $player->last_name = '山岸';
+        $player->last_name = '山岸謙介';
         $player->first_name = '謙介';
         $player->nickname = '山岸けん';
         $player->desired_position = null;
@@ -322,7 +322,7 @@ class PlayerSeeder extends Seeder
         $player->email = Str::random(10) . '@example.com';
         $player->password = Hash::make('password');
         $player->role = Role::HELPER;
-        $player->last_name = '永井';
+        $player->last_name = '永井未来';
         $player->first_name = '未来';
         $player->desired_position = null;
         $player->position_joined = '9';
@@ -378,7 +378,7 @@ class PlayerSeeder extends Seeder
         $player->email = Str::random(10) . '@example.com';
         $player->password = Hash::make('password');
         $player->role = Role::EXPERIENCE;
-        $player->last_name = 'しん';
+        $player->last_name = 'タムタム';
         $player->first_name = Str::random(10);
         $player->desired_position = null;
         $player->position_joined = null;

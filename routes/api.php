@@ -7,6 +7,7 @@ use App\Http\Controllers\Attendance\OrderFetchController;
 use App\Http\Controllers\Attendance\UpdateController;
 use App\Http\Controllers\Player\FetchController;
 use App\Http\Controllers\SignIn\SignInController;
+use App\Http\Controllers\StartingMember\FetchController as StartingMemberFetchController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -25,13 +26,13 @@ use Illuminate\Support\Facades\Route;
 Route::post('/signIn', SignInController::class);
 // 活動
 Route::get('/activity', ActivityFetchController::class);
-// オーダー(出欠テーブルより)
-Route::get('/order', OrderFetchController::class);
+// スタメン
+Route::get('/starting-member', StartingMemberFetchController::class);
+// テスト用スタメン決め
+Route::get("starting-member/update", UpdateController::class);
 
 // 選手登録必要
 Route::middleware(['auth:player'])->group(function () {
     // 選手
     Route::get('/player', FetchController::class);
-    // テスト用スタメン決め
-    Route::get("attendance/update", UpdateController::class);
 });

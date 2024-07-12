@@ -10,6 +10,7 @@ use App\Enums\Role;
 use App\Models\Activity;
 use App\Models\Attendance;
 use App\Models\StartingMember;
+use App\Services\Exceptions\AlreadyDecidedException;
 use App\Services\Exceptions\NoCatcherException;
 use App\Services\Exceptions\NoPitcherException;
 use App\Services\Exceptions\NotEnoughMembersBecauseManyDHsException;
@@ -25,6 +26,8 @@ class StartingMemberService
     private $attendances;
     /** @var int|null 出席者数 */
     private $attendances_count = null;
+    /** @var int|null DH数 */
+    private $dh_count = null;
     /** @var array<Position> DHを除くポジションの配列が初期値 */
     private $position_array = [];
     /** @var array<int> 出席者数までの数字の配列が初期値 */
@@ -36,68 +39,16 @@ class StartingMemberService
     /** @var Collection<Attendance> キャッチャーができる参加者のコレクション */
     private $catcher_attendances;
 
-    public function __construct(Activity $activity)
+    public function generate(Activity $activity): Collection
     {
         $this->setProperties($activity);
-    }
-
-    public function generate(): Collection
-    {
         $this->checkException();
 
-        // ピッチャーを決める。ピッチャーの時打順下位にできるようにする。playerテーブルにカラム追加
-        // キャッチャーを決める。
-        // 体験者のポジション決める。
-        // DHの人を打順先頭にする
-        // 残りの参加者からスタメンを決める
-
-
-        $pitcher = $this->getPitcher();
-        $this->starting_members->push($pitcher);
-
-        $catcher = $this->getCatcher();
-        $this->starting_members->push($catcher);
-
-        $this->attendances = $this->attendances->filter(
-            fn (Attendance $attendance) => !$this->starting_members->pluck('attendance_id')->contains($attendance->id)
-        );
-
-        // $this->attendances = $this->attendances
-        //     ->whereNotIn('id', )
-
-        $experience_attendances = $this->attendances->filter(fn (Attendance $attendance) => $attendance->player->role === Role::EXPERIENCE);
-        // 初回の体験者のみスタメンと希望ポジションが外野なら優遇（画面で制御のみ）
-        $experience_attendances->each(function (Attendance $attendance) {
-            $starting_member = $this->createStartingMember($attendance, $attendance->player->desired_position);
-            $attendance->player->desired_position = null;
-            $attendance->player->save();
-            $this->starting_members->push($starting_member);
-        });
-
-        $this->attendances = $this->attendances
-            ->whereNotIn('id', $experience_attendances->pluck('id'));
-
-        // DHフラグのある出席者にポジションDHをセット（DHフラグを持てるかは出欠登録時にチェック）
-        $dh_attendances = $this->attendances
-            ->where('dh_flag', true)
-            ->sortByDesc(fn (Attendance $attendance) => $attendance->dh_flag)
-            ->each(function (Attendance $attendance): void {
-                $starting_member = $this->createStartingMember($attendance, Position::DH);
-                $this->starting_members->push($starting_member);
-            });
-
-        $this->attendances
-            ->whereNotIn('id', $dh_attendances->pluck('id'))
-            ->shuffle()
-            ->each(function (Attendance $attendance): void {
-                if ($attendance->player->pitcher_flag && ($this->starting_members->where('position', Position::DH)->count() + 9) < $this->attendances_count) {
-                    $starting_member = $this->createStartingMember($attendance, Position::DH);
-                    $this->starting_members->push($starting_member);
-                } else {
-                    $starting_member = $this->createStartingMember($attendance);
-                }
-            });
-
+        $this->decideDH();
+        $this->decidePitcher();
+        $this->decideCatcher();
+        $this->decideExperience();
+        $this->decideStartingMember(); // 残りの参加者からスタメンを決める
 
         return $this->starting_members;
     }
@@ -118,23 +69,32 @@ class StartingMemberService
 
         if ($this->attendances_count === 9 || $this->activity->dh_type === DHType::ZERO) {
             $this->batting_order_array = range(1, 9);
+            $this->dh_count = 0;
         } elseif ($this->activity->dh_type === DHType::ONE) {
-            $this->batting_order_array = range(2, 10);
+            $this->batting_order_array = range(1, 10);
+            $this->dh_count = 1;
         } else {
-            $this->batting_order_array = range(($this->attendances_count - 9), $this->attendances_count);
+            $this->batting_order_array = range(1, $this->attendances_count);
+            $this->dh_count = $this->attendances_count - 9;
         }
 
         $this->starting_members = collect([]);
 
         $this->pitcher_attendances = $this->attendances
+            ->where('dh_flag', false)
             ->filter(fn (Attendance $attendance) => $attendance->player->pitcher_flag);
 
         $this->catcher_attendances = $this->attendances
+            ->where('dh_flag', false)
             ->filter(fn (Attendance $attendance) => $attendance->player->catcher_flag);
     }
 
     private function checkException(): void
     {
+        if ($this->activity->decide_order_flag) {
+            throw new AlreadyDecidedException('既にオーダーが決められています。');
+        }
+
         if ($this->activity->activity_type === ActivityType::PRACTICE) {
             throw new DomainException('試合ではありません。');
         }
@@ -160,80 +120,120 @@ class StartingMemberService
         }
     }
 
-    private function getPitcher(): StartingMember
+    private function decideDH(): void
     {
+        // DHフラグのある出席者にポジションDHをセット（DHフラグを持てるかは出欠登録時にチェック）
+        $dh_attendances = $this->attendances
+            ->where('dh_flag', true);
 
+        if ($dh_attendances->count() < $this->dh_count) {
+            $dh_attendances->push(
+                $this->attendances
+                    ->whereNotIn('id', $dh_attendances->pluck('id'))
+                    ->shuffle()
+                    ->take($this->dh_count - $dh_attendances->count())
+            );
+        }
 
-
-        // TODO ランダムではなく成績順にする
-        /** @var Attendance この試合のピッチャー */
-        $pitcher_attendance = $this->pitcher_attendances->random();
-
-        return $this->createStartingMember($pitcher_attendance, Position::PITCHER);
+        $dh_attendances
+            ->shuffle()
+            ->each(function (Attendance $attendance): void {
+                $this->createStartingMember($attendance, Position::DH);
+            });
     }
 
-    /**
-     * @param Collection<Attendance> $this->attendances
-     * @return StartingMember
-     */
-    private function getCatcher(): StartingMember
+    private function decidePitcher(): void
     {
-        // 残りの出席者のうちキャッチャーのできる人たち
-        $catcher_attendances = $this->attendances->filter(
-            fn (Attendance $attendance) => $attendance->player->catcher_flag && $attendance->id !== $this->starting_members->first()->attendance_id
-        );
+        // TODO 成績順にする
+        /** @var Attendance */
+        $pitcher_attendance = $this->pitcher_attendances
+            ->where('player_id', 10)
+            ->firstOrFail();
 
 
-
-        /** @var Attendance この試合のキャッチャー */
-        $catcher_attendance = $catcher_attendances->random();
-
-        return $this->createStartingMember($catcher_attendance, Position::CATCHER);
+        $this->createStartingMember($pitcher_attendance, Position::PITCHER);
     }
 
-    private function createStartingMember(Attendance $attendance, ?Position $position = null): StartingMember
+    private function decideCatcher(): void
+    {
+        /** @var Attendance */
+        $catcher_attendance = $this->catcher_attendances
+            ->whereNotIn('id', $this->starting_members->pluck('attendance_id'))
+            ->shuffle()
+            ->firstOrFail();
+
+        $this->createStartingMember($catcher_attendance, Position::CATCHER);
+    }
+
+    private function decideExperience(): void
+    {
+        $experience_attendances = $this->attendances
+            ->filter(fn (Attendance $attendance) => $attendance->player->role === Role::EXPERIENCE);
+        // 体験者のみスタメン かつ 初回のみ希望ポジションが外野なら優遇（画面でのみ制御）
+        $experience_attendances->each(function (Attendance $attendance) {
+            $this->createStartingMember($attendance, $attendance->player->desired_position);
+            $attendance->player->desired_position = null;
+            $attendance->player->save();
+        });
+    }
+
+    private function decideStartingMember(): void
+    {
+        $this->attendances
+            ->shuffle()
+            ->each(function (Attendance $attendance): void {
+                $this->createStartingMember($attendance);
+            });
+    }
+
+    private function createStartingMember(Attendance $attendance, ?Position $position = null): void
     {
         $starting_member = new StartingMember();
         $starting_member->team_id = $attendance->team_id;
-        $starting_member->player_id = $attendance->player_id;
-        $starting_member->activity_id = $attendance->activity_id;
         $starting_member->attendance_id = $attendance->id;
         $starting_member->position = $position ? $position : $this->randPosition();
-        $starting_member->starting_lineup = $starting_member->position !== null;
-        if ($starting_member->starting_lineup && $this->batting_order_array) {
-            $starting_member->batting_order = $this->batting_order_array[array_rand($this->batting_order_array)];
-        }
-
         if ($starting_member->position) {
             $this->position_array = array_filter($this->position_array, fn (Position $position) => $position !== $starting_member->position);
         }
-
+        $starting_member->starting_flag = $starting_member->position !== null;
+        $starting_member->batting_order = $position ? $this->decideBattingOrder($attendance, $starting_member->position) : null;
         if ($starting_member->batting_order) {
             $this->batting_order_array = array_diff($this->batting_order_array, [$starting_member->batting_order]);
         }
-
         $starting_member->save();
-        return $starting_member;
+
+        $this->starting_members->push($starting_member);
+        // 出席者コレクションを更新
+        $this->attendances = $this->attendances
+            ->whereNotIn('id', $starting_member->attendance_id);
     }
 
     private function randPosition(): ?Position
     {
-        if ($this->activity->dh_type === DHType::ZERO && $this->position_array === []) {
+        if ($this->position_array === []) {
             return null;
         }
 
-        if ($this->activity->dh_type === DHType::ONE && $this->position_array === []) {
-            if ($this->starting_members->where('position', Position::DH)->count() > 0) {
-                return null;
-            } else {
-                return Position::DH;
-            }
-        }
-
-        if ($this->activity->dh_type === DHType::UNLIMITED && $this->position_array === []) {
-            return Position::DH;
-        }
-
         return $this->position_array[array_rand($this->position_array, 1)];
+    }
+
+    private function decideBattingOrder(Attendance $attendance, Position $position): int|null
+    {
+        if ($position === Position::DH) {
+            // DHの時は打順先頭
+            return $this->batting_order_array[array_key_first($this->batting_order_array)];
+        }
+
+        if ($attendance->player->batting_order_bottom_flag && $position === Position::PITCHER) {
+            // 先発ピッチャーが打順下位フラグを持っていれば打順7番以降
+            $bottom_batting_order_array = array_diff($this->batting_order_array, range(1, 6));
+            return $bottom_batting_order_array[array_rand($bottom_batting_order_array)];
+        }
+
+        if ($this->batting_order_array) {
+            return $this->batting_order_array[array_rand($this->batting_order_array)];
+        }
+
+        return null;
     }
 }
