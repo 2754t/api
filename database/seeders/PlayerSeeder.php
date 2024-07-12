@@ -158,7 +158,7 @@ class PlayerSeeder extends Seeder
         $player->first_name = Str::random(10);
         $player->desired_position = null;
         $player->position_joined = "2,3,4,5,6,7,8,9";
-        $player->pitcher_flag = false;
+        $player->pitcher_flag = true;
         $player->catcher_flag = false;
         $player->batting_order_bottom_flag = true;
         $player->save();
@@ -200,7 +200,7 @@ class PlayerSeeder extends Seeder
         $player->first_name = Str::random(10);
         $player->desired_position = Position::SECOND;
         $player->position_joined = "1,3,4,5,6,7,8,9";
-        $player->pitcher_flag = false;
+        $player->pitcher_flag = true;
         $player->catcher_flag = false;
         $player->batting_order_bottom_flag = false;
         $player->save();
@@ -312,7 +312,7 @@ class PlayerSeeder extends Seeder
         $player->first_name = '慎太郎';
         $player->desired_position = null;
         $player->position_joined = '1,3,4,5,6,7,8,9';
-        $player->pitcher_flag = false;
+        $player->pitcher_flag = true;
         $player->catcher_flag = false;
         $player->batting_order_bottom_flag = false;
         $player->save();

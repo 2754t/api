@@ -32,17 +32,18 @@ class UpdateAction
         DB::transaction(function () use ($activity) {
 
             $this->setProperties($activity);
+
             $this->decideSecondPitcher();
             $this->decideSecondPosition();
 
             // テスト用
-            // $attendances->each(function (Attendance $attendance) {
-            //     if ($attendance->second_position === null) {
+            // $this->starting_members->each(function (StartingMember $starting_member) {
+            //     if ($starting_member->second_position === null) {
             //         $second_position = "";
             //     } else {
-            //         $second_position = $attendance->second_position->label();
+            //         $second_position = $starting_member->second_position->label();
             //     }
-            //     var_dump($attendance->player->last_name . ' ' . $attendance->starting_member->position->label() . ' ' . $second_position);
+            //     var_dump($starting_member->attendance->player->last_name . ' ' . $starting_member->position->label() . ' ' . $second_position);
             // });
             // die();
 
@@ -60,15 +61,18 @@ class UpdateAction
                 $position !== Position::DH;
         });
 
-        $this->starting_members = $this->service->generate($activity);
+        $this->starting_members = StartingMember::query()
+            ->with('attendance.player')
+            ->whereIn('id', $this->service->generate($activity)->pluck('id'))
+            ->get();
 
         $this->can_second_position_players = $this->starting_members
             ->filter(function (StartingMember $starting_member) {
                 return $this->starting_members
                     ->whereNotIn('position', [Position::PITCHER, Position::CATCHER])
                     ->where('dh_flag', false)
-                    ->pluck('player_id')
-                    ->search($starting_member->attendance->player_id);
+                    ->pluck('attendance_id')
+                    ->search($starting_member->attendance_id);
             });
     }
 
@@ -76,7 +80,7 @@ class UpdateAction
     {
         $can_pitchers = $this->can_second_position_players
             ->filter(function (StartingMember $can_second_position_player) {
-                return $can_second_position_player->player->pitcher_flag;
+                return $can_second_position_player->attendance->player->pitcher_flag;
             });
 
         if (!$can_pitchers->isEmpty()) {
@@ -103,13 +107,13 @@ class UpdateAction
                     // ループ終了
                     return false;
                 }
-                if (!$can_second_position_player->player->position_joined) {
+                if (!$can_second_position_player->attendance->player->position_joined) {
                     // 何もしない（continueと同じ）
                     return true;
                 }
                 // カンマ区切りの文字列を配列に変換
                 /** @var array<int> */
-                $player_position_array = explode(',', $can_second_position_player->player->position_joined);
+                $player_position_array = explode(',', $can_second_position_player->attendance->player->position_joined);
                 // ポジション配列と一致するポジションのみに絞る
                 $player_position_array = array_filter($player_position_array, function (int $player_position) {
                     return in_array(Position::tryFrom($player_position), $this->position_array);
@@ -133,10 +137,10 @@ class UpdateAction
     {
         $can_second_position_players = $this->can_second_position_players
             ->filter(function ($can_second_position_player) {
-                if (!$can_second_position_player->player->position_joined) {
+                if (!$can_second_position_player->attendance->player->position_joined) {
                     return false;
                 }
-                return count(explode(',', $can_second_position_player->player->position_joined)) >= 4;
+                return count(explode(',', $can_second_position_player->attendance->player->position_joined)) >= 4;
             });
 
         // ポジション配列に希望ポジションがあればセット
@@ -144,7 +148,7 @@ class UpdateAction
             ->shuffle()
             ->each(function (StartingMember $can_second_position_player) {
                 /** @var Position|null */
-                $desired_position = $can_second_position_player->player->desired_position;
+                $desired_position = $can_second_position_player->attendance->player->desired_position;
                 if (!$desired_position) {
                     // 何もしない（continueと同じ）
                     return true;

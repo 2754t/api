@@ -127,12 +127,16 @@ class StartingMemberService
             ->where('dh_flag', true);
 
         if ($dh_attendances->count() < $this->dh_count) {
-            $dh_attendances->push(
-                $this->attendances
-                    ->whereNotIn('id', $dh_attendances->pluck('id'))
-                    ->shuffle()
-                    ->take($this->dh_count - $dh_attendances->count())
-            );
+            // TODO キャッチャーがDHになるとこまる
+            $additional_attendances = $this->attendances
+                ->whereNotIn('id', $dh_attendances->pluck('id'))
+                ->filter(function (Attendance $attendance) {
+                    return !$attendance->player->catcher_flag;
+                })
+                ->shuffle()
+                ->take($this->dh_count - $dh_attendances->count());
+
+            $dh_attendances = $dh_attendances->concat($additional_attendances);
         }
 
         $dh_attendances
@@ -191,12 +195,12 @@ class StartingMemberService
         $starting_member = new StartingMember();
         $starting_member->team_id = $attendance->team_id;
         $starting_member->attendance_id = $attendance->id;
-        $starting_member->position = $position ? $position : $this->randPosition();
+        $starting_member->position = $position ?? $this->randPosition();
         if ($starting_member->position) {
             $this->position_array = array_filter($this->position_array, fn (Position $position) => $position !== $starting_member->position);
         }
         $starting_member->starting_flag = $starting_member->position !== null;
-        $starting_member->batting_order = $position ? $this->decideBattingOrder($attendance, $starting_member->position) : null;
+        $starting_member->batting_order = $starting_member->position ? $this->decideBattingOrder($attendance, $starting_member->position) : null;
         if ($starting_member->batting_order) {
             $this->batting_order_array = array_diff($this->batting_order_array, [$starting_member->batting_order]);
         }
@@ -205,7 +209,8 @@ class StartingMemberService
         $this->starting_members->push($starting_member);
         // 出席者コレクションを更新
         $this->attendances = $this->attendances
-            ->whereNotIn('id', $starting_member->attendance_id);
+            ->whereNotIn('id', $starting_member->attendance_id)
+            ->values();;
     }
 
     private function randPosition(): ?Position

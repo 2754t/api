@@ -3,11 +3,10 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\Activity\FetchController as ActivityFetchController;
-use App\Http\Controllers\Attendance\OrderFetchController;
-use App\Http\Controllers\Attendance\UpdateController;
 use App\Http\Controllers\Player\FetchController;
 use App\Http\Controllers\SignIn\SignInController;
 use App\Http\Controllers\StartingMember\FetchController as StartingMemberFetchController;
+use App\Http\Controllers\StartingMember\UpdateController as StartingMemberUpdateController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -29,7 +28,7 @@ Route::get('/activity', ActivityFetchController::class);
 // スタメン
 Route::get('/starting-member', StartingMemberFetchController::class);
 // テスト用スタメン決め
-Route::get("starting-member/update", UpdateController::class);
+Route::get("starting-member/update", StartingMemberUpdateController::class);
 
 // 選手登録必要
 Route::middleware(['auth:player'])->group(function () {

@@ -48,9 +48,9 @@ class StartingMember extends Model
     |-------------------
     |
     */
-    public function player(): BelongsTo
+    public function attendance(): BelongsTo
     {
-        return $this->BelongsTo(Player::class);
+        return $this->BelongsTo(Attendance::class);
     }
 
     /*

@@ -10,6 +10,6 @@ class UpdateController extends Controller
 {
     public function __invoke(UpdateAction $action)
     {
-        $action(Activity::find('2'));
+        $action(Activity::where('id', 2)->first());
     }
 }
