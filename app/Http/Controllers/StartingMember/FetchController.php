@@ -13,7 +13,7 @@ class FetchController extends Controller
         $activity_id = 2;
         // TODO getすると一度全権取得してしまう
         $starting_members = StartingMember::query()
-            ->with(['player', 'attendance'])
+            ->with(['attendance.player'])
             ->get()
             ->filter(function (StartingMember $starting_member) use ($activity_id) {
                 return $starting_member->attendance->activity_id === $activity_id;
