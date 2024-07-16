@@ -52,7 +52,7 @@ class StadiumSeeder extends Seeder
         $stadium3->sunday_cost = 1440;
         $stadium3->free_parking_flag = true;
         $stadium3->parking_cost = null;
-        $stadium3->nearest_station = '阪急逆瀬川駅';
+        $stadium3->nearest_station = '阪急売布神社駅';
         $stadium3->from_station = 15;
         $stadium3->save();
     }
