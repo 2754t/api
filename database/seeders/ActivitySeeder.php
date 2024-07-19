@@ -35,7 +35,7 @@ class ActivitySeeder extends Seeder
         $activity0->recruitment = 9;
         $activity0->entry_cost = 600;
         $activity0->belongings = 'ユニフォーム（ジャージ可）、グローブ、スパイク（金具可）、参加費';
-        $activity0->decide_order_flag = true;
+        $activity0->decide_order_flag = false;
         $activity0->next_send_datetime = null;
         $activity0->save();
 
