@@ -10,7 +10,7 @@ class FetchController extends Controller
 {
     public function __invoke()
     {
-        $activity_id = 2;
+        $activity_id = 3;
         // TODO getすると一度全権取得してしまう
         $starting_members = StartingMember::query()
             ->with(['attendance.player'])

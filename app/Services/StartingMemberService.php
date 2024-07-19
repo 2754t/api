@@ -127,7 +127,6 @@ class StartingMemberService
             ->where('dh_flag', true);
 
         if ($dh_attendances->count() < $this->dh_count) {
-            // TODO キャッチャーがDHになるとこまる
             $additional_attendances = $this->attendances
                 ->whereNotIn('id', $dh_attendances->pluck('id'))
                 ->filter(function (Attendance $attendance) {
@@ -151,7 +150,7 @@ class StartingMemberService
         // TODO 成績順にする
         /** @var Attendance */
         $pitcher_attendance = $this->pitcher_attendances
-            ->where('player_id', 10)
+            ->where('player_id', 14)
             ->firstOrFail();
 
 

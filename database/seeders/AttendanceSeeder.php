@@ -27,7 +27,7 @@ class AttendanceSeeder extends Seeder
             $attendance = new Attendance();
             $attendance->team_id = $team_id;
             $attendance->player_id = $player_id;
-            $attendance->activity_id = 2;
+            $attendance->activity_id = 3;
             $attendance->answer = Answer::YES;
             $attendance->dh_flag = false;
             $attendance->save();
