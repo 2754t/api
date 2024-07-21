@@ -64,7 +64,7 @@ class ActivitySeeder extends Seeder
         $activity2->activity_datetime = '2024-07-20 15:00:00';
         $activity2->play_time = 2;
         $activity2->meeting_time = '開始15分前まで';
-        $activity2->meeting_place = '一塁側スタンド';
+        $activity2->meeting_place = '一塁側スタンド付近';
         $activity2->activity_type = ActivityType::GAME;
         $activity2->confirmed_flag = true;
         $activity2->opposing_team = 'ファイザーズ';
@@ -95,25 +95,6 @@ class ActivitySeeder extends Seeder
         $activity3->decide_order_flag = false;
         $activity3->next_send_datetime = null;
         $activity3->save();
-
-        $activity4 = new Activity();
-        $activity4->team_id = $team_id;
-        $activity4->stadium_id = 2;
-        $activity4->activity_datetime = '2024-08-03 15:00:00';
-        $activity4->play_time = 2;
-        $activity4->meeting_time = '開始15分前まで';
-        $activity4->meeting_place = '一塁側スタンド';
-        $activity4->activity_type = ActivityType::GAME;
-        $activity4->confirmed_flag = false;
-        $activity4->opposing_team = null;
-        $activity4->referee_type = RefereeType::DISPATCH;
-        $activity4->dh_type = DHType::ONE;
-        $activity4->recruitment = 10;
-        $activity4->entry_cost = 700;
-        $activity4->belongings = 'ユニフォーム（ジャージ可）、グローブ、スパイク（金具可）、参加費';
-        $activity4->decide_order_flag = false;
-        $activity4->next_send_datetime = null;
-        $activity4->save();
 
         $activity5 = new Activity();
         $activity5->team_id = $team_id;
@@ -180,8 +161,8 @@ class ActivitySeeder extends Seeder
         $activity8->meeting_time = '開始15分前まで';
         $activity8->meeting_place = '一塁側';
         $activity8->activity_type = ActivityType::GAME;
-        $activity8->confirmed_flag = false;
-        $activity8->opposing_team = null;
+        $activity8->confirmed_flag = true;
+        $activity8->opposing_team = 'ファイザーズ';
         $activity8->referee_type = RefereeType::DISPATCH;
         $activity8->dh_type = DHType::ONE;
         $activity8->recruitment = 10;
@@ -216,7 +197,7 @@ class ActivitySeeder extends Seeder
         $activity10->activity_datetime = '2024-09-21 15:00:00';
         $activity10->play_time = 2;
         $activity10->meeting_time = '開始15分前まで';
-        $activity10->meeting_place = '一塁側スタンド';
+        $activity10->meeting_place = '一塁側スタンド付近';
         $activity10->activity_type = ActivityType::GAME;
         $activity10->confirmed_flag = false;
         $activity10->opposing_team = null;

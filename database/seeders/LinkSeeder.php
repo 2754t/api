@@ -30,5 +30,19 @@ class LinkSeeder extends Seeder
         $link2->activity_id = 1;
         $link2->url = 'https://youtu.be/71CwWPKHVeU?si=aPe63P_A9OQzhb0V';
         $link2->save();
+
+        $link3 = new Link();
+        $link3->team_id = $team_id;
+        $link3->player_id = null;
+        $link3->activity_id = 2;
+        $link3->url = 'https://youtu.be/JEF9Ut_UG7E?si=ttsKdtStZnBsmAoB';
+        $link3->save();
+
+        $link4 = new Link();
+        $link4->team_id = $team_id;
+        $link4->player_id = null;
+        $link4->activity_id = 3;
+        $link4->url = 'https://youtu.be/4C2GCSzz4iE?si=0T5NyFpEqRKdUL_I';
+        $link4->save();
     }
 }

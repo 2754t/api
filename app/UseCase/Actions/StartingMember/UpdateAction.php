@@ -86,7 +86,9 @@ class UpdateAction
         if (!$can_pitchers->isEmpty()) {
             // TODO 成績順にする？
             /** @var StartingMember */
-            $pitcher = $can_pitchers->random();
+            $pitcher = $can_pitchers->filter(function (StartingMember $pitcher) {
+                return $pitcher->attendance->player->last_name === '上利';
+            })->first();
             $this->createSecondPosition($pitcher, Position::PITCHER);
         }
     }
