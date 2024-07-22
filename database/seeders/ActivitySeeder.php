@@ -105,7 +105,7 @@ class ActivitySeeder extends Seeder
         $activity5->meeting_place = '一塁側';
         $activity5->activity_type = ActivityType::GAME;
         $activity5->confirmed_flag = false;
-        $activity5->opposing_team = null;
+        $activity5->opposing_team = '募集中';
         $activity5->referee_type = RefereeType::DISPATCH;
         $activity5->dh_type = DHType::ONE;
         $activity5->recruitment = 10;

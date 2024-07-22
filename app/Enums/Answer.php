@@ -20,7 +20,7 @@ enum Answer: int
     public function label(): string
     {
         return match ($this) {
-            self::NOANSWER => '無回答',
+            self::NOANSWER => '未回答',
             self::YES => '出席',
             self::NO => '欠席',
         };

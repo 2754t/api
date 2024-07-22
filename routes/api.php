@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\Activity\FetchController as ActivityFetchController;
+use App\Http\Controllers\Attendance\FetchController as AttendanceFetchController;
 use App\Http\Controllers\Player\FetchController;
 use App\Http\Controllers\SignIn\SignInController;
 use App\Http\Controllers\StartingMember\FetchController as StartingMemberFetchController;
@@ -26,11 +27,13 @@ Route::post('/signIn', SignInController::class);
 // 活動
 Route::get('/activity', ActivityFetchController::class);
 // スタメン
-Route::get('/starting-member', StartingMemberFetchController::class);
+Route::get('/starting-member/{activity}', StartingMemberFetchController::class)->whereNumber('activity');
 // テスト用スタメン決め
 Route::get("starting-member/update", StartingMemberUpdateController::class);
+// 出欠
+Route::get('/attendance/{activity}', AttendanceFetchController::class)->whereNumber('activity');
 
-// 選手登録必要
+// TODO 仕分け 選手登録必要
 Route::middleware(['auth:player'])->group(function () {
     // 選手
     Route::get('/player', FetchController::class);

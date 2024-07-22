@@ -4,20 +4,20 @@ namespace App\Http\Controllers\StartingMember;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\StartingMemberResource;
+use App\Models\Activity;
 use App\Models\StartingMember;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class FetchController extends Controller
 {
-    public function __invoke()
+    public function __invoke(Activity $activity): AnonymousResourceCollection
     {
-        $activity_id = 3;
-        // TODO getすると一度全権取得してしまう
         $starting_members = StartingMember::query()
+            ->whereHas('attendance', function ($query) use ($activity) {
+                $query->where('activity_id', $activity->id);
+            })
             ->with(['attendance.player'])
-            ->get()
-            ->filter(function (StartingMember $starting_member) use ($activity_id) {
-                return $starting_member->attendance->activity_id === $activity_id;
-            });
+            ->get();
 
         if ($starting_members->isEmpty()) {
             abort('400', "選手がいません");
