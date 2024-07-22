@@ -38,15 +38,17 @@ class StartingMemberService
     private $pitcher_attendances;
     /** @var Collection<Attendance> キャッチャーができる参加者のコレクション */
     private $catcher_attendances;
+    /** @var Collection<Attendance> DHの出席者コレクション */
+    private $dh_attendances;
 
     public function generate(Activity $activity): Collection
     {
         $this->setProperties($activity);
         $this->checkException();
 
-        $this->decideDH();
         $this->decidePitcher();
         $this->decideCatcher();
+        $this->decideDH();
         $this->decideExperience();
         $this->decideStartingMember(); // 残りの参加者からスタメンを決める
 
@@ -87,6 +89,9 @@ class StartingMemberService
         $this->catcher_attendances = $this->attendances
             ->where('dh_flag', false)
             ->filter(fn (Attendance $attendance) => $attendance->player->catcher_flag);
+
+        $this->dh_attendances = $this->attendances
+            ->where('dh_flag', true);
     }
 
     private function checkException(): void
@@ -108,7 +113,7 @@ class StartingMemberService
         }
 
         if (($this->attendances_count - 9) < $this->attendances->where('dh_flag', true)->count()) {
-            throw new NotEnoughMembersBecauseManyDHsException('DH希望者が' . $this->attendances->where('DHFlag', true)->count() . '名のため、スタメンが決められません。');
+            throw new NotEnoughMembersBecauseManyDHsException('DH希望者が' . $this->attendances->where('dh_flag', true)->count() . '名のため、スタメンが決められません。');
         }
 
         if ($this->pitcher_attendances->count() <= 2) {
@@ -120,36 +125,12 @@ class StartingMemberService
         }
     }
 
-    private function decideDH(): void
-    {
-        // DHフラグのある出席者にポジションDHをセット（DHフラグを持てるかは出欠登録時にチェック）
-        $dh_attendances = $this->attendances
-            ->where('dh_flag', true);
-
-        if ($dh_attendances->count() < $this->dh_count) {
-            $additional_attendances = $this->attendances
-                ->whereNotIn('id', $dh_attendances->pluck('id'))
-                ->filter(function (Attendance $attendance) {
-                    return !$attendance->player->catcher_flag;
-                })
-                ->shuffle()
-                ->take($this->dh_count - $dh_attendances->count());
-
-            $dh_attendances = $dh_attendances->concat($additional_attendances);
-        }
-
-        $dh_attendances
-            ->shuffle()
-            ->each(function (Attendance $attendance): void {
-                $this->createStartingMember($attendance, Position::DH);
-            });
-    }
-
     private function decidePitcher(): void
     {
         // TODO 成績順にする
         /** @var Attendance */
         $pitcher_attendance = $this->pitcher_attendances
+            ->whereNotIn('id', $this->dh_attendances->pluck('id'))
             ->where('player_id', 14)
             ->firstOrFail();
 
@@ -166,6 +147,24 @@ class StartingMemberService
             ->firstOrFail();
 
         $this->createStartingMember($catcher_attendance, Position::CATCHER);
+    }
+
+    private function decideDH(): void
+    {
+        if ($this->dh_attendances->count() < $this->dh_count) {
+            $additional_attendances = $this->attendances
+                ->whereNotIn('id', $this->dh_attendances->pluck('id'))
+                ->shuffle()
+                ->take($this->dh_count - $this->dh_attendances->count());
+
+            $this->dh_attendances = $this->dh_attendances->concat($additional_attendances);
+        }
+
+        $this->dh_attendances
+            ->shuffle()
+            ->each(function (Attendance $attendance): void {
+                $this->createStartingMember($attendance, Position::DH);
+            });
     }
 
     private function decideExperience(): void
@@ -223,15 +222,22 @@ class StartingMemberService
 
     private function decideBattingOrder(Attendance $attendance, Position $position): int|null
     {
-        if ($position === Position::DH) {
-            // DHの時は打順先頭
-            return $this->batting_order_array[array_key_first($this->batting_order_array)];
-        }
 
         if ($attendance->player->batting_order_bottom_flag && $position === Position::PITCHER) {
             // 先発ピッチャーが打順下位フラグを持っていれば打順7番以降
             $bottom_batting_order_array = array_diff($this->batting_order_array, range(1, 6));
             return $bottom_batting_order_array[array_rand($bottom_batting_order_array)];
+        }
+
+        if ($position === Position::PITCHER || $position === Position::CATCHER) {
+            // スタメンの投手捕手をDHから除外するため、先に打順を決める
+            $not_dh_batting_order_array = array_diff($this->batting_order_array, range(1, $this->dh_count));
+            return $not_dh_batting_order_array[array_rand($not_dh_batting_order_array)];
+        }
+
+        if ($position === Position::DH) {
+            // DHの時は打順先頭
+            return $this->batting_order_array[array_key_first($this->batting_order_array)];
         }
 
         if ($this->batting_order_array) {
