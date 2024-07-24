@@ -76,6 +76,11 @@ class Activity extends Model
     {
         return $this->hasMany(Link::class, 'activity_id', 'id');
     }
+
+    public function attendances(): HasMany
+    {
+        return $this->hasMany(Attendance::class, 'activity_id', 'id');
+    }
     /*
     |-------------------
     | アクセサ

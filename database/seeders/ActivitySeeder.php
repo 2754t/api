@@ -124,7 +124,7 @@ class ActivitySeeder extends Seeder
         $activity6->meeting_place = '一塁側入り口前';
         $activity6->activity_type = ActivityType::GAME;
         $activity6->confirmed_flag = false;
-        $activity6->opposing_team = null;
+        $activity6->opposing_team = '募集中';
         $activity6->referee_type = RefereeType::DISPATCH;
         $activity6->dh_type = DHType::ONE;
         $activity6->recruitment = 10;
@@ -143,7 +143,7 @@ class ActivitySeeder extends Seeder
         $activity7->meeting_place = '一塁側';
         $activity7->activity_type = ActivityType::GAME;
         $activity7->confirmed_flag = false;
-        $activity7->opposing_team = null;
+        $activity7->opposing_team = '募集中';
         $activity7->referee_type = RefereeType::DISPATCH;
         $activity7->dh_type = DHType::ONE;
         $activity7->recruitment = 10;
@@ -180,8 +180,8 @@ class ActivitySeeder extends Seeder
         $activity9->meeting_time = '開始15分前まで';
         $activity9->meeting_place = '一塁側';
         $activity9->activity_type = ActivityType::GAME;
-        $activity9->confirmed_flag = false;
-        $activity9->opposing_team = null;
+        $activity9->confirmed_flag = true;
+        $activity9->opposing_team = 'デリシャスマイル';
         $activity9->referee_type = RefereeType::DISPATCH;
         $activity9->dh_type = DHType::ONE;
         $activity9->recruitment = 10;
@@ -199,8 +199,8 @@ class ActivitySeeder extends Seeder
         $activity10->meeting_time = '開始15分前まで';
         $activity10->meeting_place = '一塁側スタンド付近';
         $activity10->activity_type = ActivityType::GAME;
-        $activity10->confirmed_flag = false;
-        $activity10->opposing_team = null;
+        $activity10->confirmed_flag = true;
+        $activity10->opposing_team = 'デリシャスマイル';
         $activity10->referee_type = RefereeType::DISPATCH;
         $activity10->dh_type = DHType::ONE;
         $activity10->recruitment = 10;

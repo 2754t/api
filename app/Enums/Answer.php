@@ -16,6 +16,7 @@ enum Answer: int
     case NOANSWER = 0;
     case YES = 1;
     case NO = 2;
+    case DUEDATE = 3;
 
     public function label(): string
     {
@@ -23,6 +24,7 @@ enum Answer: int
             self::NOANSWER => '未回答',
             self::YES => '出席',
             self::NO => '欠席',
+            self::DUEDATE => '期日指定',
         };
     }
 }
