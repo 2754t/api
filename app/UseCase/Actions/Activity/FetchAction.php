@@ -13,7 +13,7 @@ class FetchAction
     {
         // TODO team_idの判定方法考える
         return Activity::query()
-            ->with(['stadium', 'links', 'attendances'])
+            ->with(['stadium', 'links', 'attendances.player'])
             ->where('team_id', 1)
             ->whereYear('activity_datetime', $year)
             ->whereMonth('activity_datetime', $month)
