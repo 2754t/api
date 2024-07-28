@@ -46,5 +46,19 @@ class AttendanceSeeder extends Seeder
             $attendance->dh_flag = false;
             $attendance->save();
         };
+
+        $player_ids3 = Player::query()
+            ->whereIn('last_name', ['舩越', '西久保', '山岸', '西本', '矢口', '山岸謙介'])
+            ->pluck('id');
+
+        foreach ($player_ids3 as $player_id) {
+            $attendance = new Attendance();
+            $attendance->team_id = $team_id;
+            $attendance->player_id = $player_id;
+            $attendance->activity_id = 5;
+            $attendance->answer = Answer::YES;
+            $attendance->dh_flag = false;
+            $attendance->save();
+        };
     }
 }

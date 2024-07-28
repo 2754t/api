@@ -44,5 +44,12 @@ class LinkSeeder extends Seeder
         $link4->activity_id = 3;
         $link4->url = 'https://youtu.be/4C2GCSzz4iE?si=0T5NyFpEqRKdUL_I';
         $link4->save();
+
+        $link5 = new Link();
+        $link5->team_id = $team_id;
+        $link5->player_id = null;
+        $link5->activity_id = 4;
+        $link5->url = 'https://youtu.be/n1e-M38lLxw?si=31x_gj0ZySWlKAwO';
+        $link5->save();
     }
 }
