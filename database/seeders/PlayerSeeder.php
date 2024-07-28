@@ -28,10 +28,11 @@ class PlayerSeeder extends Seeder
         $player1->role = Role::ADMIN;
         $player1->last_name = '舩越';
         $player1->first_name = '貴矢';
-        $player1->desired_position = Position::FIRST;
+        $player1->desired_position = Position::SHORT;
         $player1->position_joined = '2,3,4,5,6,7,8,9';
         $player1->pitcher_flag = false;
-        $player1->catcher_flag = true;
+        // $player1->catcher_flag = true;
+        $player1->catcher_flag = false;
         $player1->batting_order_bottom_flag = false;
         $player1->save();
 
@@ -100,7 +101,7 @@ class PlayerSeeder extends Seeder
         $player6->last_name = '雅';
         $player6->first_name = Str::random(10);
         $player6->desired_position = null;
-        $player6->position_joined = '7,8,9';
+        $player6->position_joined = '8,9';
         $player6->pitcher_flag = false;
         $player6->catcher_flag = false;
         $player6->batting_order_bottom_flag = false;
@@ -114,7 +115,7 @@ class PlayerSeeder extends Seeder
         $player7->last_name = '山岸';
         $player7->first_name = Str::random(10);
         $player7->desired_position = null;
-        $player7->position_joined = '3,4,6';
+        $player7->position_joined = '3';
         $player7->pitcher_flag = false;
         $player7->catcher_flag = false;
         $player7->batting_order_bottom_flag = false;
@@ -184,8 +185,8 @@ class PlayerSeeder extends Seeder
         $player12->role = Role::MEMBER;
         $player12->last_name = '井岡';
         $player12->first_name = Str::random(10);
-        $player12->desired_position = null;
-        $player12->position_joined = "2,7,8,9";
+        $player12->desired_position = Position::THIRD;
+        $player12->position_joined = "5,6,7,8,9";
         $player12->pitcher_flag = false;
         $player12->catcher_flag = false;
         $player12->batting_order_bottom_flag = false;
@@ -409,7 +410,7 @@ class PlayerSeeder extends Seeder
         $player28->last_name = '緒方';
         $player28->first_name = Str::random(10);
         $player28->desired_position = null;
-        $player28->position_joined = null;
+        $player28->position_joined = '4';
         $player28->pitcher_flag = true;
         $player28->catcher_flag = false;
         $player28->batting_order_bottom_flag = false;
@@ -423,7 +424,7 @@ class PlayerSeeder extends Seeder
         $player29->last_name = '八代谷';
         $player29->first_name = Str::random(10);
         $player29->desired_position = null;
-        $player29->position_joined = null;
+        $player29->position_joined = '4,7,9';
         $player29->pitcher_flag = false;
         $player29->catcher_flag = false;
         $player29->batting_order_bottom_flag = false;

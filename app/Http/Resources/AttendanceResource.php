@@ -24,6 +24,7 @@ class AttendanceResource extends JsonResource
             'activity' => new ActivityResource($this->whenLoaded('activity')),
             'player' => new PlayerResource($this->whenLoaded('player')),
             'answer' => $this->answer,
+            'answer_due' => $this->answer_due,
             'dh_flag' => $this->dh_flag,
             'note' => $this->note,
         ];

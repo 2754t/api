@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Http\Controllers\Activity\FetchController as ActivityFetchController;
 use App\Http\Controllers\Attendance\FetchController as AttendanceFetchController;
+use App\Http\Controllers\Attendance\UpdateController;
 use App\Http\Controllers\Player\FetchController;
 use App\Http\Controllers\SignIn\SignInController;
 use App\Http\Controllers\StartingMember\FetchController as StartingMemberFetchController;
@@ -32,6 +33,7 @@ Route::get('/starting-member/{activity}', StartingMemberFetchController::class)-
 Route::get("starting-member/update", StartingMemberUpdateController::class);
 // 出欠
 Route::get('/attendance/{activity}', AttendanceFetchController::class)->whereNumber('activity');
+Route::put('/attendance/{attendance}', UpdateController::class)->whereNumber('attendance');
 
 // TODO 仕分け 選手登録必要
 Route::middleware(['auth:player'])->group(function () {

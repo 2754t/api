@@ -15,6 +15,7 @@ use Illuminate\Support\Carbon;
  * @property int         $activity_id 活動ID
  * @property int         $player_id   選手ID
  * @property int         $answer      出欠回答
+ * @property Carbon|null $answer_due  指定回答日
  * @property bool        $dh_flag     DHフラグ
  * @property string|null $note        備考
  * @property Carbon|null $created_at
@@ -31,6 +32,7 @@ class Attendance extends Model
         'activity_id' => 'integer',
         'player_id' => 'integer',
         'answer' => 'integer',
+        'answer_due' => 'datetime',
         'dh_flag' => 'boolean',
     ];
 
