@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('team_id')->comment('チームID');
             $table->foreignId('activity_id')->comment('活動ID');
             $table->foreignId('player_id')->comment('選手ID');
-            $table->tinyInteger('answer')->default(0)->comment('出欠回答 [0:未回答 1:出席 2:欠席 3:回答日指定 4:試合なら出席]');
+            $table->tinyInteger('answer')->default(0)->comment('出欠回答 [0:未回答 1:出席 2:試合なら出席 10:回答日指定 20:欠席]');
             $table->dateTime('answer_due')->nullable()->comment('指定回答日');
             $table->boolean('dh_flag')->default(false)->comment('DHフラグ');
             $table->tinyText('note')->nullable()->comment('備考');
