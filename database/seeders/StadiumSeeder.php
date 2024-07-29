@@ -32,28 +32,54 @@ class StadiumSeeder extends Seeder
 
         $stadium2 = new Stadium();
         $stadium2->team_id = $team_id;
-        $stadium2->stadium_name = '宝塚市立スポーツセンター野球場';
-        $stadium2->address = '兵庫県宝塚市小浜１丁目１−１１';
-        $stadium2->weekday_cost = 1800;
-        $stadium2->saturday_cost = 2160;
-        $stadium2->sunday_cost = 2160;
+        $stadium2->stadium_name = '橘公園野球場';
+        $stadium2->address = '兵庫県尼崎市東七松町１丁目２２−２２';
+        $stadium2->weekday_cost = 2800;
+        $stadium2->saturday_cost = 2800;
+        $stadium2->sunday_cost = 3360;
         $stadium2->free_parking_flag = false;
-        $stadium2->parking_cost = 200;
-        $stadium2->nearest_station = '阪急逆瀬川駅';
-        $stadium2->from_station = 22;
+        $stadium2->parking_cost = 500;
+        $stadium2->nearest_station = 'JR立花駅';
+        $stadium2->from_station = 15;
         $stadium2->save();
 
         $stadium3 = new Stadium();
         $stadium3->team_id = $team_id;
-        $stadium3->stadium_name = '宝塚市立売布北グラウンド';
-        $stadium3->address = '兵庫県宝塚市売布自由ガ丘８−１';
-        $stadium3->weekday_cost = 1200;
-        $stadium3->saturday_cost = 1440;
-        $stadium3->sunday_cost = 1440;
-        $stadium3->free_parking_flag = true;
-        $stadium3->parking_cost = null;
-        $stadium3->nearest_station = '阪急売布神社駅';
-        $stadium3->from_station = 15;
+        $stadium3->stadium_name = 'ベイコム野球場';
+        $stadium3->address = '兵庫県尼崎市西長洲町１丁目４−１';
+        $stadium3->weekday_cost = 3600;
+        $stadium3->saturday_cost = 3600;
+        $stadium3->sunday_cost = 4320;
+        $stadium3->free_parking_flag = false;
+        $stadium3->parking_cost = 500;
+        $stadium3->nearest_station = 'JR尼崎駅';
+        $stadium3->from_station = 13;
         $stadium3->save();
+
+        $stadium4 = new Stadium();
+        $stadium4->team_id = $team_id;
+        $stadium4->stadium_name = '宝塚市立スポーツセンター野球場';
+        $stadium4->address = '兵庫県宝塚市小浜１丁目１−１１';
+        $stadium4->weekday_cost = 1800;
+        $stadium4->saturday_cost = 2160;
+        $stadium4->sunday_cost = 2160;
+        $stadium4->free_parking_flag = false;
+        $stadium4->parking_cost = 200;
+        $stadium4->nearest_station = '阪急逆瀬川駅';
+        $stadium4->from_station = 22;
+        $stadium4->save();
+
+        $stadium5 = new Stadium();
+        $stadium5->team_id = $team_id;
+        $stadium5->stadium_name = '宝塚市立売布北グラウンド';
+        $stadium5->address = '兵庫県宝塚市売布自由ガ丘８−１';
+        $stadium5->weekday_cost = 1200;
+        $stadium5->saturday_cost = 1440;
+        $stadium5->sunday_cost = 1440;
+        $stadium5->free_parking_flag = true;
+        $stadium5->parking_cost = null;
+        $stadium5->nearest_station = '阪急売布神社駅';
+        $stadium5->from_station = 15;
+        $stadium5->save();
     }
 }

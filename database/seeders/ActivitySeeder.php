@@ -60,7 +60,7 @@ class ActivitySeeder extends Seeder
 
         $activity2 = new Activity();
         $activity2->team_id = $team_id;
-        $activity2->stadium_id = 2;
+        $activity2->stadium_id = 4;
         $activity2->activity_datetime = '2024-07-20 15:00:00';
         $activity2->play_time = 2;
         $activity2->meeting_time = '開始15分前まで';
@@ -98,18 +98,18 @@ class ActivitySeeder extends Seeder
 
         $activity5 = new Activity();
         $activity5->team_id = $team_id;
-        $activity5->stadium_id = 3;
+        $activity5->stadium_id = 2;
         $activity5->activity_datetime = '2024-08-10 15:00:00';
         $activity5->play_time = 2;
         $activity5->meeting_time = '開始15分前まで';
-        $activity5->meeting_place = '一塁側';
+        $activity5->meeting_place = '一塁側駐輪場付近';
         $activity5->activity_type = ActivityType::GAME;
-        $activity5->confirmed_flag = false;
-        $activity5->opposing_team = '募集中';
+        $activity5->confirmed_flag = true;
+        $activity5->opposing_team = '重追魂';
         $activity5->referee_type = RefereeType::DISPATCH;
         $activity5->dh_type = DHType::ONE;
         $activity5->recruitment = 10;
-        $activity5->entry_cost = 600;
+        $activity5->entry_cost = 700;
         $activity5->belongings = 'ユニフォーム（ジャージ可）、グローブ、スパイク（金具可）、参加費';
         $activity5->decide_order_flag = false;
         $activity5->next_send_datetime = null;
@@ -136,7 +136,7 @@ class ActivitySeeder extends Seeder
 
         $activity7 = new Activity();
         $activity7->team_id = $team_id;
-        $activity7->stadium_id = 3;
+        $activity7->stadium_id = 5;
         $activity7->activity_datetime = '2024-08-24 15:00:00';
         $activity7->play_time = 2;
         $activity7->meeting_time = '開始15分前まで';
@@ -155,7 +155,7 @@ class ActivitySeeder extends Seeder
 
         $activity8 = new Activity();
         $activity8->team_id = $team_id;
-        $activity8->stadium_id = 3;
+        $activity8->stadium_id = 5;
         $activity8->activity_datetime = '2024-08-31 15:00:00';
         $activity8->play_time = 2;
         $activity8->meeting_time = '開始15分前まで';
@@ -174,7 +174,7 @@ class ActivitySeeder extends Seeder
 
         $activity9 = new Activity();
         $activity9->team_id = $team_id;
-        $activity9->stadium_id = 3;
+        $activity9->stadium_id = 5;
         $activity9->activity_datetime = '2024-09-14 15:00:00';
         $activity9->play_time = 2;
         $activity9->meeting_time = '開始15分前まで';
@@ -193,7 +193,7 @@ class ActivitySeeder extends Seeder
 
         $activity10 = new Activity();
         $activity10->team_id = $team_id;
-        $activity10->stadium_id = 2;
+        $activity10->stadium_id = 4;
         $activity10->activity_datetime = '2024-09-21 15:00:00';
         $activity10->play_time = 2;
         $activity10->meeting_time = '開始15分前まで';

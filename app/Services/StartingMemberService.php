@@ -131,8 +131,8 @@ class StartingMemberService
         /** @var Attendance */
         $pitcher_attendance = $this->pitcher_attendances
             ->whereNotIn('id', $this->dh_attendances->pluck('id'))
-            ->where('player_id', 5)
-            ->firstOrFail();
+            ->where('player_id', 1)
+            ->first();
 
 
         $this->createStartingMember($pitcher_attendance, Position::PITCHER);

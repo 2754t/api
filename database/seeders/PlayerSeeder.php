@@ -28,11 +28,12 @@ class PlayerSeeder extends Seeder
         $player1->role = Role::ADMIN;
         $player1->last_name = '舩越';
         $player1->first_name = '貴矢';
+        $player1->nickname = '舩越';
         $player1->desired_position = Position::SHORT;
-        $player1->position_joined = '2,3,4,5,6,7,8,9';
-        $player1->pitcher_flag = false;
-        // $player1->catcher_flag = true;
-        $player1->catcher_flag = false;
+        $player1->position_joined = '1,2,3,4,5,6,7,8,9';
+        $player1->pitcher_flag = true;
+        $player1->catcher_flag = true;
+        // $player1->catcher_flag = false;
         $player1->batting_order_bottom_flag = false;
         $player1->save();
 
@@ -58,6 +59,7 @@ class PlayerSeeder extends Seeder
         $player3->role = Role::MEMBER;
         $player3->last_name = '西久保';
         $player3->first_name = Str::random(10);
+        $player3->nickname = '西久保';
         $player3->desired_position = null;
         $player3->position_joined = "2";
         $player3->pitcher_flag = false;
@@ -72,6 +74,7 @@ class PlayerSeeder extends Seeder
         $player4->role = Role::MEMBER;
         $player4->last_name = '西本';
         $player4->first_name = Str::random(10);
+        $player4->nickname = '西本';
         $player4->desired_position = Position::THIRD;
         $player4->position_joined = "3,4,5,6,7,8,9";
         $player4->pitcher_flag = false;
@@ -86,6 +89,7 @@ class PlayerSeeder extends Seeder
         $player5->role = Role::MEMBER;
         $player5->last_name = '上利';
         $player5->first_name = Str::random(10);
+        $player5->nickname = '上利';
         $player5->desired_position = null;
         $player5->position_joined = '1,3,7,9';
         $player5->pitcher_flag = true;
@@ -100,6 +104,7 @@ class PlayerSeeder extends Seeder
         $player6->role = Role::MEMBER;
         $player6->last_name = '雅';
         $player6->first_name = Str::random(10);
+        $player6->nickname = '雅';
         $player6->desired_position = null;
         $player6->position_joined = '8,9';
         $player6->pitcher_flag = false;
@@ -114,6 +119,7 @@ class PlayerSeeder extends Seeder
         $player7->role = Role::MEMBER;
         $player7->last_name = '山岸';
         $player7->first_name = Str::random(10);
+        $player7->nickname = '山岸';
         $player7->desired_position = null;
         $player7->position_joined = '3';
         $player7->pitcher_flag = false;
@@ -126,9 +132,9 @@ class PlayerSeeder extends Seeder
         $player8->email = Str::random(10) . '@example.com';
         $player8->password = Hash::make('password');
         $player8->role = Role::MEMBER;
-        $player8->last_name = '山岸謙介';
+        $player8->last_name = '山岸';
         $player8->first_name = '謙介';
-        $player8->nickname = '山岸けん';
+        $player8->nickname = '山岸謙';
         $player8->desired_position = null;
         $player8->position_joined = '6,8';
         $player8->pitcher_flag = false;
@@ -143,6 +149,7 @@ class PlayerSeeder extends Seeder
         $player9->role = Role::MEMBER;
         $player9->last_name = '柏原';
         $player9->first_name = Str::random(10);
+        $player9->nickname = '柏原';
         $player9->desired_position = Position::SHORT;
         $player9->position_joined = "1,3,5,6,7,8,9";
         $player9->pitcher_flag = true;
@@ -157,6 +164,7 @@ class PlayerSeeder extends Seeder
         $player10->role = Role::MEMBER;
         $player10->last_name = '清水';
         $player10->first_name = Str::random(10);
+        $player10->nickname = '清水';
         $player10->desired_position = null;
         $player10->position_joined = "2,3,4,5,6,7,8,9";
         $player10->pitcher_flag = true;
@@ -171,9 +179,10 @@ class PlayerSeeder extends Seeder
         $player11->role = Role::MEMBER;
         $player11->last_name = '矢口';
         $player11->first_name = Str::random(10);
+        $player11->nickname = '矢口';
         $player11->desired_position = Position::SECOND;
         $player11->position_joined = "3,4,5,6,7,8,9";
-        $player11->pitcher_flag = false;
+        $player11->pitcher_flag = true;
         $player11->catcher_flag = false;
         $player11->batting_order_bottom_flag = false;
         $player11->save();
@@ -185,6 +194,7 @@ class PlayerSeeder extends Seeder
         $player12->role = Role::MEMBER;
         $player12->last_name = '井岡';
         $player12->first_name = Str::random(10);
+        $player12->nickname = '井岡';
         $player12->desired_position = Position::THIRD;
         $player12->position_joined = "5,6,7,8,9";
         $player12->pitcher_flag = false;
@@ -199,6 +209,7 @@ class PlayerSeeder extends Seeder
         $player13->role = Role::MEMBER;
         $player13->last_name = '竹添';
         $player13->first_name = Str::random(10);
+        $player13->nickname = '竹添';
         $player13->desired_position = Position::SECOND;
         $player13->position_joined = "1,3,4,5,6,7,8,9";
         $player13->pitcher_flag = true;
@@ -213,6 +224,7 @@ class PlayerSeeder extends Seeder
         $player14->role = Role::MEMBER;
         $player14->last_name = '村井';
         $player14->first_name = Str::random(10);
+        $player14->nickname = '村井';
         $player14->desired_position = Position::CENTER;
         $player14->position_joined = "1,2,3,4,5,6,7,8,9";
         $player14->pitcher_flag = true;
@@ -227,6 +239,7 @@ class PlayerSeeder extends Seeder
         $player15->role = Role::MEMBER;
         $player15->last_name = '岡本';
         $player15->first_name = Str::random(10);
+        $player15->nickname = '岡本';
         $player15->desired_position = Position::FIRST;
         $player15->position_joined = '2,3,4,5,6,7,8,9';
         $player15->pitcher_flag = false;
@@ -241,6 +254,7 @@ class PlayerSeeder extends Seeder
         $player16->role = Role::HELPER;
         $player16->last_name = '大塚';
         $player16->first_name = Str::random(10);
+        $player16->nickname = '大塚';
         $player16->desired_position = Position::SHORT;
         $player16->position_joined = '1,3,4,5,6';
         $player16->pitcher_flag = true;
@@ -255,6 +269,7 @@ class PlayerSeeder extends Seeder
         $player17->role = Role::HELPER;
         $player17->last_name = '池尾';
         $player17->first_name = Str::random(10);
+        $player17->nickname = '池尾';
         $player17->desired_position = null;
         $player17->position_joined = null;
         $player17->pitcher_flag = false;
@@ -269,6 +284,7 @@ class PlayerSeeder extends Seeder
         $player18->role = Role::HELPER;
         $player18->last_name = '蓬莱';
         $player18->first_name = Str::random(10);
+        $player18->nickname = '蓬莱';
         $player18->desired_position = null;
         $player18->position_joined = null;
         $player18->pitcher_flag = false;
@@ -283,6 +299,7 @@ class PlayerSeeder extends Seeder
         $player19->role = Role::HELPER;
         $player19->last_name = '藤野';
         $player19->first_name = Str::random(10);
+        $player19->nickname = '藤野';
         $player19->desired_position = Position::RIGHT;
         $player19->position_joined = null;
         $player19->pitcher_flag = false;
@@ -297,6 +314,7 @@ class PlayerSeeder extends Seeder
         $player20->role = Role::HELPER;
         $player20->last_name = '坂本';
         $player20->first_name = Str::random(10);
+        $player20->nickname = '坂本';
         $player20->desired_position = null;
         $player20->position_joined = null;
         $player20->pitcher_flag = false;
@@ -311,6 +329,7 @@ class PlayerSeeder extends Seeder
         $player21->role = Role::HELPER;
         $player21->last_name = '永井';
         $player21->first_name = '慎太郎';
+        $player21->nickname = '永井慎';
         $player21->desired_position = null;
         $player21->position_joined = '1,3,4,5,6,7,8,9';
         $player21->pitcher_flag = true;
@@ -323,8 +342,9 @@ class PlayerSeeder extends Seeder
         $player22->email = Str::random(10) . '@example.com';
         $player22->password = Hash::make('password');
         $player22->role = Role::HELPER;
-        $player22->last_name = '永井未来';
+        $player22->last_name = '永井';
         $player22->first_name = '未来';
+        $player22->nickname = '永井未';
         $player22->desired_position = null;
         $player22->position_joined = '9';
         $player22->pitcher_flag = false;
@@ -336,15 +356,17 @@ class PlayerSeeder extends Seeder
         $player23->team_id = $team_id;
         $player23->email = Str::random(10) . '@example.com';
         $player23->password = Hash::make('password');
-        $player23->role = Role::HELPER;
-        $player23->last_name = '尾上';
+        $player23->role = Role::EXPERIENCE;
+        $player23->last_name = '八代谷';
         $player23->first_name = Str::random(10);
+        $player23->nickname = '八代谷';
         $player23->desired_position = null;
-        $player23->position_joined = null;
+        $player23->position_joined = '4,7,9';
         $player23->pitcher_flag = false;
         $player23->catcher_flag = false;
         $player23->batting_order_bottom_flag = false;
         $player23->save();
+
 
         $player24 = new Player();
         $player24->team_id = $team_id;
@@ -353,6 +375,7 @@ class PlayerSeeder extends Seeder
         $player24->role = Role::HELPER;
         $player24->last_name = '青山';
         $player24->first_name = Str::random(10);
+        $player24->nickname = '青山';
         $player24->desired_position = null;
         $player24->position_joined = null;
         $player24->pitcher_flag = false;
@@ -365,11 +388,12 @@ class PlayerSeeder extends Seeder
         $player25->email = Str::random(10) . '@example.com';
         $player25->password = Hash::make('password');
         $player25->role = Role::EXPERIENCE;
-        $player25->last_name = '塩谷';
+        $player25->last_name = '緒方';
         $player25->first_name = Str::random(10);
+        $player25->nickname = '緒方';
         $player25->desired_position = null;
-        $player25->position_joined = null;
-        $player25->pitcher_flag = false;
+        $player25->position_joined = '1,4,9';
+        $player25->pitcher_flag = true;
         $player25->catcher_flag = false;
         $player25->batting_order_bottom_flag = false;
         $player25->save();
@@ -381,6 +405,7 @@ class PlayerSeeder extends Seeder
         $player26->role = Role::EXPERIENCE;
         $player26->last_name = '田村';
         $player26->first_name = Str::random(10);
+        $player26->nickname = '田村';
         $player26->desired_position = null;
         $player26->position_joined = null;
         $player26->pitcher_flag = false;
@@ -395,6 +420,7 @@ class PlayerSeeder extends Seeder
         $player27->role = Role::EXPERIENCE;
         $player27->last_name = '横地';
         $player27->first_name = Str::random(10);
+        $player27->nickname = '横地';
         $player27->desired_position = null;
         $player27->position_joined = null;
         $player27->pitcher_flag = false;
@@ -407,28 +433,17 @@ class PlayerSeeder extends Seeder
         $player28->email = Str::random(10) . '@example.com';
         $player28->password = Hash::make('password');
         $player28->role = Role::EXPERIENCE;
-        $player28->last_name = '緒方';
+        $player28->last_name = 'マサ';
         $player28->first_name = Str::random(10);
+        $player28->nickname = 'マサ';
         $player28->desired_position = null;
-        $player28->position_joined = '4';
-        $player28->pitcher_flag = true;
+        $player28->position_joined = null;
+        $player28->pitcher_flag = false;
         $player28->catcher_flag = false;
         $player28->batting_order_bottom_flag = false;
         $player28->save();
 
-        $player29 = new Player();
-        $player29->team_id = $team_id;
-        $player29->email = Str::random(10) . '@example.com';
-        $player29->password = Hash::make('password');
-        $player29->role = Role::EXPERIENCE;
-        $player29->last_name = '八代谷';
-        $player29->first_name = Str::random(10);
-        $player29->desired_position = null;
-        $player29->position_joined = '4,7,9';
-        $player29->pitcher_flag = false;
-        $player29->catcher_flag = false;
-        $player29->batting_order_bottom_flag = false;
-        $player29->save();
+
 
         // for ($i = 1; $i <= 10; $i++) {
         //     $player = new Player();

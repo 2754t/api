@@ -87,7 +87,7 @@ class UpdateAction
             // TODO 成績順にする？
             /** @var StartingMember */
             $pitcher = $can_pitchers->filter(function (StartingMember $pitcher) {
-                return $pitcher->attendance->player->last_name === '緒方';
+                return $pitcher->attendance->player->nickname === '矢口';
             })->first();
             $this->createSecondPosition($pitcher, Position::PITCHER);
         }
