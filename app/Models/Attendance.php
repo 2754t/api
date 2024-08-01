@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\Answer;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -33,7 +34,7 @@ class Attendance extends Model
         'team_id' => 'integer',
         'activity_id' => 'integer',
         'player_id' => 'integer',
-        'answer' => 'integer',
+        'answer' => Answer::class,
         'answer_yes_datetime' => 'datetime',
         'answer_due' => 'datetime',
         'penalty' => 'integer',

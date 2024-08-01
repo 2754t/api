@@ -443,6 +443,21 @@ class PlayerSeeder extends Seeder
         $player28->batting_order_bottom_flag = false;
         $player28->save();
 
+        $player29 = new Player();
+        $player29->team_id = $team_id;
+        $player29->email = Str::random(10) . '@example.com';
+        $player29->password = Hash::make('password');
+        $player29->role = Role::EXPERIENCE;
+        $player29->last_name = '小島';
+        $player29->first_name = Str::random(10);
+        $player29->nickname = '小島';
+        $player29->desired_position = null;
+        $player29->position_joined = null;
+        $player29->pitcher_flag = false;
+        $player29->catcher_flag = false;
+        $player29->batting_order_bottom_flag = false;
+        $player29->save();
+
 
 
         // for ($i = 1; $i <= 10; $i++) {

@@ -48,7 +48,7 @@ class AttendanceSeeder extends Seeder
         };
 
         $player_ids3 = Player::query()
-            ->whereIn('nickname', ['舩越', '山岸', '西本', '矢口', '山岸謙'])
+            ->whereIn('nickname', ['舩越', '山岸', '西本', '矢口', '山岸謙', '雅', '清水', '柏原', '小島'])
             ->pluck('id');
 
         foreach ($player_ids3 as $player_id) {
