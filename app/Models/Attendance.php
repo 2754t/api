@@ -10,14 +10,16 @@ use Illuminate\Support\Carbon;
 /**
  * App\Models\Attendance
  *
- * @property int         $id          出欠ID
- * @property int         $team_id     チームID
- * @property int         $activity_id 活動ID
- * @property int         $player_id   選手ID
- * @property int         $answer      出欠回答
- * @property Carbon|null $answer_due  指定回答日
- * @property bool        $dh_flag     DHフラグ
- * @property string|null $note        備考
+ * @property int         $id                  出欠ID
+ * @property int         $team_id             チームID
+ * @property int         $activity_id         活動ID
+ * @property int         $player_id           選手ID
+ * @property int         $answer              出欠回答
+ * @property Carbon|null $answer_yes_datetime 出席回答日
+ * @property Carbon|null $answer_due          指定回答日
+ * @property int         $penalty             ペナルティ
+ * @property bool        $dh_flag             DHフラグ
+ * @property string|null $note                備考
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  */
@@ -32,7 +34,9 @@ class Attendance extends Model
         'activity_id' => 'integer',
         'player_id' => 'integer',
         'answer' => 'integer',
+        'answer_yes_datetime' => 'datetime',
         'answer_due' => 'datetime',
+        'penalty' => 'integer',
         'dh_flag' => 'boolean',
     ];
 

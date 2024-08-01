@@ -20,7 +20,7 @@ return new class extends Migration
             $table->dateTime('access_token_expired')->nullable()->comment('アクセストークン有効期限');
             $table->string('last_name', 30)->comment('姓');
             $table->string('first_name', 30)->comment('名');
-            $table->string('nickname', 30)->nullable()->comment('ニックネーム');
+            $table->string('nickname', 30)->comment('ニックネーム');
             $table->tinyInteger('role')->default(0)->comment('権限 [0:体験者 1:助っ人 2:メンバー 3:管理者]');
             $table->integer('player_number')->nullable()->comment('背番号');
             $table->tinyInteger('desired_position')->nullable()->comment('希望ポジション');
