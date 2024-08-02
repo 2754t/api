@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Enums\Answer;
+use App\Enums\Role;
 use App\Models\Activity;
 use App\Models\Attendance;
 use App\Models\Player;
@@ -38,16 +39,16 @@ class SendAttendanceRequest extends Command
 
         $activities->each(function (Activity $activity) {
             // 募集人数に足りているか
-            $short_member_count = $this->countShortPlayer($activity);
-            if ($short_member_count === 0) {
-                // 次回送信日をNullに
+            $short_player_count = $this->countShortPlayer($activity);
+            if ($short_player_count === 0) {
+                // 次回送信日をnullに
                 $activity->next_send_datetime = null;
                 $activity->save();
                 return true;
             }
 
-            // 助っ人以外で未送信の人が残っているか
-            $players = $this->fetchUnsentPlayers($activity, $short_member_count);
+            // メールを送る選手を絞る
+            $players = $this->fetchUnsentPlayers($activity, $short_player_count);
             if ($players->isNotEmpty()) {
                 $this->sendToPlayers($activity, $players);
                 $this->setNextSendDatetime($activity, $players);
@@ -68,24 +69,60 @@ class SendAttendanceRequest extends Command
 
     private function countShortPlayer(Activity $activity)
     {
-        // TODO 募集人数がnullの処理
+        // 募集人数にしていがなければ
+        if (!$activity->recruitment) {
+            return 99999;
+        }
         /** @var int */
-        $attendances_count = Attendance::where('activity_id', $activity->id)->where('answer', Answer::YES)->count();
+        $attendances_count = Attendance::query()
+            ->where('activity_id', $activity->id)
+            ->whereIn('answer', [Answer::YES, Answer::CONDITIONALYES])
+            ->count();
+
         if ($activity->recruitment <= $attendances_count) {
             return 0;
         }
-        return $activity->recruitment - $attendances_count;
+        return (int)($activity->recruitment - $attendances_count);
     }
 
-    private function fetchUnsentPlayers(Activity $activity, int $short_member_count)
+    private function fetchUnsentPlayers(Activity $activity, int $short_player_count)
     {
-        $builder = Attendance::where('activity_id', $activity->id)->select('player_id');
+        // 初回に募集する時
+        if ($activity->recruitment === $short_player_count) {
+            /** @var Collection<Player> */
+            $players = Player::query()
+                ->where('role', Role::ADMIN)
+                ->get();
 
-        return Player::whereNotIn('id', $builder)->limit($short_member_count)->get();
+            if ($players->count() >= $activity->recruitment) {
+                return $players;
+            }
+
+            $limit_count = (int)($activity->recruitment - $players->count());
+
+            // Player::query()
+            //     ->where('role', Role::MEMBER)
+            //     ->orderByDesc('a') 出席優先度
+            //     ->limit($limit_count)
+            //     ->get();
+
+            return $players;
+        }
+
+        $builder = Attendance::query()
+            ->where('activity_id', $activity->id)
+            ->select('player_id');
+
+
+        return Player::query()
+            ->whereNotIn('id', $builder)
+            ->whereIn('role', [Role::ADMIN, Role::MEMBER])
+            ->limit($short_player_count)
+            ->get();
     }
 
     /**
-     * Undocumented function
+     * 管理者とメンバーに出欠回答依頼メールを送る
      *
      * @param Activity $activity
      * @param Collection<Player> $players
@@ -97,12 +134,11 @@ class SendAttendanceRequest extends Command
         $players->each(function (Player $player) use ($activity) {
             $player->notify(new AttendanceRequest($activity));
 
-            // attendance 追加
+            // attendance追加
             $attendance = new Attendance();
             $attendance->team_id = $player->team_id;
-            $attendance->player_id = $player->id;
             $attendance->activity_id = $activity->id;
-            // TODO デフォルト値変更
+            $attendance->player_id = $player->id;
             $attendance->dh_flag = false;
             $attendance->save();
         });
@@ -127,9 +163,21 @@ class SendAttendanceRequest extends Command
 
     private function setNextSendDatetime(Activity $activity)
     {
-        // 初回の場合は3日後
-        // if (!$activity->next_send_datetime)
-        // そうでなければ2時間後
-        // ただし、活動日を超えてしまう場合はNull
+        if (
+            now()->addWeek(2) < $activity->activity_datetime &&
+            $activity->activity_datetime <= now()->addWeek(3)
+        ) {
+            // 活動日まで2週間以上3週間未満であれば2時間置きに送る。8時から20時
+            $activity->next_send_datetime = now()->addHour(2);
+            $activity->save();
+        } elseif (now()->addWeek(3) < $activity->activity_datetime) {
+            // 活動日まで3週間以上あれば2日置きに送る。8時から20時
+            $activity->next_send_datetime = now()->addDay(2);
+            $activity->save();
+        } else {
+            // TODO
+            $activity->next_send_datetime = now()->addMinute(15);
+            $activity->save();
+        }
     }
 }

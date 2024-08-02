@@ -20,6 +20,7 @@ use Illuminate\Support\Carbon;
  * @property string|null   $access_token              アクセストークン
  * @property Carbon|null   $access_token_expired      アクセストークン有効期限
  * @property Role          $role                      権限 [0:体験者 1:助っ人 2:メンバー 3:管理者]
+ * @property int           $attendance_priority       出席優先度
  * @property string        $last_name                 姓
  * @property string        $first_name                名
  * @property string        $nickname                  ニックネーム
@@ -45,6 +46,7 @@ class Player extends Model implements Authenticatable
         'team_id' => 'integer',
         'access_token_expired' => 'datetime',
         'role' => Role::class,
+        'attendance_priority' => 'integer',
         'player_number' => 'integer',
         'desired_position' => Position::class,
         'pitcher_flag' => 'boolean',

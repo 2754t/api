@@ -26,6 +26,7 @@ class PlayerResource extends JsonResource
             'access_token' => $this->access_token,
             'access_token_expired' => $this->access_token_expired,
             'role' => $this->role,
+            'attendance_priority' => $this->attendance_priority,
             'last_name' => $this->last_name,
             'first_name' => $this->first_name,
             'nickname' => $this->nickname,

@@ -123,8 +123,8 @@ class ActivitySeeder extends Seeder
         $activity6->meeting_time = '開始15分前まで';
         $activity6->meeting_place = '一塁側入り口前';
         $activity6->activity_type = ActivityType::GAME;
-        $activity6->confirmed_flag = false;
-        $activity6->opposing_team = '募集中';
+        $activity6->confirmed_flag = true;
+        $activity6->opposing_team = 'ドランカーズ';
         $activity6->referee_type = RefereeType::DISPATCH;
         $activity6->dh_type = DHType::ONE;
         $activity6->recruitment = 10;
