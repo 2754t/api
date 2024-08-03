@@ -134,10 +134,15 @@ class SendAttendanceRequest extends Command
      */
     private function firstRecruitment(Activity $activity): Collection
     {
+        $builder = Attendance::query()
+            ->where('activity_id', $activity->id)
+            ->select('player_id');
+
         /** @var Collection<Player> */
         $admins = Player::query()
             ->with('attendances')
             ->where('team_id', $activity->team_id)
+            ->whereNotIn('id', $builder)
             ->where('role', Role::ADMIN)
             ->get();
 
@@ -145,7 +150,7 @@ class SendAttendanceRequest extends Command
             return $admins;
         }
 
-        $limit_count = (int)($activity->recruitment - $admins->count());
+        $limit_count = $activity->recruitment - $admins->count();
 
         /** @var Collection<Player> */
         $batteries = Player::query()
@@ -156,6 +161,7 @@ class SendAttendanceRequest extends Command
                 $query->where('pitcher_flag', true)
                     ->orWhere('catcher_flag', true);
             })
+            ->whereNotIn('id', $builder)
             ->orderByDesc('attendance_priority')
             ->limit($limit_count)
             ->get();
@@ -166,13 +172,15 @@ class SendAttendanceRequest extends Command
             return $admin_and_batteries;
         }
 
-        $limit_count = (int)($activity->recruitment - $admin_and_batteries->count());
+        $limit_count = $activity->recruitment - $admin_and_batteries->count();
 
         /** @var Collection<Player> */
         $member = Player::query()
             ->with('attendances')
             ->where('team_id', $activity->team_id)
             ->where('role', Role::MEMBER)
+            ->whereNotIn('id', $builder)
+            ->whereNotIn('id', $admin_and_batteries->pluck('id'))
             ->orderByDesc('attendance_priority')
             ->limit($limit_count)
             ->get();
@@ -202,6 +210,7 @@ class SendAttendanceRequest extends Command
             if ($attendance_answer_and_penalties->count() > 0) {
                 $attendance_priority = round((
                     $attendance_answer_and_penalties->whereIn('answer', [Answer::YES, Answer::CONDITIONALYES])->count() -
+                    $attendance_answer_and_penalties->where('answer', Answer::NOANSWER)->count() -
                     $attendance_answer_and_penalties->sum('penalty')
                 ) / $attendance_answer_and_penalties->count() * 100);
                 $player->attendance_priority = $attendance_priority;

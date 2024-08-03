@@ -32,6 +32,7 @@ class UpdateAction
             }
         }
         if (
+            $attendance->answer_yes_datetime &&
             in_array($attendance->answer, [Answer::NO, Answer::DUEDATE]) &&
             $attendance->answer_yes_datetime->addDay(3) < now()
         ) {
