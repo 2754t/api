@@ -7,7 +7,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class AttendanceRequest extends Notification
+class NotifyAdminOfAttendanceSent extends Notification
 {
     use Queueable;
 
@@ -34,14 +34,13 @@ class AttendanceRequest extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->subject('出欠確認')
-            //->line($this->activity->activity_datetime . 'に' . $this->activity->activity_type. 'が登録されました。')
+            ->subject('出欠依頼を全員に送りました')
             ->line(sprintf(
                 '%sの%sが登録されました。',
                 $this->activity->activity_datetime->format('m月d日 H:i'),
                 $this->activity->activity_type->label()
             ))
-            ->line('サイトにアクセスして出欠を回答してください。')
+            ->line('サイトにアクセスして出欠を確認してください。')
             ->action('活動一覧ページ', url('/activity'));
     }
 
