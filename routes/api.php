@@ -6,6 +6,7 @@ use App\Http\Controllers\Activity\FetchController as ActivityFetchController;
 use App\Http\Controllers\Attendance\FetchController as AttendanceFetchController;
 use App\Http\Controllers\Attendance\UpdateController;
 use App\Http\Controllers\Player\FetchController;
+use App\Http\Controllers\SignIn\PasswordController;
 use App\Http\Controllers\SignIn\SignInController;
 use App\Http\Controllers\StartingMember\FetchController as StartingMemberFetchController;
 use App\Http\Controllers\StartingMember\UpdateController as StartingMemberUpdateController;
@@ -35,8 +36,11 @@ Route::get("starting-member/update", StartingMemberUpdateController::class);
 Route::get('/attendance/{activity}', AttendanceFetchController::class)->whereNumber('activity');
 Route::put('/attendance/{attendance}', UpdateController::class)->whereNumber('attendance');
 
+
 // TODO 仕分け 選手登録必要
 Route::middleware(['auth:player'])->group(function () {
+    // ログイン中ユーザのパスワード変更
+    Route::put('/password', PasswordController::class);
     // 選手
     Route::get('/player', FetchController::class);
 });

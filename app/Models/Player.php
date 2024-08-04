@@ -7,6 +7,7 @@ use App\Enums\Role;
 use Illuminate\Auth\Authenticatable as AuthAuthenticatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
@@ -79,6 +80,11 @@ class Player extends Model implements Authenticatable
     |-------------------
     |
     */
+    public function team(): BelongsTo
+    {
+        return $this->belongsTo(Team::class, 'team_id', 'id');
+    }
+
     public function attendances(): HasMany
     {
         return $this->hasMany(Attendance::class, 'player_id', 'id');
