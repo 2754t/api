@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace App\UseCase\Actions\SignIn;
+namespace App\UseCase\Actions\Password;
 
 use App\Models\Player;
-use App\UseCase\Params\SignIn\PasswordParam;
+use App\UseCase\Params\Password\UpdateParam;
 use Illuminate\Support\Facades\Hash;
 
-class PasswordAction
+class UpdateAction
 {
-    public function __invoke(PasswordParam $param, Player $player): Player
+    public function __invoke(UpdateParam $param, Player $player): Player
     {
         $player->password = Hash::make($param->password);
         $player->save();

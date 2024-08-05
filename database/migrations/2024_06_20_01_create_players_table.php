@@ -16,6 +16,8 @@ return new class extends Migration
             $table->foreignId('team_id')->comment('チームID');
             $table->string('email', 100)->comment('メールアドレス');
             $table->string('password', 191)->comment('パスワード');
+            $table->string('password_token', 100)->nullable()->comment('パスワード再発行トークン');
+            $table->dateTime('password_token_expired')->nullable()->comment('パスワード再発行トークン期限');
             $table->string('access_token', 100)->nullable()->comment('アクセストークン');
             $table->dateTime('access_token_expired')->nullable()->comment('アクセストークン有効期限');
             $table->string('last_name', 30)->comment('姓');

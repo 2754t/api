@@ -2,23 +2,23 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Controllers\SignIn;
+namespace App\Http\Controllers\Password;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\SignIn\PasswordRequest;
+use App\Http\Requests\Password\UpdateRequest;
 use App\Http\Resources\SignInPlayerResource;
 use App\Models\Player;
-use App\UseCase\Actions\SignIn\PasswordAction;
-use App\UseCase\Params\SignIn\PasswordParam;
+use App\UseCase\Actions\Password\UpdateAction;
+use App\UseCase\Params\Password\UpdateParam;
 
 /**
  *  ログイン中ユーザのパスワード変更
  */
-class PasswordController extends Controller
+class UpdateController extends Controller
 {
     public function __invoke(
-        PasswordRequest $request,
-        PasswordAction $action,
+        UpdateRequest $request,
+        UpdateAction $action,
     ): SignInPlayerResource {
         /** @var Player|null */
         $player = auth()->guard('player')->user();
@@ -27,7 +27,7 @@ class PasswordController extends Controller
             abort(400);
         }
 
-        $param = new PasswordParam($request);
+        $param = new UpdateParam($request);
         $player = $action($param, $player);
 
         return new SignInPlayerResource($player);

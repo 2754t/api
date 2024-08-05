@@ -22,6 +22,8 @@ class SignInPlayerResource extends JsonResource
             'id' => $this->id,
             'team' => new TeamResource($this->whenLoaded('team')),
             'email' => $this->email,
+            'password_token' => $this->password_token,
+            'password_token_expired' => $this->password_token_expired,
             'access_token' => $this->access_token,
             'access_token_expired' => $this->access_token_expired,
             'role' => $this->role,

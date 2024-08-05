@@ -137,6 +137,14 @@ return [
             'replace_placeholders' => true,
             'permission' => 0666,
         ],
+
+        'mail' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/mail.log'),
+            'level' => 'debug',
+            'days' => 7,
+            'permission' => 0o666,
+        ],
     ],
 
 ];

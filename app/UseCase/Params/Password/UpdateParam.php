@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\UseCase\Params\SignIn;
+namespace App\UseCase\Params\Password;
 
 use App\Shared\Param;
 
@@ -11,7 +11,7 @@ use App\Shared\Param;
  * @property string $password              新しいパスワード
  * @property string $password_confirmation 新しいパスワード（確認用）
  */
-class PasswordParam extends Param
+class UpdateParam extends Param
 {
     protected $fillable = [
         'current_password',

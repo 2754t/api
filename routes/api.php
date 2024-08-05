@@ -5,8 +5,11 @@ declare(strict_types=1);
 use App\Http\Controllers\Activity\FetchController as ActivityFetchController;
 use App\Http\Controllers\Attendance\FetchController as AttendanceFetchController;
 use App\Http\Controllers\Attendance\UpdateController;
+use App\Http\Controllers\Password\ChangePasswordController;
+use App\Http\Controllers\Password\SendMailController;
+use App\Http\Controllers\Password\UpdateController as PasswordUpdateController;
+use App\Http\Controllers\Password\VerifyTokenController;
 use App\Http\Controllers\Player\FetchController;
-use App\Http\Controllers\SignIn\PasswordController;
 use App\Http\Controllers\SignIn\SignInController;
 use App\Http\Controllers\StartingMember\FetchController as StartingMemberFetchController;
 use App\Http\Controllers\StartingMember\UpdateController as StartingMemberUpdateController;
@@ -26,6 +29,13 @@ use Illuminate\Support\Facades\Route;
 // 権限制御なし
 // ログイン
 Route::post('/signIn', SignInController::class);
+// パスワードリマインダー : メール認証
+Route::post('/password-reminder', SendMailController::class);
+// パスワードリマインダー : トークン確認
+Route::get('/password-reminder/{token}', VerifyTokenController::class);
+// パスワードリマインダー : パスワード再設定
+Route::post('/password-reminder/reset', ChangePasswordController::class);
+
 // 活動
 Route::get('/activity', ActivityFetchController::class);
 // スタメン
@@ -40,7 +50,7 @@ Route::put('/attendance/{attendance}', UpdateController::class)->whereNumber('at
 // TODO 仕分け 選手登録必要
 Route::middleware(['auth:player'])->group(function () {
     // ログイン中ユーザのパスワード変更
-    Route::put('/password', PasswordController::class);
+    Route::put('/password', PasswordUpdateController::class);
     // 選手
     Route::get('/player', FetchController::class);
 });

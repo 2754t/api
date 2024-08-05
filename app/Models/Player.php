@@ -19,6 +19,8 @@ use Illuminate\Support\Carbon;
  * @property int           $team_id                   チームID
  * @property string        $email                     メールアドレス
  * @property string        $password                  パスワード
+ * @property string|null   $password_token            パスワード再発行トークン
+ * @property Carbon|null   $password_token_expired    パスワード再発行トークン期限
  * @property string|null   $access_token              アクセストークン
  * @property Carbon|null   $access_token_expired      アクセストークン有効期限
  * @property Role          $role                      権限 [0:体験者 1:助っ人 2:メンバー 3:管理者]
@@ -46,6 +48,7 @@ class Player extends Model implements Authenticatable
     protected $casts = [
         'id' => 'integer',
         'team_id' => 'integer',
+        'password_token_expired' => 'datetime',
         'access_token_expired' => 'datetime',
         'role' => Role::class,
         'attendance_priority' => 'integer',
