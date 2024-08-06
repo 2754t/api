@@ -40,8 +40,9 @@ class NotifyAdminOfAttendanceSent extends Notification
                 $this->activity->activity_datetime->format('m月d日 H:i'),
                 $this->activity->activity_type->label()
             ))
-            ->line('サイトにアクセスして出欠を確認してください。')
-            ->action('活動一覧ページ', url('/activity'));
+            ->line('サイトにログインして出欠を確認してください。')
+            ->action('ログインページ', config('app.front_url') . '/signin')
+            ->action('活動一覧ページ', config('app.front_url') . '/activity');
     }
 
     /**

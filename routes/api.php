@@ -36,15 +36,10 @@ Route::get('/password-reminder/{token}', VerifyTokenController::class);
 // パスワードリマインダー : パスワード再設定
 Route::post('/password-reminder/reset', ChangePasswordController::class);
 
-// 活動
+// 活動取得
 Route::get('/activity', ActivityFetchController::class);
-// スタメン
-Route::get('/starting-member/{activity}', StartingMemberFetchController::class)->whereNumber('activity');
-// テスト用スタメン決め
-Route::get("starting-member/update", StartingMemberUpdateController::class);
-// 出欠
+// 出欠取得
 Route::get('/attendance/{activity}', AttendanceFetchController::class)->whereNumber('activity');
-Route::put('/attendance/{attendance}', UpdateController::class)->whereNumber('attendance');
 
 
 // TODO 仕分け 選手登録必要
@@ -53,4 +48,11 @@ Route::middleware(['auth:player'])->group(function () {
     Route::put('/password', PasswordUpdateController::class);
     // 選手
     Route::get('/player', FetchController::class);
+    // 出欠更新
+    Route::put('/attendance/{attendance}', UpdateController::class)->whereNumber('attendance');
+    // スタメン取得
+    Route::get('/starting-member/{activity}', StartingMemberFetchController::class)->whereNumber('activity');
 });
+
+// テスト用スタメン決め
+Route::get("starting-member/update", StartingMemberUpdateController::class);

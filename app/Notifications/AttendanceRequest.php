@@ -41,8 +41,9 @@ class AttendanceRequest extends Notification
                 $this->activity->activity_datetime->format('m月d日 H:i'),
                 $this->activity->activity_type->label()
             ))
-            ->line('サイトにアクセスして出欠を回答してください。')
-            ->action('活動一覧ページ', url('/activity'));
+            ->line('サイトにログインして出欠を回答してください。')
+            ->action('ログインページ', config('app.front_url') . '/signin')
+            ->action('活動一覧ページ', config('app.front_url') . '/activity');
     }
 
     /**

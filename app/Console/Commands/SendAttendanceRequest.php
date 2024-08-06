@@ -9,10 +9,9 @@ use App\Models\Attendance;
 use App\Models\Player;
 use App\Notifications\AttendanceRequest;
 use App\Notifications\NotifyAdminOfAttendanceSent;
+use App\Utilities\SendMailUtility;
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Log;
-use Throwable;
 
 class SendAttendanceRequest extends Command
 {
@@ -199,7 +198,9 @@ class SendAttendanceRequest extends Command
     {
         // メール送信
         $players->each(function (Player $player) use ($activity) {
-            $player->notify(new AttendanceRequest($activity));
+            $mail = new AttendanceRequest($activity);
+            $mail_message = $mail->toMail($player);
+            SendMailUtility::send($mail, $mail_message, $player);
 
             // playerの出席優先度更新
             $attendance_answer_and_penalties = $player->attendances()
@@ -257,7 +258,9 @@ class SendAttendanceRequest extends Command
             ->get();
 
         $admins->each(function (Player $admin) use ($activity) {
-            $admin->notify(new NotifyAdminOfAttendanceSent($activity));
+            $mail = new NotifyAdminOfAttendanceSent($activity);
+            $mail_message = $mail->toMail($admin);
+            SendMailUtility::send($mail, $mail_message, $admin);
         });
     }
 
