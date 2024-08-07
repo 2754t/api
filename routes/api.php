@@ -10,6 +10,8 @@ use App\Http\Controllers\Password\SendMailController;
 use App\Http\Controllers\Password\UpdateController as PasswordUpdateController;
 use App\Http\Controllers\Password\VerifyTokenController;
 use App\Http\Controllers\Player\FetchController;
+use App\Http\Controllers\Player\FindController;
+use App\Http\Controllers\Player\UpdateController as PlayerUpdateController;
 use App\Http\Controllers\SignIn\SignInController;
 use App\Http\Controllers\StartingMember\FetchController as StartingMemberFetchController;
 use App\Http\Controllers\StartingMember\UpdateController as StartingMemberUpdateController;
@@ -41,13 +43,13 @@ Route::get('/activity', ActivityFetchController::class);
 // 出欠取得
 Route::get('/attendance/{activity}', AttendanceFetchController::class)->whereNumber('activity');
 
-
-// TODO 仕分け 選手登録必要
 Route::middleware(['auth:player'])->group(function () {
     // ログイン中ユーザのパスワード変更
     Route::put('/password', PasswordUpdateController::class);
     // 選手
     Route::get('/player', FetchController::class);
+    Route::get('/player/{player}', FindController::class)->whereNumber('player');
+    Route::put('/player/{player}', PlayerUpdateController::class)->whereNumber('player');
     // 出欠更新
     Route::put('/attendance/{attendance}', UpdateController::class)->whereNumber('attendance');
     // スタメン取得

@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('last_name', 30)->comment('姓');
             $table->string('first_name', 30)->comment('名');
             $table->string('nickname', 30)->comment('ニックネーム');
-            $table->tinyInteger('role')->default(0)->comment('権限 [0:体験者 1:助っ人 2:メンバー 3:管理者]');
+            $table->tinyInteger('role')->default(30)->comment('権限 [1:管理者 10:メンバー 20:助っ人 30:体験者]');
             $table->tinyInteger('attendance_priority')->default(0)->comment('出席優先度');
             $table->integer('player_number')->nullable()->comment('背番号');
             $table->tinyInteger('desired_position')->nullable()->comment('希望ポジション');

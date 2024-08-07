@@ -1,19 +1,21 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Player;
 
 use App\Http\Controllers\Controller;
-use App\Models\Player;
-use Illuminate\Support\Facades\Auth;
+use App\Http\Resources\PlayerResource;
+use App\UseCase\Actions\Player\FetchAction;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class FetchController extends Controller
 {
-    public function __invoke()
+    public function __invoke(FetchAction $action): AnonymousResourceCollection
     {
-        $login_player = Auth::guard('player')->user();
+        /** @var Collection<Player> */
+        $players = $action();
 
-        $players = Player::where('team_id', $login_player->team_id)->paginate(20);
-        // TODO リソース作って返す
-        return $players;
+        return PlayerResource::collection($players);
     }
 }

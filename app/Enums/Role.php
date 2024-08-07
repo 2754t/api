@@ -13,18 +13,18 @@ enum Role: int
 {
     use HasLabel;
 
-    case EXPERIENCE = 0;
-    case HELPER = 1;
-    case MEMBER = 2;
-    case ADMIN = 3;
+    case ADMIN = 1;
+    case MEMBER = 10;
+    case HELPER = 20;
+    case EXPERIENCE = 30;
 
     public function label(): string
     {
         return match ($this) {
-            self::EXPERIENCE => '体験者',
-            self::HELPER => '助っ人',
-            self::MEMBER => 'メンバー',
             self::ADMIN => '管理者',
+            self::MEMBER => 'メンバー',
+            self::HELPER => '助っ人',
+            self::EXPERIENCE => '体験者',
         };
     }
 }
