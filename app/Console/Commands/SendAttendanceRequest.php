@@ -212,8 +212,13 @@ class SendAttendanceRequest extends Command
                 $attendance_priority = round((
                     $attendance_answer_and_penalties->whereIn('answer', [Answer::YES, Answer::CONDITIONALYES])->count() -
                     $attendance_answer_and_penalties->where('answer', Answer::NOANSWER)->count() -
-                    $attendance_answer_and_penalties->sum('penalty')
-                ) / $attendance_answer_and_penalties->count() * 100);
+                    $attendance_answer_and_penalties->sum('penalty') +
+                    1
+                ) / (
+                    $attendance_answer_and_penalties->count() -
+                    $attendance_answer_and_penalties->where('answer', Answer::DUEDATE)->count() +
+                    1
+                ) * 100);
                 $player->attendance_priority = $attendance_priority;
                 $player->save();
             }
