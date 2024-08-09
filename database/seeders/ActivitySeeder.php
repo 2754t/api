@@ -131,7 +131,7 @@ class ActivitySeeder extends Seeder
         $activity6->entry_cost = 600;
         $activity6->belongings = 'ユニフォーム（ジャージ可）、グローブ、スパイク（金具可）、参加費';
         $activity6->decide_order_flag = false;
-        $activity6->next_send_datetime = null;
+        $activity6->next_send_datetime = '2024-08-12 09:00:00';
         $activity6->save();
 
         $activity7 = new Activity();
@@ -150,7 +150,7 @@ class ActivitySeeder extends Seeder
         $activity7->entry_cost = 600;
         $activity7->belongings = 'ユニフォーム（ジャージ可）、グローブ、スパイク（金具可）、参加費';
         $activity7->decide_order_flag = false;
-        $activity7->next_send_datetime = null;
+        $activity7->next_send_datetime = '2024-08-12 09:00:00';
         $activity7->save();
 
         $activity8 = new Activity();
@@ -169,7 +169,7 @@ class ActivitySeeder extends Seeder
         $activity8->entry_cost = 600;
         $activity8->belongings = 'ユニフォーム（ジャージ可）、グローブ、スパイク（金具可）、参加費';
         $activity8->decide_order_flag = false;
-        $activity8->next_send_datetime = null;
+        $activity8->next_send_datetime = '2024-08-12 09:00:00';
         $activity8->save();
 
         $activity9 = new Activity();
@@ -188,7 +188,7 @@ class ActivitySeeder extends Seeder
         $activity9->entry_cost = 600;
         $activity9->belongings = 'ユニフォーム（ジャージ可）、グローブ、スパイク（金具可）、参加費';
         $activity9->decide_order_flag = false;
-        $activity9->next_send_datetime = null;
+        $activity9->next_send_datetime = '2024-08-12 09:00:00';
         $activity9->save();
 
         $activity10 = new Activity();
@@ -207,7 +207,7 @@ class ActivitySeeder extends Seeder
         $activity10->entry_cost = 700;
         $activity10->belongings = 'ユニフォーム（ジャージ可）、グローブ、スパイク（金具可）、参加費';
         $activity10->decide_order_flag = false;
-        $activity10->next_send_datetime = null;
+        $activity10->next_send_datetime = '2024-08-12 09:00:00';
         $activity10->save();
     }
 }
